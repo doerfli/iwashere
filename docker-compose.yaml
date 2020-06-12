@@ -1,0 +1,22 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:4.2-bionic
+    #restart: always
+    volumes:
+      - ./mongo/data:/data/db
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: admin
+#      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - 27017:27017
+  backend:
+    image: iwashere
+    ports:
+      - 8080:8080
+    environment:
+      - MONGO_CONNECTION=mongodb://mongo:27017
+  frontend:
+    image: iwashere-web
+    ports:
+      - 8888:80

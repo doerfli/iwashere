@@ -1,0 +1,35 @@
+#server.servlet.session.cookie.http-only=true
+#server.servlet.session.cookie.secure=true
+logging:
+  level:
+    li:
+      doerf:
+        subscribed: DEBUG
+    org:
+      springframework:
+        data:
+          mongodb:
+            repository:
+              query:
+                MongoQueryCreator: DEBUG
+            core:
+              ReactiveMongoTemplate: DEBUG
+
+
+mongo:
+  databasename: iwashere
+  connection: mongodb://localhost:27017
+
+server:
+  servlet:
+    contextPath: /api
+
+mailgun:
+  apikey: ${MAILGUN_APIKEY}
+  baseurl: https://api.mailgun.net/v3/mail.bytes.li
+
+baseUrl: http://localhost:8080
+mailsender: iwashere@mail.bytes.li
+
+cron:
+  renewals: "0 3 0 * * *"
