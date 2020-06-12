@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono
 
 
 @Service
-class SubscribedUserDetailsService(private val userRepository: UserRepository) : UserDetailsService {
+class IwashereUserDetailsService(private val userRepository: UserRepository) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails {
         val user = userRepository.findFirstByUsername(Mono.just(username))
