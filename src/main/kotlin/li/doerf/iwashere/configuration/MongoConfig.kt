@@ -1,15 +1,15 @@
-package li.doerf.subscribed.configuration
+package li.doerf.iwashere.configuration
 
-import com.mongodb.reactivestreams.client.MongoClient
-import com.mongodb.reactivestreams.client.MongoClients
+import com.mongodb.client.MongoClient
+import com.mongodb.client.MongoClients
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.MongoTemplate
 
 
 @Configuration
-class ReactiveMongoConfig {
+class MongoConfig {
 
     @Value("\${mongo.databasename}")
     private lateinit var database: String
@@ -22,8 +22,8 @@ class ReactiveMongoConfig {
     }
 
     @Bean
-    fun reactiveMongoTemplate(): ReactiveMongoTemplate {
-        return ReactiveMongoTemplate(mongoClient(), database)
+    fun mongoTemplate(): MongoTemplate {
+        return MongoTemplate(mongoClient(), database)
     }
 
     @Bean

@@ -1,8 +1,7 @@
 logging:
   level:
     li:
-      doerf:
-        subscribed: DEBUG
+      doerf: DEBUG
     org:
       springframework:
         data:

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
-import reactor.core.publisher.Mono
 
 @Service
 class MailServiceImpl @Autowired constructor(
@@ -23,7 +22,7 @@ class MailServiceImpl @Autowired constructor(
 
     private val logger = getLogger(javaClass)
 
-    override fun sendSignupMail(user: User): Mono<Boolean> {
+    override suspend fun sendSignupMail(user: User) {
         logger.debug("sending signup email to $user")
         val ctx = Context()
 //        val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
@@ -32,10 +31,10 @@ class MailServiceImpl @Autowired constructor(
 //        ctx.setVariable("validUntil", dateFormat.format(Date.from(user.tokenExpiration)))
 
         val content = templateEngine.process("signup.txt", ctx)
-        return mailgunService.sendEmail(
+        mailgunService.sendEmail(
                 mailSender,
                 user.username,
-                "Welcome to subscribed",
+                "Welcome to iwashere",
                 content)
     }
 

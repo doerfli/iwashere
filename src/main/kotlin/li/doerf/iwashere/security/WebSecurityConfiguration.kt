@@ -23,16 +23,17 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
             .and()
                 .authorizeRequests()
                 .antMatchers("/home/**","/login","/accounts/signup")
-                .permitAll()
-                .anyRequest().authenticated()
+                    .permitAll()
+                .anyRequest()
+                    .authenticated()
             .and()
                 .csrf().disable()
                 .formLogin()
                 .loginProcessingUrl("/login")
-                .successHandler { request, response, authentication ->
+                .successHandler { _, response, _ ->
                     response.status = 200
                 }
-                .failureHandler { request, response, exception ->
+                .failureHandler { _, response, _ ->
                     response.status = 401
                 }
             .and()

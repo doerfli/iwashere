@@ -12,11 +12,11 @@ class DbTestHelper {
     private lateinit var userRepository: UserRepository
 
     fun cleanDb() {
-        userRepository.deleteAll().block()
+        userRepository.deleteAll()
     }
 
     fun createTestUser(username: String): User {
-        return userRepository.save(User(null, username, "xxx")).block()!!
+        return userRepository.save(User(null, username, "xxx"))
     }
 
 }

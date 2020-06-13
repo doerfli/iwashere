@@ -6,13 +6,12 @@ import io.mockk.mockkClass
 import li.doerf.iwashere.documents.User
 import li.doerf.iwashere.repositories.UserRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import reactor.core.publisher.Mono
+import java.util.*
 
 @ExtendWith(SpringExtension::class)
 @Import(UserRepository::class)
@@ -28,8 +27,7 @@ internal class IwashereUserDetailsServiceTest {
 
     @Test
     fun testLoadUserByUsernameNotFound() {
-        val userMono = Mono.empty<User>()
-        every { userRepository.findFirstByUsername(any()) } returns userMono
+        every { userRepository.findFirstByUsername(any()) } returns Optional.empty()
         org.junit.jupiter.api.assertThrows<NoSuchElementException> {
             sut.loadUserByUsername("doesnotexist")
         }
@@ -40,8 +38,7 @@ internal class IwashereUserDetailsServiceTest {
         val username = "someone"
         val userMock = mockkClass(User::class)
         every { userMock.username } returns "someone"
-        val userMono = Mono.just(userMock)
-        every { userRepository.findFirstByUsername(any()) } returns userMono
+        every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
 
         val res = sut.loadUserByUsername(username)
 

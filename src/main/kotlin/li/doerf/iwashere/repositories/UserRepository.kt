@@ -1,10 +1,10 @@
 package li.doerf.iwashere.repositories
 
 import li.doerf.iwashere.documents.User
-import org.springframework.data.repository.reactive.ReactiveCrudRepository
-import reactor.core.publisher.Mono
+import org.springframework.data.repository.PagingAndSortingRepository
+import java.util.*
 
 
-interface UserRepository : ReactiveCrudRepository<User, String> {
-    fun findFirstByUsername(username: Mono<String>): Mono<User>
+interface UserRepository : PagingAndSortingRepository<User, String> {
+    fun findFirstByUsername(username: String): Optional<User>
 }

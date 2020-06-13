@@ -4,12 +4,11 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Method
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.core.extensions.authentication
-import com.github.kittinunf.fuel.reactor.monoResponse
+import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import reactor.core.publisher.Mono
 
 @Service
 class MailgunServiceImpl @Autowired constructor(
@@ -22,7 +21,7 @@ class MailgunServiceImpl @Autowired constructor(
     @Value("\${mailgun.baseurl}")
     private lateinit var baseUrl: String
 
-    override fun sendEmail(sender: String, recipient: String, subject: String, text: String): Mono<Boolean> {
+    override suspend fun sendEmail(sender: String, recipient: String, subject: String, text: String) {
         val body= listOf(
                 "from" to sender,
                 "to" to recipient,
@@ -32,23 +31,20 @@ class MailgunServiceImpl @Autowired constructor(
 
         val url = "$baseUrl/messages"
         logger.trace("posting to url $url")
-        val responseMono = sendRequest(url, body)
-        return responseMono.map { response ->
-            logger.debug("request to send mail submitted - response statusCode ${response.statusCode}")
-            if (response.statusCode != 200) {
-                logger.error(response.statusCode.toString() + " " + response.responseMessage)
-                throw MailNotSentException("request to send email not successful - recipient $recipient")
-            }
-            true
+        val response = sendRequest(url, body)
+        logger.debug("request to send mail submitted - response statusCode ${response.statusCode}")
+        if (response.statusCode != 200) {
+            logger.error(response.statusCode.toString() + " " + response.responseMessage)
+            throw MailNotSentException("request to send email not successful - recipient $recipient")
         }
     }
 
     // visible for testing
-    fun sendRequest(url: String, body: List<Pair<String, String>>): Mono<Response> {
+    suspend fun sendRequest(url: String, body: List<Pair<String, String>>): Response {
         return fuel.upload(url, Method.POST, body)
                 .authentication()
                 .basic("api", apiKey)
-                .monoResponse()
+                .awaitStringResponseResult().second
     }
 
 }
