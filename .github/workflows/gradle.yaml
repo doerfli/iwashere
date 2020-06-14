@@ -17,11 +17,11 @@ jobs:
       - uses: eskatos/gradle-command-action@v1
         with:
           arguments: build
-#  docker:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v1
-#      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u doerfli --password-stdin
-#      - uses: rlespinasse/github-slug-action@v2.x
-#      - run: docker build -t docker.pkg.github.com/doerfli/iwashere/backend:${{ env.GITHUB_REF_SLUG }} .
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u doerfli --password-stdin
+      - uses: rlespinasse/github-slug-action@v2.x
+      - run: docker build -t docker.pkg.github.com/doerfli/iwashere/backend:${{ env.GITHUB_REF_SLUG }} .
 #      - run: docker push docker.pkg.github.com/doerfli/iwashere/backend:${{ env.GITHUB_REF_SLUG }}
