@@ -25,7 +25,7 @@ class LocationsServiceImpl(
         }
 
         val loc = locationRepository.save(newLocation)
-        logger.debug("location stored: $loc")
+        logger.info("location stored: $loc")
         return loc
     }
 

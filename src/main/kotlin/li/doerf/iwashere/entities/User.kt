@@ -12,6 +12,6 @@ data class User(
         val id: Long? = null,
         val username: String,
         var password: String,
-        @OneToMany(cascade = [CascadeType.ALL], mappedBy = "id")
+        @OneToMany(cascade = [CascadeType.ALL], mappedBy = "user")
         var locations: List<Location>? = null
 )

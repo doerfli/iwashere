@@ -58,6 +58,8 @@ dependencies {
 //	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("com.ninja-squad:springmockk:${Versions.mockk}")
+
+	testRuntimeOnly("com.h2database:h2")
 }
 
 tasks.withType<Test> {

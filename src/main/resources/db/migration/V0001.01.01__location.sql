@@ -11,3 +11,6 @@ create table location (
 
 create unique index
     idx_location_shortname ON location(shortname);
+
+create index
+    idx_location_user_id ON location(user_id);
