@@ -6,11 +6,10 @@ create table location (
     zip varchar(10),
     city varchar(512),
     country varchar(512),
-    user_id int8 not null
+    user_id int8 not null,
+    primary key (id),
+    foreign key (user_id) REFERENCES appluser(id)
 );
 
 create unique index
     idx_location_shortname ON location(shortname);
-
-create index
-    idx_location_user_id ON location(user_id);
