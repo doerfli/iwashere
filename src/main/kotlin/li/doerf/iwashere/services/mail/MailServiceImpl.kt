@@ -1,6 +1,6 @@
 package li.doerf.iwashere.services.mail
 
-import li.doerf.iwashere.documents.User
+import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value

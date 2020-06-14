@@ -7,8 +7,8 @@ import io.mockk.every
 import io.mockk.mockk
 import li.doerf.iwashere.TestHelper
 import li.doerf.iwashere.controllers.AccountsController
-import li.doerf.iwashere.documents.User
 import li.doerf.iwashere.dto.SignupRequest
+import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.AccountsServiceImpl
 import li.doerf.iwashere.services.mail.MailService

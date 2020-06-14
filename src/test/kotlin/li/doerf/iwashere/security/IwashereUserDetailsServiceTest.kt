@@ -3,7 +3,7 @@ package li.doerf.iwashere.security
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.mockkClass
-import li.doerf.iwashere.documents.User
+import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach

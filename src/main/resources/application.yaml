@@ -4,20 +4,23 @@ logging:
   level:
     li:
       doerf: DEBUG
-    org:
-      springframework:
-        data:
-          mongodb:
-            repository:
-              query:
-                MongoQueryCreator: DEBUG
-            core:
-              ReactiveMongoTemplate: DEBUG
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: TRACE
 
-
-mongo:
-  databasename: iwashere
-  connection: mongodb://localhost:27017
+spring:
+  datasource:
+    username: postgres
+    password: secret
+    url: jdbc:postgresql://localhost:5432/postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
 
 server:
   servlet:

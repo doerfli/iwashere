@@ -1,6 +1,6 @@
 package li.doerf.iwashere.utils
 
-import li.doerf.iwashere.documents.User
+import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.security.UserPrincipal
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import java.security.Principal

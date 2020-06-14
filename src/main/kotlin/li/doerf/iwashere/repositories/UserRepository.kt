@@ -1,6 +1,6 @@
 package li.doerf.iwashere.repositories
 
-import li.doerf.iwashere.documents.User
+import li.doerf.iwashere.entities.User
 import org.springframework.data.repository.PagingAndSortingRepository
 import java.util.*
 

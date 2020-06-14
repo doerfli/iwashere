@@ -1,6 +1,6 @@
 package li.doerf.iwashere.services
 
-import li.doerf.iwashere.documents.User
+import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.getLogger

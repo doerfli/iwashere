@@ -5,6 +5,8 @@ plugins {
 	id("io.spring.dependency-management") version Versions.springDependencyManagement
 	kotlin("jvm") version Versions.kotlin
 	kotlin("plugin.spring") version Versions.kotlin
+	kotlin("plugin.noarg") version Versions.kotlin
+	kotlin("plugin.allopen") version Versions.kotlin
 	id("com.github.ben-manes.versions") version Versions.benManesVersions
 	id("nebula.release") version Versions.nebulaRelease
 }
@@ -31,7 +33,7 @@ dependencies {
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -45,6 +47,9 @@ dependencies {
 	implementation("com.github.kittinunf.fuel:fuel:${Versions.fuel}")
 	implementation("com.github.kittinunf.fuel:fuel-coroutines:${Versions.fuel}")
 	implementation("io.github.cdimascio:java-dotenv:${Versions.javaDotenv}")
+
+	runtimeOnly("org.postgresql:postgresql")
+		runtimeOnly("org.flywaydb:flyway-core")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
@@ -64,4 +69,9 @@ tasks.withType<KotlinCompile> {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "11"
 	}
+}
+
+configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
+	annotation("li.doerf.iwashere.utils.NoArgs")
+	invokeInitializers = true
 }

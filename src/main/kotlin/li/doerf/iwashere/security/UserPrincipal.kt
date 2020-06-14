@@ -1,6 +1,6 @@
 package li.doerf.iwashere.security
 
-import li.doerf.iwashere.documents.User
+import li.doerf.iwashere.entities.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 

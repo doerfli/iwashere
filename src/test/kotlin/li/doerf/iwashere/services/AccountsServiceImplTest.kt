@@ -3,7 +3,7 @@ package li.doerf.iwashere.services
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
-import li.doerf.iwashere.documents.User
+import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.mail.MailService
 import org.junit.jupiter.api.Test

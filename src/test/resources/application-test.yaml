@@ -2,18 +2,6 @@ logging:
   level:
     li:
       doerf: DEBUG
-    org:
-      springframework:
-        data:
-          mongodb:
-            repository:
-              query:
-                MongoQueryCreator: DEBUG
-            core:
-              ReactiveMongoTemplate: DEBUG
-mongo:
-  databasename: iwashere_test
-  connection: mongodb://localhost:27017
 
 mailgun:
   apikey: 1234567890
