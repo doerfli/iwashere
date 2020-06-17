@@ -1,9 +1,6 @@
 package li.doerf.iwashere.controllers
 
-import li.doerf.iwashere.dto.location.LocationCreateRequest
-import li.doerf.iwashere.dto.location.LocationCreateResponse
-import li.doerf.iwashere.dto.location.LocationListResponse
-import li.doerf.iwashere.dto.location.toLocationDto
+import li.doerf.iwashere.dto.location.*
 import li.doerf.iwashere.entities.Location
 import li.doerf.iwashere.services.LocationsService
 import li.doerf.iwashere.utils.UserHelper
@@ -44,6 +41,18 @@ class LocationsController(
         } else {
             notFound().build()
         }
+    }
+
+    @PutMapping
+    fun update(request: LocationUpdateRequest, principal: Principal): ResponseEntity<LocationUpdateResponse> {
+        val updated = locationsService.update(request.entity, userHelper.getUser(principal))
+        return ok(LocationUpdateResponse(updated.toLocationDto()))
+    }
+
+    @PutMapping("updateShortname")
+    fun updateShortname(request: LocationUpdateShortnameRequest, principal: Principal): ResponseEntity<LocationUpdateShortnameResponse> {
+        val updated = locationsService.updateShortname(request.id, request.shortname, userHelper.getUser(principal))
+        return ok(LocationUpdateShortnameResponse(updated.id!!, updated.shortname))
     }
 
 }

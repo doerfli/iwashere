@@ -6,6 +6,6 @@ import org.springframework.data.repository.PagingAndSortingRepository
 
 
 interface LocationRepository : PagingAndSortingRepository<Location, Long> {
-    fun countFirstByShortnameAndUser(shortname: String, user: User): Int
+    fun countFirstByShortname(shortname: String): Int
     fun getAllByUser(user: User): List<Location>
 }
