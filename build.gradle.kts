@@ -43,19 +43,19 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesVersion}")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${Versions.coroutinesVersion}")
 	implementation("org.thymeleaf:thymeleaf-spring5")
+	implementation("org.springdoc:springdoc-openapi-ui:${Versions.springDocOpenApi}")
 
 	implementation("com.github.kittinunf.fuel:fuel:${Versions.fuel}")
 	implementation("com.github.kittinunf.fuel:fuel-coroutines:${Versions.fuel}")
 	implementation("io.github.cdimascio:java-dotenv:${Versions.javaDotenv}")
 
 	runtimeOnly("org.postgresql:postgresql")
-		runtimeOnly("org.flywaydb:flyway-core")
+	runtimeOnly("org.flywaydb:flyway-core")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 		exclude(module = "mockito-core")
 	}
-//	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("com.ninja-squad:springmockk:${Versions.mockk}")
 
