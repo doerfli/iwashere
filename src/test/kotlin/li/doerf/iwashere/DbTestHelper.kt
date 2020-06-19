@@ -15,8 +15,8 @@ class DbTestHelper {
     private lateinit var locationRepository: LocationRepository
 
     fun cleanDb() {
-        userRepository.deleteAll()
         locationRepository.deleteAll()
+        userRepository.deleteAll()
     }
 
     fun createTestUser(username: String): User {
