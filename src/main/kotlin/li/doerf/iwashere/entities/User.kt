@@ -1,7 +1,10 @@
 package li.doerf.iwashere.entities
 
 import li.doerf.iwashere.utils.NoArgs
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.Table
 
 
 @Entity
@@ -11,7 +14,7 @@ data class User(
         @Id @GeneratedValue
         val id: Long? = null,
         val username: String,
-        var password: String,
-        @OneToMany(cascade = [CascadeType.ALL], mappedBy = "user")
-        var locations: List<Location>? = null
+        var password: String
+//        @OneToMany(cascade = [CascadeType.ALL], mappedBy = "user")
+//        var locations: List<Location>? = null
 )
