@@ -211,4 +211,30 @@ internal class LocationsServiceImplTest {
             locationRepository.save(any() as Location)
         }
     }
+
+    @Test
+    fun get() {
+        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user)
+        every { locationRepository.findFirstByShortname("loc1") } returns Optional.of(loc)
+
+        // WHEN
+        val result = svc.getByShortName("loc1")
+
+        // THEN
+        assertThat(result.isPresent).isTrue()
+        assertThat(result.get().id).isEqualTo(42)
+    }
+
+    @Test
+    fun getNotFound() {
+        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user)
+        every { locationRepository.findFirstByShortname("loc1") } returns Optional.empty()
+
+        // WHEN
+        val result = svc.getByShortName("loc1")
+
+        // THEN
+        assertThat(result.isPresent).isFalse()
+    }
+
 }

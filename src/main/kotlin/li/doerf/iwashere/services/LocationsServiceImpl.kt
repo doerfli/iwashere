@@ -6,6 +6,7 @@ import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class LocationsServiceImpl(
@@ -35,6 +36,11 @@ class LocationsServiceImpl(
         val count = locationRepository.countFirstByShortname(shortname)
         logger.debug("location $shortname count = $count")
         return count > 0
+    }
+
+    override fun getByShortName(shortname: String): Optional<Location> {
+        logger.trace("get location with shortname $shortname")
+        return locationRepository.findFirstByShortname(shortname)
     }
 
     override fun getAll(user: User): List<Location> {

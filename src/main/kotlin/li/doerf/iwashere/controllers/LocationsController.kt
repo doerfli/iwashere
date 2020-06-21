@@ -27,6 +27,15 @@ class LocationsController(
         return ok(LocationListResponse(locations))
     }
 
+    @GetMapping("/byShortname/{shortname}")
+    fun get(@PathVariable("shortname") shortname: String): ResponseEntity<LocationDto> {
+        val locationOpt = locationsService.getByShortName(shortname)
+        if (locationOpt.isEmpty) {
+            throw IllegalArgumentException("Location with shortname '$shortname' does not exist")
+        }
+        return ok(locationOpt.get().toLocationDto())
+    }
+
     @PostMapping
     fun create(@RequestBody request: LocationCreateRequest, principal: Principal): ResponseEntity<LocationCreateResponse> {
         val toBeCreated = Location(null, request.name, request.shortname, request.street, request.zip, request.city, request.country, userHelper.getUser(principal))

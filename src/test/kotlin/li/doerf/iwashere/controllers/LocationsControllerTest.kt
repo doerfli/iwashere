@@ -5,6 +5,7 @@ import li.doerf.iwashere.LocationHelper
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.utils.getLogger
+import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
@@ -74,6 +76,31 @@ internal class LocationsControllerTest {
                 // then
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun get() {
+        val loc1 = LocationHelper.new("Location 1", "loc1", testuser)
+        locationRepository.save(loc1)
+
+        // when
+        mvc.perform(MockMvcRequestBuilders.get("/locations/byShortname/loc1").contentType(MediaType.APPLICATION_JSON))
+
+        // then
+        .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.id", `is`(loc1.id?.toInt())))
+            .andExpect(jsonPath("$.name", `is`(loc1.name)))
+    }
+
+    @Test
+    fun getNotFound() {
+        // when
+        mvc.perform(MockMvcRequestBuilders.get("/locations/byShortname/loc1").contentType(MediaType.APPLICATION_JSON))
+
+                // then
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest)
     }
 
 }
