@@ -1,4 +1,4 @@
-package li.doerf.iwashere.controller
+package li.doerf.iwashere.controllers
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -6,7 +6,6 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import li.doerf.iwashere.TestHelper
-import li.doerf.iwashere.controllers.AccountsController
 import li.doerf.iwashere.dto.SignupRequest
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
