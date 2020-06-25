@@ -10,12 +10,12 @@ services:
     ports:
       - 5432:5432
   backend:
-    image: iwashere
+    image: docker.pkg.github.com/doerfli/iwashere/iwashere-backend:master
     ports:
       - 8080:8080
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database/postgres
   frontend:
-    image: iwashere-web
+    image: docker.pkg.github.com/doerfli/iwashere-web/iwashere-frontend:master
     ports:
       - 8888:80

@@ -21,6 +21,6 @@ VOLUME /log
 COPY --from=build /workspace/build/libs/dependency/BOOT-INF/lib /app/lib
 COPY --from=build /workspace/build/libs/dependency/META-INF /app/META-INF
 COPY --from=build /workspace/build/libs/dependency/BOOT-INF/classes /app
-RUN addgroup -S subscribed && adduser -S subscribed -G subscribed
-USER subscribed
-ENTRYPOINT java -Xtune:virtualized -cp app:app/lib/* li.doerf.subscribed.SubscribedApplicationKt
+RUN addgroup -S subscribed && adduser -S iwashere -G iwashere
+USER iwashere
+ENTRYPOINT java -Xtune:virtualized -cp app:app/lib/* li.doerf.iwashere.IwashereApplicationKt
