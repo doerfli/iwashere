@@ -10,6 +10,7 @@ class IwashereApplication
 fun main(args: Array<String>) {
 	dotenv {
 		systemProperties = true
+		ignoreIfMissing = true
 	}
 	runApplication<IwashereApplication>(*args)
 }
