@@ -25,5 +25,10 @@ class VisitorServiceImpl(
         return visitor
     }
 
+    override fun deleteAll(visitors: List<Visitor>) {
+        logger.info("deleting ${visitors.size} visitors")
+        visitorRepository.deleteAll(visitors)
+    }
+
 
 }

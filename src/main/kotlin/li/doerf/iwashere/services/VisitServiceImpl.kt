@@ -5,6 +5,7 @@ import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.stereotype.Service
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 @Service
 class VisitServiceImpl(
@@ -31,6 +32,16 @@ class VisitServiceImpl(
         logger.debug("visit saved: $visit")
         logger.info("visit registered id: ${visit.id} - location: ${visit.location}")
         return visit
+    }
+
+    override fun cleanup(retentionDays: Long) {
+        logger.info("cleaning up visits older than $retentionDays days")
+        val cleanupDay = Instant.now().minus(retentionDays, ChronoUnit.DAYS)
+        val visits = visitRepository.findAllByRegistrationTimeBefore(cleanupDay)
+        val visitors = visits.map { it.visitor }
+        logger.info("deleting ${visits.size} visits")
+        visitRepository.deleteAll(visits)
+        visitorService.deleteAll(visitors)
     }
 
 }

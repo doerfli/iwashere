@@ -33,5 +33,6 @@ mailgun:
 baseUrl: http://localhost:8080
 mailsender: iwashere@mail.bytes.li
 
-cron:
-  renewals: "0 3 0 * * *"
+cleanup:
+  cron: "0 3 0 * * *"
+  retentionDays: 28
