@@ -6,6 +6,7 @@ create table location (
     zip varchar(10),
     city varchar(512),
     country varchar(512),
+    registration_date timestamp,
     user_id int8 not null,
     primary key (id),
     foreign key (user_id) REFERENCES appluser(id)

@@ -1,6 +1,7 @@
 package li.doerf.iwashere.entities
 
 import li.doerf.iwashere.utils.NoArgs
+import java.time.Instant
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -12,5 +13,6 @@ data class Visitor(
         var firstname: String,
         var lastname: String,
         var email: String,
-        var phone: String
+        var phone: String,
+        val registrationDate: Instant = Instant.now()
 )

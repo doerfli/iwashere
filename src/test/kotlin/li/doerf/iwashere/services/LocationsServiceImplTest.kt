@@ -41,8 +41,8 @@ internal class LocationsServiceImplTest {
     @Test
     fun create() {
         // GIVEN
-        val newLoc = Location(null, "Location 1", "loc1", null, null, null, null, user)
-        val newLocSaved = Location(42, "Location 1", "loc1", null, null, null, null, user)
+        val newLoc = Location(null, "Location 1", "loc1", null, null, null, null, user = user)
+        val newLocSaved = Location(42, "Location 1", "loc1", null, null, null, null, user = user)
 
         every { locationRepository.countFirstByShortname("loc1") } returns 0
         every { locationRepository.save(newLoc) } returns newLocSaved
@@ -57,7 +57,7 @@ internal class LocationsServiceImplTest {
     @Test
     fun createAlreadyExists() {
         // GIVEN
-        val newLoc = Location(null, "Location 1", "loc1", null, null, null, null, user)
+        val newLoc = Location(null, "Location 1", "loc1", null, null, null, null, user = user)
 
         every { locationRepository.countFirstByShortname("loc1") } returns 1
 
@@ -73,7 +73,7 @@ internal class LocationsServiceImplTest {
     @Test
     fun createLocationWithId() {
         // GIVEN
-        val newLoc = Location(42, "Location 1", "loc1", null, null, null, null, user)
+        val newLoc = Location(42, "Location 1", "loc1", null, null, null, null, user = user)
 
         every { locationRepository.countFirstByShortname("loc1") } returns 0
 
@@ -89,7 +89,7 @@ internal class LocationsServiceImplTest {
     @Test
     fun createLocationWithOtherUser() {
         // GIVEN
-        val newLoc = Location(null, "Location 1", "loc1", null, null, null, null, user2)
+        val newLoc = Location(null, "Location 1", "loc1", null, null, null, null, user = user2)
 
         every { locationRepository.countFirstByShortname("loc1") } returns 0
 
@@ -128,8 +128,8 @@ internal class LocationsServiceImplTest {
     @Test
     fun update() {
         // GIVEN
-        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user)
-        val updateLoc = Location(42, "Location A", "locA", "strt", "zp", "cty", "cntry", user)
+        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user = user)
+        val updateLoc = Location(42, "Location A", "locA", "strt", "zp", "cty", "cntry", user = user)
 
         every { locationRepository.findById(42) } returns Optional.of(loc)
         every { locationRepository.save(any() as Location) } returns updateLoc
@@ -144,7 +144,7 @@ internal class LocationsServiceImplTest {
     @Test
     fun updateNotAllowed() {
         // GIVEN
-        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user)
+        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user = user)
 
         every { locationRepository.findById(42) } returns Optional.of(loc)
 
@@ -161,8 +161,8 @@ internal class LocationsServiceImplTest {
     @Test
     fun updateShortname() {
         // GIVEN
-        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user)
-        val updateLoc = Location(42, "Location A", "locA", null, null, null, null, user)
+        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user = user)
+        val updateLoc = Location(42, "Location A", "locA", null, null, null, null, user = user)
 
         every { locationRepository.findById(42) } returns Optional.of(loc)
         every { locationRepository.countFirstByShortname("locA") } returns 0
@@ -178,8 +178,8 @@ internal class LocationsServiceImplTest {
     @Test
     fun updateShortnameExists() {
         // GIVEN
-        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user)
-        val updateLoc = Location(42, "Location A", "locA", null, null, null, null, user)
+        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user = user)
+        val updateLoc = Location(42, "Location A", "locA", null, null, null, null, user = user)
 
         every { locationRepository.findById(42) } returns Optional.of(loc)
         every { locationRepository.countFirstByShortname("locA") } returns 1
@@ -198,7 +198,7 @@ internal class LocationsServiceImplTest {
     @Test
     fun updateShortnameNotAllowed() {
         // GIVEN
-        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user)
+        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user = user)
 
         every { locationRepository.findById(42) } returns Optional.of(loc)
 
@@ -214,7 +214,7 @@ internal class LocationsServiceImplTest {
 
     @Test
     fun get() {
-        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user)
+        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user = user)
         every { locationRepository.findFirstByShortname("loc1") } returns Optional.of(loc)
 
         // WHEN
@@ -227,7 +227,7 @@ internal class LocationsServiceImplTest {
 
     @Test
     fun getNotFound() {
-        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user)
+        val loc = Location(42, "Location 1", "loc1", null, null, null, null, user = user)
         every { locationRepository.findFirstByShortname("loc1") } returns Optional.empty()
 
         // WHEN

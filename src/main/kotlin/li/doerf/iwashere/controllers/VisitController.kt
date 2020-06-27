@@ -25,7 +25,7 @@ class VisitController(
     fun register(@RequestBody request: VisitRegisterRequest) : ResponseEntity<VisitRegisterResponse> {
         logger.debug("registering visit $request")
         val visit = visitService.register(request.firstname, request.lastname, request.email, request.phone, request.locationShortname)
-        return ok(VisitRegisterResponse(visit.id!!, visit.registrationTime))
+        return ok(VisitRegisterResponse(visit.id!!, visit.registrationDate))
     }
 
 }

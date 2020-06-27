@@ -7,7 +7,7 @@ class LocationHelper {
 
     companion object {
         fun new(name: String, shortname: String, user: User): Location {
-            return Location(null, name, shortname, null, null, null, null, user)
+            return Location(null, name, shortname, null, null, null, null, user = user)
         }
     }
 

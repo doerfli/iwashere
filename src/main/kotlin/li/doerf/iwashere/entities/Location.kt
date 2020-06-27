@@ -1,6 +1,7 @@
 package li.doerf.iwashere.entities
 
 import li.doerf.iwashere.utils.NoArgs
+import java.time.Instant
 import javax.persistence.*
 
 @Entity
@@ -13,6 +14,7 @@ data class Location(
         var zip: String?,
         var city: String?,
         var country: String?,
+        val registrationDate: Instant = Instant.now(),
         @ManyToOne
         @JoinColumn(name="user_id", nullable=false)
         val user: User

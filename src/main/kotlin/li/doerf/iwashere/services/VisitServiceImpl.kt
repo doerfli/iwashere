@@ -26,8 +26,7 @@ class VisitServiceImpl(
         val visit = visitRepository.save(Visit(
                 null,
                 visitor,
-                location.get(),
-                Instant.now()
+                location.get()
         ))
         logger.debug("visit saved: $visit")
         logger.info("visit registered id: ${visit.id} - location: ${visit.location}")
@@ -37,7 +36,7 @@ class VisitServiceImpl(
     override fun cleanup(retentionDays: Long) {
         logger.info("cleaning up visits older than $retentionDays days")
         val cleanupDay = Instant.now().minus(retentionDays, ChronoUnit.DAYS)
-        val visits = visitRepository.findAllByRegistrationTimeBefore(cleanupDay)
+        val visits = visitRepository.findAllByRegistrationDateBefore(cleanupDay)
         val visitors = visits.map { it.visitor }
         logger.info("deleting ${visits.size} visits")
         visitRepository.deleteAll(visits)

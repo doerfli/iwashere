@@ -48,16 +48,16 @@ class LocationsServiceImpl(
         return locationRepository.getAllByUser(user)
     }
 
-    override fun update(locationToUpdate: LocationDto, user: User): Location {
-        logger.trace("location update request: $locationToUpdate")
-        val loc = getLocationForUser(locationToUpdate.id, user)
+    override fun update(entity: LocationDto, user: User): Location {
+        logger.trace("location update request: $entity")
+        val loc = getLocationForUser(entity.id, user)
 
         val updatedLoc = loc.copy(
-                name = locationToUpdate.name,
-                street = locationToUpdate.street,
-                zip = locationToUpdate.zip,
-                city = locationToUpdate.city,
-                country = locationToUpdate.country
+                name = entity.name,
+                street = entity.street,
+                zip = entity.zip,
+                city = entity.city,
+                country = entity.country
         )
         val result = locationRepository.save(updatedLoc)
         logger.info("updated location $result")

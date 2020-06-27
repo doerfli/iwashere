@@ -17,11 +17,11 @@ class UserHelper(
         if ((principal as UsernamePasswordAuthenticationToken).principal is org.springframework.security.core.userdetails.User) {
             logger.warn("this should only be used during test")
             // this is for testcases using withMockUser
-            val user = (principal as UsernamePasswordAuthenticationToken).principal as org.springframework.security.core.userdetails.User
+            val user = principal.principal as org.springframework.security.core.userdetails.User
             return userRepository.findFirstByUsername(user.username).get()
         }
 
-        val username = (principal as UsernamePasswordAuthenticationToken).principal as UserPrincipal
+        val username = principal.principal as UserPrincipal
         return username.user
     }
 }

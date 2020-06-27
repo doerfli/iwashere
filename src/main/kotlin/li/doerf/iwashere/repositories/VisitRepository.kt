@@ -6,6 +6,6 @@ import java.time.Instant
 
 interface VisitRepository : PagingAndSortingRepository<Visit, Long> {
 
-    fun findAllByRegistrationTimeBefore(date: Instant): Collection<Visit>
+    fun findAllByRegistrationDateBefore(date: Instant): Collection<Visit>
 
 }
