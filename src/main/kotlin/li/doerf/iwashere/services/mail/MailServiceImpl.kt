@@ -30,7 +30,7 @@ class MailServiceImpl @Autowired constructor(
 //        ctx.setVariable("link", "$applBaseUrl/#/confirmation/${user.token}")
 //        ctx.setVariable("validUntil", dateFormat.format(Date.from(user.tokenExpiration)))
 
-        val content = templateEngine.process("signup.txt", ctx)
+        val content = templateEngine.process("signup_${user.language.lower()}.txt", ctx)
         mailgunService.sendEmail(
                 mailSender,
                 user.username,

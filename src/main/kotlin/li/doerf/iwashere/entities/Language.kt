@@ -2,5 +2,9 @@ package li.doerf.iwashere.entities
 
 enum class Language {
     DE,
-    EN
+    EN;
+
+    fun lower(): String {
+        return name.toLowerCase()
+    }
 }
