@@ -48,8 +48,7 @@ class VisitServiceIntTest {
     fun clean() {
         val visitor1 = visitorRepository.save(Visitor(
                 null,
-                "first",
-                "name",
+                "first name",
                 "first@mail.com",
                 "1234567890"
         ))
@@ -62,8 +61,7 @@ class VisitServiceIntTest {
 
         val visitor2 = visitorRepository.save(Visitor(
                 null,
-                "Joe",
-                "Second",
+                "Joe Second",
                 "first@mail.com",
                 "1234567890"
         ))
@@ -78,6 +76,6 @@ class VisitServiceIntTest {
 
         assertThat(visitRepository.count()).isEqualTo(1)
         assertThat(visitorRepository.count()).isEqualTo(1)
-        assertThat(visitRepository.findAll().map { it.visitor.firstname }).contains("first")
+        assertThat(visitRepository.findAll().map { it.visitor.name }).contains("first name")
     }
 }

@@ -10,8 +10,7 @@ import javax.persistence.Id
 @NoArgs
 data class Visitor(
         @Id @GeneratedValue val id: Long? = null,
-        var firstname: String,
-        var lastname: String,
+        var name: String,
         var email: String,
         var phone: String,
         val registrationDate: Instant = Instant.now()

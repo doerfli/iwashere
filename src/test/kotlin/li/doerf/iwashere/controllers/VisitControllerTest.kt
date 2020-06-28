@@ -51,8 +51,7 @@ internal class VisitControllerTest {
                 .content(testHelper.asJsonString(
                         VisitRegisterRequest(
                                 "loc1",
-                                "John",
-                                "Doe",
+                                "John Doe",
                                 "john@doe.com",
                                 "+41798654321"
                         )

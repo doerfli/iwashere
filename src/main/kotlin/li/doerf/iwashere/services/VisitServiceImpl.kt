@@ -16,13 +16,13 @@ class VisitServiceImpl(
 
     private val logger = getLogger(javaClass)
 
-    override fun register(firstname: String, lastname: String, email: String, phone: String, locationShortname: String): Visit {
-        logger.trace("registering visit $firstname $lastname, $email, $phone at $locationShortname")
+    override fun register(name: String, email: String, phone: String, locationShortname: String): Visit {
+        logger.trace("registering visit $name, $email, $phone at $locationShortname")
         val location = locationsService.getByShortName(locationShortname)
         if (location.isEmpty) {
             throw IllegalArgumentException("location unknown $locationShortname")
         }
-        val visitor = visitorService.createVisitor(firstname, lastname, email, phone)
+        val visitor = visitorService.createVisitor(name, email, phone)
         val visit = visitRepository.save(Visit(
                 null,
                 visitor,

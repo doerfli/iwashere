@@ -12,12 +12,11 @@ class VisitorServiceImpl(
 
     private val logger = getLogger(javaClass)
 
-    override fun createVisitor(firstname: String, lastname: String, email: String, phone: String): Visitor {
-        logger.trace("creating visitor $firstname $lastname, $email, $phone")
+    override fun createVisitor(name: String, email: String, phone: String): Visitor {
+        logger.trace("creating visitor $name, $email, $phone")
         val visitor = visitorRepository.save(Visitor(
                 null,
-                firstname,
-                lastname,
+                name,
                 email,
                 phone
         ))

@@ -31,22 +31,19 @@ internal class VisitorServiceImplTest {
     @Test
     fun createVisitor() {
         val visitor = Visitor(1,
-                "john",
-                "doe",
+                "john doe",
                 "john.doe@gmail.com",
                 "+12235123")
         every { visitorRepository.save(any() as Visitor) } returns visitor
 
         val result = svc.createVisitor(
-                visitor.firstname,
-                visitor.lastname,
+                visitor.name,
                 visitor.email,
                 visitor.phone
         )
 
         assertThat(result.id).isEqualTo(1)
-        assertThat(result.firstname).isEqualTo("john")
-        assertThat(result.lastname).isEqualTo("doe")
+        assertThat(result.name).isEqualTo("john doe")
         assertThat(result.email).isEqualTo("john.doe@gmail.com")
         assertThat(result.phone).isEqualTo("+12235123")
 
