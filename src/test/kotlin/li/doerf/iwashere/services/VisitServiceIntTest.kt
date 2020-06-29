@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
-import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 @SpringBootTest
@@ -57,7 +57,7 @@ class VisitServiceIntTest {
                 null,
                 visitor1,
                 location,
-                Instant.now()
+                LocalDateTime.now()
         ))
 
         val visitor2 = guestRepository.save(Guest(
@@ -70,7 +70,7 @@ class VisitServiceIntTest {
                 null,
                 visitor2,
                 location,
-                Instant.now().minus(35, ChronoUnit.DAYS)
+                LocalDateTime.now().minus(35, ChronoUnit.DAYS)
         ))
 
         visitService.cleanup(28)
@@ -103,10 +103,10 @@ class VisitServiceIntTest {
     fun listDifferentDates() {
         // GIVEN
         createVisit("1")
-        createVisit("2", dateTime = Instant.now().minus(1, ChronoUnit.DAYS))
-        createVisit("3", dateTime = Instant.now().minus(2, ChronoUnit.DAYS))
+        createVisit("2", dateTime = LocalDateTime.now().minus(1, ChronoUnit.DAYS))
+        createVisit("3", dateTime = LocalDateTime.now().minus(2, ChronoUnit.DAYS))
         createVisit("4")
-        createVisit("5", dateTime = Instant.now().minus(38, ChronoUnit.DAYS))
+        createVisit("5", dateTime = LocalDateTime.now().minus(38, ChronoUnit.DAYS))
 
         val today = LocalDate.now()
 
@@ -121,7 +121,7 @@ class VisitServiceIntTest {
     }
 
 
-    private fun createVisit(id: String, dateTime: Instant = Instant.now(), loc: Location = location): Visit {
+    private fun createVisit(id: String, dateTime: LocalDateTime = LocalDateTime.now(), loc: Location = location): Visit {
         val visitor1 = guestRepository.save(Guest(
                 null,
                 "name$id",

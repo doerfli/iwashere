@@ -1,7 +1,7 @@
 package li.doerf.iwashere.entities
 
 import li.doerf.iwashere.utils.NoArgs
-import java.time.Instant
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -14,5 +14,5 @@ data class Visit(
         @ManyToOne
         @JoinColumn(name="location_id", nullable=false)
         val location: Location,
-        val registrationDate: Instant = Instant.now()
+        val registrationDate: LocalDateTime = LocalDateTime.now()
 )

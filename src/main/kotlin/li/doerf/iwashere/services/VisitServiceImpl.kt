@@ -8,6 +8,7 @@ import li.doerf.iwashere.utils.getLogger
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
@@ -41,7 +42,7 @@ class VisitServiceImpl(
 
     override fun cleanup(retentionDays: Long) {
         logger.info("cleaning up visits older than $retentionDays days")
-        val cleanupDay = Instant.now().minus(retentionDays, ChronoUnit.DAYS)
+        val cleanupDay = LocalDateTime.now().minus(retentionDays, ChronoUnit.DAYS)
         val visits = visitRepository.findAllByRegistrationDateBefore(cleanupDay)
         val visitors = visits.map { it.guest }
         logger.info("deleting ${visits.size} visits")
@@ -56,8 +57,8 @@ class VisitServiceImpl(
             throw IllegalArgumentException("unknown location: $locationShortname")
         }
         val offset = ZoneId.of(ZoneId.systemDefault().id).rules.getOffset(Instant.now())
-        val after = Instant.from(date.atStartOfDay().toInstant(offset))
-        val before= Instant.from(date.plusDays(1).atStartOfDay().toInstant(offset))
+        val after = date.atStartOfDay()
+        val before= date.plusDays(1).atStartOfDay()
         val visits = visitRepository.findAllByLocationAndRegistrationDateBetween(location.get(), after, before)
         // double check that location of visit belongs to current user
         return visits.filter { visit -> visit.location.user.id == user.id }

@@ -1,8 +1,8 @@
 package li.doerf.iwashere.dto.visit
 
-import java.time.Instant
+import java.time.LocalDateTime
 
 data class VisitRegisterResponse(
         val id: Long,
-        val timestamp: Instant
+        val timestamp: LocalDateTime
 )

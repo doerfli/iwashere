@@ -1,8 +1,7 @@
 package li.doerf.iwashere.dto.visit
 
 import li.doerf.iwashere.entities.Visit
-import java.text.SimpleDateFormat
-import java.util.*
+import java.time.format.DateTimeFormatter
 
 data class VisitDto(
         val id: Long,
@@ -12,13 +11,14 @@ data class VisitDto(
         val date: String
 )
 
+val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
 fun Visit.toDto(): VisitDto {
-    val formatter = SimpleDateFormat("yyyy-MM-dd")
     return VisitDto(
             this.id!!,
             this.guest.name,
             this.guest.email,
             this.guest.phone,
-            formatter.format(Date.from(this.registrationDate))
+            fmt.format(this.registrationDate)
     )
 }

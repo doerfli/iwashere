@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.*
 
@@ -99,8 +100,8 @@ internal class VisitsControllerTest {
     @Test
     fun list() {
         createVisit("1")
-        createVisit("2", dateTime = Instant.now().minus(1, ChronoUnit.DAYS))
-        createVisit("3", dateTime = Instant.now().minus(2, ChronoUnit.DAYS))
+        createVisit("2", dateTime = LocalDateTime.now().minus(1, ChronoUnit.DAYS))
+        createVisit("3", dateTime = LocalDateTime.now().minus(2, ChronoUnit.DAYS))
         createVisit("4")
 
         val date = SimpleDateFormat("yyyy-MM-dd").format(Date.from(Instant.now()))
@@ -119,7 +120,7 @@ internal class VisitsControllerTest {
 
     }
 
-    private fun createVisit(id: String, dateTime: Instant = Instant.now(), loc: Location = location): Visit {
+    private fun createVisit(id: String, dateTime: LocalDateTime = LocalDateTime.now(), loc: Location = location): Visit {
         val visitor1 = guestRepository.save(Guest(
                 null,
                 "name$id",

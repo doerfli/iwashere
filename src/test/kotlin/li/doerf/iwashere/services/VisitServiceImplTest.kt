@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.time.Instant
+import java.time.LocalDateTime
 import java.util.*
 
 @ExtendWith(SpringExtension::class)
@@ -57,7 +57,7 @@ internal class VisitServiceImplTest {
                 3,
                 visitor,
                 location,
-                Instant.now()
+                LocalDateTime.now()
         )
         every { visitRepository.save(any() as Visit) } returns visit
 

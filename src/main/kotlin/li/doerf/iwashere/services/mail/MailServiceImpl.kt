@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
-import java.text.SimpleDateFormat
-import java.util.*
+import java.time.format.DateTimeFormatter
 
 @Service
 class MailServiceImpl @Autowired constructor(
@@ -56,8 +55,8 @@ class MailServiceImpl @Autowired constructor(
         ctx.setVariable("location_name", visit.location.name)
         ctx.setVariable("location_zip", visit.location.zip)
         ctx.setVariable("location_city", visit.location.city)
-        val dateFormat = SimpleDateFormat("dd.MM.yyyy")
-        ctx.setVariable("visit_timestamp", dateFormat.format(Date.from(visit.registrationDate)))
+        val dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        ctx.setVariable("visit_timestamp", dateFormat.format(visit.registrationDate))
 
         val content = templateEngine.process("visit_${visit.location.user.language.lower()}.txt", ctx)
         mailgunService.sendEmail(
