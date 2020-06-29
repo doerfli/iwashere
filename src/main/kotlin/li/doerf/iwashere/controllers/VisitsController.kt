@@ -1,10 +1,7 @@
 package li.doerf.iwashere.controllers
 
 import kotlinx.coroutines.runBlocking
-import li.doerf.iwashere.dto.visit.VisitListResponse
-import li.doerf.iwashere.dto.visit.VisitRegisterRequest
-import li.doerf.iwashere.dto.visit.VisitRegisterResponse
-import li.doerf.iwashere.dto.visit.toDto
+import li.doerf.iwashere.dto.visit.*
 import li.doerf.iwashere.services.VisitService
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.getLogger
@@ -40,6 +37,14 @@ class VisitsController(
         val guests = visitService.list(locationShortname, date, userHelper.getUser(principal))
                 .stream().map { it.toDto() }.collect(Collectors.toList())
         return ok(VisitListResponse(guests))
+    }
+
+    @GetMapping("{shortname}/dates")
+    fun getDatesWithVisits(@PathVariable("shortname") locationShortname: String, principal: Principal): ResponseEntity<VisitListDatesReponse> {
+        logger.debug("retrieving dates with visitors for $locationShortname")
+        val dates = visitService.listDates(locationShortname, userHelper.getUser(principal))
+                .map { DateGuestcountDto(it.key, it.value) }
+        return ok(VisitListDatesReponse(dates))
     }
 
 }

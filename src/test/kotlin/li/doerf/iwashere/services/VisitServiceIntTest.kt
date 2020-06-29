@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 @SpringBootTest
@@ -134,5 +135,31 @@ class VisitServiceIntTest {
                 loc,
                 dateTime
         ))
+    }
+
+    @Test
+    fun listDates() {
+        // GIVEN
+        val today = LocalDateTime.now()
+        val yesterDay = today.minus(1, ChronoUnit.DAYS)
+        val twoDaysAgo = today.minus(2, ChronoUnit.DAYS)
+        val aWeekAgo = today.minus(7, ChronoUnit.DAYS)
+        val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+        createVisit("1", dateTime = today)
+        createVisit("21", dateTime = yesterDay)
+        createVisit("22", dateTime = yesterDay)
+        createVisit("31", dateTime = twoDaysAgo)
+        createVisit("32", dateTime = twoDaysAgo)
+        createVisit("33", dateTime = twoDaysAgo)
+        createVisit("4", dateTime = today)
+        createVisit("51", dateTime = aWeekAgo)
+
+        val result = visitService.listDates(location.shortname, testuser)
+
+        assertThat(result[fmt.format(today)]).isEqualTo(2)
+        assertThat(result[fmt.format(yesterDay)]).isEqualTo(2)
+        assertThat(result[fmt.format(twoDaysAgo)]).isEqualTo(3)
+        assertThat(result[fmt.format(aWeekAgo)]).isEqualTo(1)
     }
 }
