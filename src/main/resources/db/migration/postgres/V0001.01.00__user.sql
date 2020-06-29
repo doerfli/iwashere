@@ -3,7 +3,7 @@ create table appluser (
     password varchar(255),
     username varchar(255),
     language varchar(3),
-    registration_date timestamp,
+    created_date timestamp,
     primary key (id)
 );
 

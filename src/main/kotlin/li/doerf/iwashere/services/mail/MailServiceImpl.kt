@@ -56,7 +56,7 @@ class MailServiceImpl @Autowired constructor(
         ctx.setVariable("location_zip", visit.location.zip)
         ctx.setVariable("location_city", visit.location.city)
         val dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-        ctx.setVariable("visit_timestamp", dateFormat.format(visit.registrationDate))
+        ctx.setVariable("visit_timestamp", dateFormat.format(visit.visitTimestamp))
 
         val content = templateEngine.process("visit_${visit.location.user.language.lower()}.txt", ctx)
         mailgunService.sendEmail(

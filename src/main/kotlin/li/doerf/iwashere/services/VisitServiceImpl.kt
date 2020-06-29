@@ -42,7 +42,7 @@ class VisitServiceImpl(
     override fun cleanup(retentionDays: Long) {
         logger.info("cleaning up visits older than $retentionDays days")
         val cleanupDay = LocalDateTime.now().minus(retentionDays, ChronoUnit.DAYS)
-        val visits = visitRepository.findAllByRegistrationDateBefore(cleanupDay)
+        val visits = visitRepository.findAllByVisitTimestampBefore(cleanupDay)
         val visitors = visits.map { it.guest }
         logger.info("deleting ${visits.size} visits")
         visitRepository.deleteAll(visits)
@@ -57,7 +57,7 @@ class VisitServiceImpl(
         }
         val after = date.atStartOfDay()
         val before= date.plusDays(1).atStartOfDay()
-        val visits = visitRepository.findAllByLocationAndRegistrationDateBetween(location.get(), after, before)
+        val visits = visitRepository.findAllByLocationAndVisitTimestampBetween(location.get(), after, before)
         // double check that location of visit belongs to current user
         return visits.filter { visit -> visit.location.user.id == user.id }
     }

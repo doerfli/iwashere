@@ -8,16 +8,16 @@ import java.time.LocalDateTime
 
 interface VisitRepository : PagingAndSortingRepository<Visit, Long> {
 
-    fun findAllByRegistrationDateBefore(date: LocalDateTime): Collection<Visit>
-    fun findAllByLocationAndRegistrationDateBetween(location: Location, after: LocalDateTime, before: LocalDateTime): Collection<Visit>
+    fun findAllByVisitTimestampBefore(date: LocalDateTime): Collection<Visit>
+    fun findAllByLocationAndVisitTimestampBetween(location: Location, after: LocalDateTime, before: LocalDateTime): Collection<Visit>
     @Query("""
         SELECT DISTINCT 
             concat(
-                function('year', registrationDate),
+                function('year', visitTimestamp),
                 '-',
-                function('month', registrationDate),
+                function('month', visitTimestamp),
                 '-',
-                function('day', registrationDate)
+                function('day', visitTimestamp)
             ) as date,
             count(id) as guestcount
         FROM Visit 

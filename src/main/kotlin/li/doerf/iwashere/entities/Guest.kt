@@ -1,7 +1,7 @@
 package li.doerf.iwashere.entities
 
 import li.doerf.iwashere.utils.NoArgs
-import java.time.Instant
+import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -13,5 +13,5 @@ data class Guest(
         var name: String,
         var email: String,
         var phone: String,
-        val registrationDate: Instant = Instant.now()
+        val createdDate: LocalDateTime = LocalDateTime.now()
 )

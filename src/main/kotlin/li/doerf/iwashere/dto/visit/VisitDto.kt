@@ -8,7 +8,7 @@ data class VisitDto(
         val guest_name: String,
         val guest_email: String?,
         val guest_phone: String?,
-        val date: String
+        val visitTimestamp: String
 )
 
 val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -19,6 +19,6 @@ fun Visit.toDto(): VisitDto {
             this.guest.name,
             this.guest.email,
             this.guest.phone,
-            fmt.format(this.registrationDate)
+            fmt.format(this.visitTimestamp)
     )
 }

@@ -115,7 +115,7 @@ internal class VisitsControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].guest_email", CoreMatchers.equalTo("name1@mail.com")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].guest_phone", CoreMatchers.equalTo("0000001")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].id", CoreMatchers.notNullValue()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].date", CoreMatchers.equalTo(date)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].visitTimestamp", CoreMatchers.equalTo(date)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[1].guest_name", CoreMatchers.equalTo("name4")))
 
     }
