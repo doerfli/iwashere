@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-internal class VisitControllerTest {
+internal class VisitsControllerTest {
 
     private lateinit var testuser: User
 

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("visits")
 @Transactional
-class VisitController(
+class VisitsController(
         private val visitService: VisitService
 ) {
 
