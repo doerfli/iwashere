@@ -1,12 +1,15 @@
 package li.doerf.iwashere.services
 
 import com.ninjasquad.springmockk.MockkBean
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockkClass
+import kotlinx.coroutines.runBlocking
 import li.doerf.iwashere.entities.Guest
 import li.doerf.iwashere.entities.Location
 import li.doerf.iwashere.entities.Visit
 import li.doerf.iwashere.repositories.VisitRepository
+import li.doerf.iwashere.services.mail.MailService
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
@@ -29,13 +32,16 @@ internal class VisitServiceImplTest {
     private lateinit var guestService: GuestService
     @MockkBean
     private lateinit var locationsService: LocationsService
+    @MockkBean(relaxed = true)
+    private lateinit var mailService: MailService
 
     @BeforeEach
     fun setup() {
         svc = VisitServiceImpl(
                 visitRepository,
                 guestService,
-                locationsService
+                locationsService,
+                mailService
         )
     }
 
@@ -56,12 +62,16 @@ internal class VisitServiceImplTest {
         every { visitRepository.save(any() as Visit) } returns visit
 
         // WHEN
-        val result = svc.register("john doe",
-                "john.doe@hotmail.com", "+0123456789",
-                "barometer")
+        val result = runBlocking {
+            svc.register("john doe",
+                    "john.doe@hotmail.com", "+0123456789",
+                    "barometer")
+        }
 
         // THEN
         assertThat(result).isEqualTo(visit)
+
+        coVerify { mailService.sendVisitMail(any()) }
     }
 
     @Test
@@ -71,9 +81,11 @@ internal class VisitServiceImplTest {
 
         // WHEN
         assertThatThrownBy {
-            svc.register("john doe",
-                    "john.doe@hotmail.com", "+0123456789",
-                    "barometer")
+            runBlocking {
+                svc.register("john doe",
+                        "john.doe@hotmail.com", "+0123456789",
+                        "barometer")
+            }
         }
 
         // THEN

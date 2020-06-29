@@ -1,11 +1,13 @@
 package li.doerf.iwashere.controllers
 
+import com.ninjasquad.springmockk.MockkBean
 import li.doerf.iwashere.DbTestHelper
 import li.doerf.iwashere.LocationHelper
 import li.doerf.iwashere.TestHelper
 import li.doerf.iwashere.dto.visit.VisitRegisterRequest
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.LocationRepository
+import li.doerf.iwashere.services.mail.MailgunServiceImpl
 import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -34,6 +36,8 @@ internal class VisitControllerTest {
     private lateinit var testHelper: TestHelper
     @Autowired
     private lateinit var locationRepository: LocationRepository
+    @MockkBean(relaxed = true)
+    private lateinit var mailgunServiceImpl: MailgunServiceImpl
 
     @BeforeEach
     fun setup() {

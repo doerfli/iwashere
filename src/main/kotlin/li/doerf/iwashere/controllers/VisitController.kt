@@ -1,5 +1,6 @@
 package li.doerf.iwashere.controllers
 
+import kotlinx.coroutines.runBlocking
 import li.doerf.iwashere.dto.visit.VisitRegisterRequest
 import li.doerf.iwashere.dto.visit.VisitRegisterResponse
 import li.doerf.iwashere.services.VisitService
@@ -24,7 +25,7 @@ class VisitController(
     @PostMapping
     fun register(@RequestBody request: VisitRegisterRequest) : ResponseEntity<VisitRegisterResponse> {
         logger.debug("registering visit $request")
-        val visit = visitService.register(request.name, request.email, request.phone, request.locationShortname)
+        val visit = runBlocking { visitService.register(request.name, request.email, request.phone, request.locationShortname) }
         return ok(VisitRegisterResponse(visit.id!!, visit.registrationDate))
     }
 

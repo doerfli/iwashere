@@ -1,12 +1,15 @@
 package li.doerf.iwashere.services.mail
 
 import li.doerf.iwashere.entities.User
+import li.doerf.iwashere.entities.Visit
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Service
 class MailServiceImpl @Autowired constructor(
@@ -35,6 +38,32 @@ class MailServiceImpl @Autowired constructor(
                 mailSender,
                 user.username,
                 "Welcome to iwashere",
+                content)
+    }
+
+    override suspend fun sendVisitMail(visit: Visit) {
+        if (visit.guest.email.isEmpty()) {
+            logger.warn("no email set - not sending email")
+            return
+        }
+
+        val recipientEmail = visit.guest.email
+        logger.debug("sending visit email to $recipientEmail"
+        )
+        val ctx = Context()
+        ctx.setVariable("guest_name", visit.guest.name)
+        ctx.setVariable("guest_email", visit.guest.email)
+        ctx.setVariable("location_name", visit.location.name)
+        ctx.setVariable("location_zip", visit.location.zip)
+        ctx.setVariable("location_city", visit.location.city)
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy")
+        ctx.setVariable("visit_timestamp", dateFormat.format(Date.from(visit.registrationDate)))
+
+        val content = templateEngine.process("visit_${visit.location.user.language.lower()}.txt", ctx)
+        mailgunService.sendEmail(
+                mailSender,
+                recipientEmail,
+                "Ihr Besuch bei ${visit.location.name}",
                 content)
     }
 
