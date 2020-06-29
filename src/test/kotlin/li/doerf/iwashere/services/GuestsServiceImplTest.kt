@@ -14,16 +14,16 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @Import(GuestRepository::class)
-internal class GuestServiceImplTest {
+internal class GuestsServiceImplTest {
 
-    private lateinit var svc: GuestServiceImpl
+    private lateinit var svc: GuestsServiceImpl
 
     @MockkBean
     private lateinit var guestRepository: GuestRepository
 
     @BeforeEach
     fun setup() {
-        svc = GuestServiceImpl(
+        svc = GuestsServiceImpl(
             guestRepository
         )
     }

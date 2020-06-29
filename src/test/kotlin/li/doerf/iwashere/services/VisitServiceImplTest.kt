@@ -21,7 +21,7 @@ import java.time.Instant
 import java.util.*
 
 @ExtendWith(SpringExtension::class)
-@Import(VisitRepository::class, GuestService::class, LocationsService::class)
+@Import(VisitRepository::class, GuestsService::class, LocationsService::class)
 internal class VisitServiceImplTest {
 
     private lateinit var svc: VisitServiceImpl
@@ -29,7 +29,7 @@ internal class VisitServiceImplTest {
     @MockkBean
     private lateinit var visitRepository: VisitRepository
     @MockkBean
-    private lateinit var guestService: GuestService
+    private lateinit var guestsService: GuestsService
     @MockkBean
     private lateinit var locationsService: LocationsService
     @MockkBean(relaxed = true)
@@ -39,7 +39,7 @@ internal class VisitServiceImplTest {
     fun setup() {
         svc = VisitServiceImpl(
                 visitRepository,
-                guestService,
+                guestsService,
                 locationsService,
                 mailService
         )
@@ -51,7 +51,7 @@ internal class VisitServiceImplTest {
         val location = mockkClass(Location::class)
         every { locationsService.getByShortName("barometer") } returns Optional.of(location)
         val visitor = mockkClass(Guest::class)
-        every { guestService.create("john doe",
+        every { guestsService.create("john doe",
                 "john.doe@hotmail.com", "+0123456789") } returns visitor
         val visit = Visit(
                 3,
@@ -91,4 +91,5 @@ internal class VisitServiceImplTest {
         // THEN
         .isInstanceOf(IllegalArgumentException::class.java)
     }
+
 }

@@ -43,6 +43,17 @@ class LocationsServiceImpl(
         return locationRepository.findFirstByShortname(shortname)
     }
 
+    override fun getByShortName(shortname: String, user: User): Optional<Location> {
+        logger.trace("get location with shortname $shortname")
+        val location = locationRepository.findFirstByShortname(shortname)
+        if (location.isPresent) {
+            if (location.get().user.id != user.id) {
+                throw IllegalArgumentException("user is not allowed to access location")
+            }
+        }
+        return location
+    }
+
     override fun getAll(user: User): List<Location> {
         logger.trace("get all locations")
         return locationRepository.getAllByUser(user)

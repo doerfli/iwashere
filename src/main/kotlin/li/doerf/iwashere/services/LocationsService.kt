@@ -8,6 +8,7 @@ import java.util.*
 interface LocationsService {
     fun create(newLocation: Location, user: User): Location
     fun exists(shortname: String, user: User): Boolean
+    fun getByShortName(shortname: String, user: User): Optional<Location>
     fun getByShortName(shortname: String): Optional<Location>
     fun getAll(user: User): List<Location>
     /** Update location properties except id and shortname */

@@ -6,9 +6,9 @@ import li.doerf.iwashere.utils.getLogger
 import org.springframework.stereotype.Service
 
 @Service
-class GuestServiceImpl(
+class GuestsServiceImpl(
         private val guestRepository: GuestRepository
-) : GuestService {
+) : GuestsService {
 
     private val logger = getLogger(javaClass)
 

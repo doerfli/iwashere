@@ -1,17 +1,20 @@
 package li.doerf.iwashere.services
 
+import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.entities.Visit
 import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.stereotype.Service
 import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 @Service
 class VisitServiceImpl(
         private val visitRepository: VisitRepository,
-        private val guestService: GuestService,
+        private val guestsService: GuestsService,
         private val locationsService: LocationsService,
         private val mailService: MailService
 ) : VisitService {
@@ -24,7 +27,7 @@ class VisitServiceImpl(
         if (location.isEmpty) {
             throw IllegalArgumentException("location unknown $locationShortname")
         }
-        val visitor = guestService.create(name, email, phone)
+        val visitor = guestsService.create(name, email, phone)
         val visit = visitRepository.save(Visit(
                 null,
                 visitor,
@@ -43,7 +46,21 @@ class VisitServiceImpl(
         val visitors = visits.map { it.guest }
         logger.info("deleting ${visits.size} visits")
         visitRepository.deleteAll(visits)
-        guestService.deleteAll(visitors)
+        guestsService.deleteAll(visitors)
+    }
+
+    override fun list(locationShortname: String, date: LocalDate, user: User): Collection<Visit> {
+        logger.trace("retrieving all guests for location $locationShortname")
+        val location = locationsService.getByShortName(locationShortname, user)
+        if (location.isEmpty) {
+            throw IllegalArgumentException("unknown location: $locationShortname")
+        }
+        val offset = ZoneId.of(ZoneId.systemDefault().id).rules.getOffset(Instant.now())
+        val after = Instant.from(date.atStartOfDay().toInstant(offset))
+        val before= Instant.from(date.plusDays(1).atStartOfDay().toInstant(offset))
+        val visits = visitRepository.findAllByLocationAndRegistrationDateBetween(location.get(), after, before)
+        // double check that location of visit belongs to current user
+        return visits.filter { visit -> visit.location.user.id == user.id }
     }
 
 }
