@@ -2,8 +2,8 @@ package li.doerf.iwashere.services
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import li.doerf.iwashere.entities.Visitor
-import li.doerf.iwashere.repositories.VisitorRepository
+import li.doerf.iwashere.entities.Guest
+import li.doerf.iwashere.repositories.GuestRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -13,30 +13,30 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 
 @ExtendWith(SpringExtension::class)
-@Import(VisitorRepository::class)
-internal class VisitorServiceImplTest {
+@Import(GuestRepository::class)
+internal class GuestServiceImplTest {
 
-    private lateinit var svc: VisitorServiceImpl
+    private lateinit var svc: GuestServiceImpl
 
     @MockkBean
-    private lateinit var visitorRepository: VisitorRepository
+    private lateinit var guestRepository: GuestRepository
 
     @BeforeEach
     fun setup() {
-        svc = VisitorServiceImpl(
-            visitorRepository
+        svc = GuestServiceImpl(
+            guestRepository
         )
     }
 
     @Test
     fun createVisitor() {
-        val visitor = Visitor(1,
+        val visitor = Guest(1,
                 "john doe",
                 "john.doe@gmail.com",
                 "+12235123")
-        every { visitorRepository.save(any() as Visitor) } returns visitor
+        every { guestRepository.save(any() as Guest) } returns visitor
 
-        val result = svc.createVisitor(
+        val result = svc.create(
                 visitor.name,
                 visitor.email,
                 visitor.phone

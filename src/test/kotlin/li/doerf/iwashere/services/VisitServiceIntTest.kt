@@ -2,13 +2,13 @@ package li.doerf.iwashere.services
 
 import li.doerf.iwashere.DbTestHelper
 import li.doerf.iwashere.LocationHelper
+import li.doerf.iwashere.entities.Guest
 import li.doerf.iwashere.entities.Location
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.entities.Visit
-import li.doerf.iwashere.entities.Visitor
+import li.doerf.iwashere.repositories.GuestRepository
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.VisitRepository
-import li.doerf.iwashere.repositories.VisitorRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -30,7 +30,7 @@ class VisitServiceIntTest {
     @Autowired
     private lateinit var visitRepository: VisitRepository
     @Autowired
-    private lateinit var visitorRepository: VisitorRepository
+    private lateinit var guestRepository: GuestRepository
     @Autowired
     private lateinit var locationRepository: LocationRepository
     @Autowired
@@ -46,7 +46,7 @@ class VisitServiceIntTest {
 
     @Test
     fun clean() {
-        val visitor1 = visitorRepository.save(Visitor(
+        val visitor1 = guestRepository.save(Guest(
                 null,
                 "first name",
                 "first@mail.com",
@@ -59,7 +59,7 @@ class VisitServiceIntTest {
                 Instant.now()
         ))
 
-        val visitor2 = visitorRepository.save(Visitor(
+        val visitor2 = guestRepository.save(Guest(
                 null,
                 "Joe Second",
                 "first@mail.com",
@@ -75,7 +75,7 @@ class VisitServiceIntTest {
         visitService.cleanup(28)
 
         assertThat(visitRepository.count()).isEqualTo(1)
-        assertThat(visitorRepository.count()).isEqualTo(1)
-        assertThat(visitRepository.findAll().map { it.visitor.name }).contains("first name")
+        assertThat(guestRepository.count()).isEqualTo(1)
+        assertThat(visitRepository.findAll().map { it.guest.name }).contains("first name")
     }
 }

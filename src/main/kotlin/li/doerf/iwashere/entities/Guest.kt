@@ -8,7 +8,7 @@ import javax.persistence.Id
 
 @Entity
 @NoArgs
-data class Visitor(
+data class Guest(
         @Id @GeneratedValue val id: Long? = null,
         var name: String,
         var email: String,

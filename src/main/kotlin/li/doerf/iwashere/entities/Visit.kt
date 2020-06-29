@@ -9,8 +9,8 @@ import javax.persistence.*
 data class Visit(
         @Id @GeneratedValue val id: Long? = null,
         @ManyToOne
-        @JoinColumn(name="visitor_id", nullable=false)
-        val visitor: Visitor,
+        @JoinColumn(name="guest_id", nullable=false)
+        val guest: Guest,
         @ManyToOne
         @JoinColumn(name="location_id", nullable=false)
         val location: Location,

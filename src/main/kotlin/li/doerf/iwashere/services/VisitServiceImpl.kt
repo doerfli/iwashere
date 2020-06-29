@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit
 @Service
 class VisitServiceImpl(
         private val visitRepository: VisitRepository,
-        private val visitorService: VisitorService,
+        private val guestService: GuestService,
         private val locationsService: LocationsService
 ) : VisitService {
 
@@ -22,7 +22,7 @@ class VisitServiceImpl(
         if (location.isEmpty) {
             throw IllegalArgumentException("location unknown $locationShortname")
         }
-        val visitor = visitorService.createVisitor(name, email, phone)
+        val visitor = guestService.create(name, email, phone)
         val visit = visitRepository.save(Visit(
                 null,
                 visitor,
@@ -37,10 +37,10 @@ class VisitServiceImpl(
         logger.info("cleaning up visits older than $retentionDays days")
         val cleanupDay = Instant.now().minus(retentionDays, ChronoUnit.DAYS)
         val visits = visitRepository.findAllByRegistrationDateBefore(cleanupDay)
-        val visitors = visits.map { it.visitor }
+        val visitors = visits.map { it.guest }
         logger.info("deleting ${visits.size} visits")
         visitRepository.deleteAll(visits)
-        visitorService.deleteAll(visitors)
+        guestService.deleteAll(visitors)
     }
 
 }

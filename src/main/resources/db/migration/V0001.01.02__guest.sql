@@ -1,4 +1,4 @@
-create table visitor (
+create table guest (
     id int8 not null,
     name varchar(256),
     email varchar(256),

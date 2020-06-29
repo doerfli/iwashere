@@ -3,9 +3,9 @@ package li.doerf.iwashere.services
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.mockkClass
+import li.doerf.iwashere.entities.Guest
 import li.doerf.iwashere.entities.Location
 import li.doerf.iwashere.entities.Visit
-import li.doerf.iwashere.entities.Visitor
 import li.doerf.iwashere.repositories.VisitRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -18,7 +18,7 @@ import java.time.Instant
 import java.util.*
 
 @ExtendWith(SpringExtension::class)
-@Import(VisitRepository::class, VisitorService::class, LocationsService::class)
+@Import(VisitRepository::class, GuestService::class, LocationsService::class)
 internal class VisitServiceImplTest {
 
     private lateinit var svc: VisitServiceImpl
@@ -26,7 +26,7 @@ internal class VisitServiceImplTest {
     @MockkBean
     private lateinit var visitRepository: VisitRepository
     @MockkBean
-    private lateinit var visitorService: VisitorService
+    private lateinit var guestService: GuestService
     @MockkBean
     private lateinit var locationsService: LocationsService
 
@@ -34,7 +34,7 @@ internal class VisitServiceImplTest {
     fun setup() {
         svc = VisitServiceImpl(
                 visitRepository,
-                visitorService,
+                guestService,
                 locationsService
         )
     }
@@ -44,8 +44,8 @@ internal class VisitServiceImplTest {
         // GIVEN
         val location = mockkClass(Location::class)
         every { locationsService.getByShortName("barometer") } returns Optional.of(location)
-        val visitor = mockkClass(Visitor::class)
-        every { visitorService.createVisitor("john doe",
+        val visitor = mockkClass(Guest::class)
+        every { guestService.create("john doe",
                 "john.doe@hotmail.com", "+0123456789") } returns visitor
         val visit = Visit(
                 3,
