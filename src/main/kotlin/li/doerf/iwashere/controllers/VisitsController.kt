@@ -26,7 +26,7 @@ class VisitsController(
     @PostMapping
     fun register(@RequestBody request: VisitRegisterRequest) : ResponseEntity<VisitRegisterResponse> {
         logger.debug("registering visit $request")
-        val visit = runBlocking { visitService.register(request.name, request.email, request.phone, request.locationShortname) }
+        val visit = runBlocking { visitService.register(request.name, request.email, request.phone, request.locationShortname, request.timestamp) }
         return ok(VisitRegisterResponse(visit.id!!, visit.visitTimestamp))
     }
 

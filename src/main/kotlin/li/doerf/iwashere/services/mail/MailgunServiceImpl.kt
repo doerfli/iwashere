@@ -5,6 +5,7 @@ import com.github.kittinunf.fuel.core.Method
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
+import io.github.cdimascio.dotenv.dotenv
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -22,6 +23,12 @@ class MailgunServiceImpl @Autowired constructor(
     private lateinit var baseUrl: String
 
     override suspend fun sendEmail(sender: String, recipient: String, subject: String, text: String) {
+        var dontSendMails = dotenv {}["DONT_SEND_MAILS"]
+        if (! dontSendMails.isNullOrEmpty() && dontSendMails.toBoolean()) {
+            logger.debug("DONT_SEND_MAILS active - no sending of mails")
+            return
+        }
+
         val body= listOf(
                 "from" to sender,
                 "to" to recipient,

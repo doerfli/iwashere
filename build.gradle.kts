@@ -58,6 +58,8 @@ dependencies {
 	}
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("com.ninja-squad:springmockk:${Versions.mockk}")
+	testImplementation("com.github.javafaker:javafaker:${Versions.javaFaker}")
+	testImplementation("io.ktor:ktor-client-apache:${Versions.ktor}")
 
 	testRuntimeOnly("com.h2database:h2")
 }

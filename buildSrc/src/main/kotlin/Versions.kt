@@ -13,5 +13,6 @@ object Versions {
     val mockk = "2.0.1"
     val coroutinesVersion = "1.3.7"
     val springDocOpenApi = "1.4.1"
-
+    val javaFaker = "1.0.2"
+    val ktor = "1.3.2"
 }

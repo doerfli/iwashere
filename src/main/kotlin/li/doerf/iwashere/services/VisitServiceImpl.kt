@@ -9,6 +9,7 @@ import li.doerf.iwashere.utils.getLogger
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 @Service
@@ -21,17 +22,23 @@ class VisitServiceImpl(
 
     private val logger = getLogger(javaClass)
 
-    override suspend fun register(name: String, email: String, phone: String, locationShortname: String): Visit {
+    override suspend fun register(name: String, email: String, phone: String, locationShortname: String, timestampStr: String?): Visit {
         logger.trace("registering visit $name, $email, $phone at $locationShortname")
         val location = locationsService.getByShortName(locationShortname)
         if (location.isEmpty) {
             throw IllegalArgumentException("location unknown $locationShortname")
         }
+        val timestamp = if (timestampStr != null) {
+            LocalDateTime.from(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").parse("$timestampStr 11:00"))
+        } else {
+            LocalDateTime.now()
+        }
         val visitor = guestsService.create(name, email, phone)
         val visit = visitRepository.save(Visit(
                 null,
                 visitor,
-                location.get()
+                location.get(),
+                timestamp
         ))
         logger.debug("visit saved: $visit")
         logger.info("visit registered id: ${visit.id} - location: ${visit.location}")
