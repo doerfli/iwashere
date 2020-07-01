@@ -16,4 +16,5 @@ object Versions {
     val javaFaker = "1.0.2"
     val ktor = "1.3.2"
     val openCSV = "4.1"
+    val apachePOI = "3.15"
 }

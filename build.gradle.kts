@@ -49,6 +49,8 @@ dependencies {
 	implementation("com.github.kittinunf.fuel:fuel-coroutines:${Versions.fuel}")
 	implementation("io.github.cdimascio:java-dotenv:${Versions.javaDotenv}")
 	implementation("com.opencsv:opencsv:${Versions.openCSV}")
+	implementation("org.apache.poi:poi:${Versions.apachePOI}")
+	implementation("org.apache.poi:poi-ooxml:${Versions.apachePOI}")
 
 	runtimeOnly("org.postgresql:postgresql")
 	runtimeOnly("org.flywaydb:flyway-core")

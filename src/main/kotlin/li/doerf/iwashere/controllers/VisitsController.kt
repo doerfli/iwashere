@@ -7,15 +7,20 @@ import li.doerf.iwashere.services.LocationsService
 import li.doerf.iwashere.services.VisitService
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.getLogger
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.usermodel.Workbook
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.util.MimeTypeUtils
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.time.LocalDate
 import java.util.stream.Collectors
 import javax.servlet.http.HttpServletResponse
+
 
 @RestController
 @RequestMapping("visits")
@@ -65,6 +70,48 @@ class VisitsController(
         guests.stream().forEach { csvWriter.writeNext(it.toCSV()) }
         csvWriter.close();
         logger.debug("writing csv finished")
+    }
+
+    @GetMapping("{shortname}/{date}/xlsx")
+    fun listXlsx(@PathVariable("shortname") locationShortname: String, @PathVariable("date") dateStr: String, principal: Principal, response: HttpServletResponse) {
+        logger.debug("retrieving visits for $locationShortname on $dateStr")
+        val date = LocalDate.parse(dateStr)
+        val guests = visitService.list(locationShortname, date, userHelper.getUser(principal))
+        val location = locationsService.getByShortName(locationShortname).get()
+
+        logger.debug("preparing response (content type, filename)")
+        response.contentType = MimeTypeUtils.APPLICATION_OCTET_STREAM.type
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"${locationShortname}_${dateStr}.xlsx\"")
+
+        logger.debug("creating xls")
+
+        var row = 0
+
+        val workbook: Workbook = XSSFWorkbook()
+        val sheet: Sheet = workbook.createSheet("Persons")
+        val header1 = sheet.createRow(row++)
+        header1.createCell(0).setCellValue("${location.name}, $dateStr")
+        val header2 = sheet.createRow(row++)
+        header2.createCell(0).setCellValue("${location.street}, ${location.zip}, ${location.city}, ${location.country}")
+        row++
+
+        val header3 = sheet.createRow(row++)
+        header3.createCell(0).setCellValue("name")
+        header3.createCell(1).setCellValue("email")
+        header3.createCell(2).setCellValue("phone")
+
+        guests.stream().forEach {
+            val rw = sheet.createRow(row++)
+            rw.createCell(0).setCellValue(it.guest.name)
+            rw.createCell(1).setCellValue(it.guest.email)
+            rw.createCell(2).setCellValue(it.guest.phone)
+        }
+
+        logger.debug("writing xls")
+        workbook.write(response.outputStream)
+        workbook.close()
+        logger.debug("writing xls finished")
     }
 
     @GetMapping("{shortname}/dates")
