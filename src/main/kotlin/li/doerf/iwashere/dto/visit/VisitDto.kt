@@ -22,3 +22,11 @@ fun Visit.toDto(): VisitDto {
             fmt.format(this.visitTimestamp)
     )
 }
+
+fun Visit.toCSV(): Array<String> {
+    return arrayOf(
+            this.guest.name,
+            this.guest.email,
+            this.guest.phone
+    )
+}

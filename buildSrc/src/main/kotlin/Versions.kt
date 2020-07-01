@@ -15,4 +15,5 @@ object Versions {
     val springDocOpenApi = "1.4.1"
     val javaFaker = "1.0.2"
     val ktor = "1.3.2"
+    val openCSV = "4.1"
 }
