@@ -64,6 +64,10 @@ dependencies {
 	testRuntimeOnly("com.h2database:h2")
 }
 
+springBoot {
+	buildInfo()
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
