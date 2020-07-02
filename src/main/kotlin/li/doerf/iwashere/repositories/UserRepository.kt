@@ -7,4 +7,5 @@ import java.util.*
 
 interface UserRepository : PagingAndSortingRepository<User, Long> {
     fun findFirstByUsername(username: String): Optional<User>
+    fun findFirstByToken(token: String): Optional<User>
 }

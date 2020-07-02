@@ -22,7 +22,7 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             .and()
                 .authorizeRequests()
-                .antMatchers("/locations/byShortname/**","/visits","/login","/accounts/signup","/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**", "/actuator/**")
+                .antMatchers("/locations/byShortname/**","/visits","/login","/accounts/signup","/accounts/confirm/**","/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**", "/actuator/**")
                     .permitAll()
                 .anyRequest()
                     .authenticated()
@@ -31,10 +31,14 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
                 .formLogin()
                 .loginProcessingUrl("/login")
                 .successHandler { _, response, _ ->
-                    response.status = 200
+                    response.status = HttpStatus.OK.value()
                 }
-                .failureHandler { _, response, _ ->
-                    response.status = 401
+                .failureHandler { req, response, t ->
+                    if ( t.cause is IllegalStateException) {
+                        response.status = HttpStatus.TOO_EARLY.value()
+                    } else {
+                        response.status = HttpStatus.UNAUTHORIZED.value()
+                    }
                 }
             .and()
                 .logout()

@@ -1,16 +1,14 @@
 package li.doerf.iwashere.controllers
 
 import com.ninjasquad.springmockk.MockkBean
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.mockk
+import io.mockk.*
 import li.doerf.iwashere.TestHelper
 import li.doerf.iwashere.dto.SignupRequest
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.AccountsServiceImpl
 import li.doerf.iwashere.services.mail.MailService
+import li.doerf.iwashere.utils.UserHelper
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,7 +40,7 @@ internal class AccountsControllerTest {
     @Test
     fun signup() {
         every { userRepository.findFirstByUsername(any()) } returns Optional.empty()
-        every { userRepository.save(any<User>()) } returns User(null, "newuser", "xx")
+        every { userRepository.save(any<User>()) } returns User(null, "newuser", "xx", token = UserHelper.generateToken())
         coEvery { mailService.sendSignupMail(any()) } returns mockk()
 
         mockMvc.perform(post("/accounts/signup")
@@ -60,7 +58,7 @@ internal class AccountsControllerTest {
 
     @Test
     fun signupUserExists() {
-        every { userRepository.findFirstByUsername(any()) } returns Optional.of(User(null, "newuser", "xx"))
+        every { userRepository.findFirstByUsername(any()) } returns Optional.of(User(null, "newuser", "xx", token = UserHelper.generateToken()))
 
         mockMvc.perform(post("/accounts/signup")
                 .content(testHelper.asJsonString(SignupRequest("newuser", "123456")))
@@ -72,6 +70,37 @@ internal class AccountsControllerTest {
         coVerify(exactly = 0) {
             userRepository.save(allAny<User>())
             mailService.sendSignupMail(any())
+        }
+    }
+
+    @Test
+    fun confirm() {
+        val token = "abcdef"
+        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token))
+        every { userRepository.save(any<User>()) } returns User(null, "newuser", "xx", token = null)
+
+        mockMvc.perform(post("/accounts/confirm/$token")
+                .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isOk)
+
+        verify {
+            userRepository.save(allAny<User>())
+        }
+    }
+
+    @Test
+    fun confirmTokenNotFound() {
+        val token = "abcdef"
+        every { userRepository.findFirstByToken(any()) } returns Optional.empty()
+
+        mockMvc.perform(post("/accounts/confirm/$token")
+                .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isOk)
+
+        verify(exactly = 0) {
+            userRepository.save(allAny<User>())
         }
     }
 

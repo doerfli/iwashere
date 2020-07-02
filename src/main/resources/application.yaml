@@ -30,7 +30,7 @@ mailgun:
   apikey: ${MAILGUN_APIKEY}
   baseurl: https://api.mailgun.net/v3/mail.bytes.li
 
-baseUrl: http://localhost:8080
+baseUrl: http://localhost:8081
 mailsender: iwashere@mail.bytes.li
 
 cleanup:

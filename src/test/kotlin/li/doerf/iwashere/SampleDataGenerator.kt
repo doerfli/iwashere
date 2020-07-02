@@ -22,13 +22,13 @@ val apiBaseUrl = "http://localhost:8080/api"
 fun main() {
     val faker = Faker()
     runBlocking {
-        val client1 = registerUser("marc@doerf.li", "1111")
+        val client1 = registerUser("marc@doerf.li", "11111111")
         repeat(10) {
             val shortname = createLocation(client1, faker)
             registerGuests(client1, faker, shortname)
         }
 
-        val client2 = registerUser("marc@bytes.li", "1111")
+        val client2 = registerUser("marc@bytes.li", "11111111")
         repeat(10) {
             val shortname = createLocation(client2, faker)
             registerGuests(client2, faker, shortname)

@@ -6,6 +6,7 @@ import li.doerf.iwashere.security.UserPrincipal
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Component
 import java.security.Principal
+import kotlin.random.Random
 
 @Component
 class UserHelper(
@@ -23,6 +24,17 @@ class UserHelper(
 
         val username = principal.principal as UserPrincipal
         return username.user
+    }
+
+    companion object {
+        private val charPool : List<Char> = ('A'..'Z') + ('0'..'9')
+
+        fun generateToken(): String {
+            return (1..8)
+                    .map { _ -> Random.nextInt(0, charPool.size) }
+                    .map(charPool::get)
+                    .joinToString("");
+        }
     }
 }
 

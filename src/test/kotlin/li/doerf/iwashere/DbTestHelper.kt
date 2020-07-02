@@ -5,6 +5,7 @@ import li.doerf.iwashere.repositories.GuestRepository
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.repositories.VisitRepository
+import li.doerf.iwashere.utils.UserHelper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -28,7 +29,7 @@ class DbTestHelper {
     }
 
     fun createTestUser(username: String): User {
-        return userRepository.save(User(null, username, "xxx"))
+        return userRepository.save(User(null, username, "xxx", token = UserHelper.generateToken()))
     }
 
 }

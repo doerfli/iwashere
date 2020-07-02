@@ -3,9 +3,12 @@ package li.doerf.iwashere.services
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
+import li.doerf.iwashere.entities.AccountState
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.mail.MailService
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -65,4 +68,50 @@ internal class AccountsServiceImplTest {
         }
     }
 
+    @Test
+    fun confirm() {
+        // GIVEN
+        val token = "abcdef"
+        val user = User(null, "user", "xx", token = token)
+        val userSlot = slot<User>()
+        every { userRepository.findFirstByToken(any()) } returns Optional.of(user)
+        every { userRepository.save(capture(userSlot)) } returns user
+
+        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
+
+        // WHEN
+        svc.confirm(token)
+
+        // THEN
+        assertThat(userSlot.captured.token).isNull()
+        assertThat(userSlot.captured.state).isEqualTo(AccountState.CONFIRMED)
+    }
+
+    @Test
+    fun confirmNotExists() {
+        // GIVEN
+        every { userRepository.findFirstByToken(any()) } returns Optional.empty()
+
+        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
+
+        // WHEN
+        assertThatThrownBy {
+            svc.confirm("abcdef");
+        }.isInstanceOf(IllegalArgumentException::class.java)
+    }
+
+    @Test
+    fun confirmInvalidState() {
+        // GIVEN
+        val token = "abcdef"
+        val user = User(null, "user", "xx", token = token, state = AccountState.CONFIRMED)
+        every { userRepository.findFirstByToken(any()) } returns Optional.of(user)
+
+        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
+
+        // WHEN
+        assertThatThrownBy {
+            svc.confirm("abcdef");
+        }.isInstanceOf(IllegalStateException::class.java)
+    }
 }

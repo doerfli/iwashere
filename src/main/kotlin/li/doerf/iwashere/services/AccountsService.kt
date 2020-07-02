@@ -5,5 +5,6 @@ import li.doerf.iwashere.entities.User
 interface AccountsService {
 
     suspend fun create(username: String, password: String): User
+    fun confirm(token: String): User
 
 }

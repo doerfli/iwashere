@@ -29,7 +29,7 @@ class MailServiceImpl @Autowired constructor(
         val ctx = Context()
 //        val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
         ctx.setVariable("email", user.username)
-//        ctx.setVariable("link", "$applBaseUrl/#/confirmation/${user.token}")
+        ctx.setVariable("link", "$applBaseUrl/#/signupConfirm/${user.token}")
 //        ctx.setVariable("validUntil", dateFormat.format(Date.from(user.tokenExpiration)))
 
         val content = templateEngine.process("signup_${user.language.lower()}.txt", ctx)
