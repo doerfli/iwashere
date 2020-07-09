@@ -24,7 +24,7 @@ import java.util.*
 
 
 @ExtendWith(SpringExtension::class)
-@Import(TestHelper::class, AccountsServiceImpl::class)
+@Import(TestHelper::class, AccountsServiceImpl::class, UserHelper::class)
 @WebMvcTest(value = [AccountsController::class])
 internal class AccountsControllerTest {
 
@@ -36,6 +36,8 @@ internal class AccountsControllerTest {
     private lateinit var userRepository: UserRepository
     @MockkBean
     private lateinit var mailService: MailService
+    @MockkBean
+    private lateinit var userHelper: UserHelper
 
     @Test
     fun signup() {
