@@ -10,7 +10,7 @@ import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Parameters
 import kotlinx.coroutines.runBlocking
-import li.doerf.iwashere.dto.SignupRequest
+import li.doerf.iwashere.dto.account.SignupRequest
 import li.doerf.iwashere.dto.location.LocationCreateRequest
 import li.doerf.iwashere.dto.visit.VisitRegisterRequest
 import java.time.LocalDateTime

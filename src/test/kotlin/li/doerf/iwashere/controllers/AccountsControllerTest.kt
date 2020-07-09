@@ -3,7 +3,7 @@ package li.doerf.iwashere.controllers
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.*
 import li.doerf.iwashere.TestHelper
-import li.doerf.iwashere.dto.SignupRequest
+import li.doerf.iwashere.dto.account.SignupRequest
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.AccountsServiceImpl

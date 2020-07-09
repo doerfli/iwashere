@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.time.LocalDateTime
 import java.util.*
 
 @ExtendWith(SpringExtension::class)
@@ -28,9 +29,9 @@ internal class AccountsServiceImplTest {
 
     @Test
     fun create() {
-        every { passwordEncoder.encode(any()) } returns fakePwd
+        every { passwordEncoder.encode("test") } returns fakePwd
         every { userRepository.findFirstByUsername(any()) } returns Optional.empty()
-        var userMock = mockkClass(User::class)
+        val userMock = mockkClass(User::class)
         every { userRepository.save(any<User>()) } returns userMock
         coEvery { mailService.sendSignupMail(any()) } returns mockk()
 
@@ -96,7 +97,7 @@ internal class AccountsServiceImplTest {
 
         // WHEN
         assertThatThrownBy {
-            svc.confirm("abcdef");
+            svc.confirm("abcdef")
         }.isInstanceOf(IllegalArgumentException::class.java)
     }
 
@@ -111,7 +112,64 @@ internal class AccountsServiceImplTest {
 
         // WHEN
         assertThatThrownBy {
-            svc.confirm("abcdef");
+            svc.confirm("abcdef")
         }.isInstanceOf(IllegalStateException::class.java)
+    }
+
+    @Test
+    fun changePassword() {
+        // GIVEN
+        every { passwordEncoder.encode("test") } returns "xxx"
+        every { passwordEncoder.encode("other") } returns "yyy"
+        val lastChangeDate = LocalDateTime.now().minusDays(1)
+        val userMock = User(null, "user", "xxx", token = "abcdef", state = AccountState.CONFIRMED, passwordChangedDate = lastChangeDate)
+        every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
+        val userSlot = slot<User>()
+        every { userRepository.save(capture(userSlot)) } returns userMock
+
+        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
+
+        svc.changePassword("test", "other", "user")
+
+        verify {
+            passwordEncoder.encode("other")
+        }
+        val savedUser = userSlot.captured
+        assertThat(savedUser.password).isEqualTo("yyy")
+        assertThat(savedUser.passwordChangedDate).isAfter(lastChangeDate)
+    }
+
+    @Test
+    fun changePasswordUserNotExists() {
+        // GIVEN
+        every { userRepository.findFirstByUsername(any()) } returns Optional.empty()
+
+        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
+
+        // WHEN
+        assertThatThrownBy {
+            svc.changePassword("old", "new", "test")
+        }.isInstanceOf(IllegalArgumentException::class.java).hasMessageContaining("username")
+    }
+
+    @Test
+    fun changePasswordInvalidOldPassword() {
+        // GIVEN
+        every { passwordEncoder.encode("test") } returns "xxx"
+        every { passwordEncoder.encode("other") } returns "yyy"
+        val lastChangeDate = LocalDateTime.now().minusDays(1)
+        val userMock = User(null, "user", "xx", token = "abcdef", state = AccountState.CONFIRMED, passwordChangedDate = lastChangeDate)
+        every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
+
+        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
+
+        assertThatThrownBy {
+            svc.changePassword("test", "other", "user")
+        }.isInstanceOf(IllegalArgumentException::class.java).hasMessageContaining("password")
+
+        verify(exactly = 0) {
+            passwordEncoder.encode("other")
+            userRepository.save(any() as User)
+        }
     }
 }

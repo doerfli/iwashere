@@ -9,6 +9,7 @@ import li.doerf.iwashere.utils.getLogger
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 @Transactional
@@ -62,6 +63,37 @@ class AccountsServiceImpl(
         } finally {
             logger.info("User confirmed: $user")
         }
+    }
+
+    override fun changePassword(oldPassword: String, newPassword: String, username: String) {
+        logger.trace("changing password for user $username")
+        val userOpt = userRepository.findFirstByUsername(username)
+
+        if (userOpt.isEmpty) {
+            throw IllegalArgumentException("invalid username")
+        }
+        val user = userOpt.get()
+
+        checkPassword(oldPassword, user)
+
+        updatePassword(newPassword, user)
+        userRepository.save(user)
+        logger.info("Password changed for user $user")
+    }
+
+    private fun checkPassword(oldPassword: String, user: User) {
+        val oldPwdHash = passwordEncoder.encode(oldPassword)
+
+        if (oldPwdHash != user.password) {
+            logger.warn("old password did not match")
+            throw IllegalArgumentException("invalid password")
+        }
+    }
+
+    private fun updatePassword(newPassword: String, user: User) {
+        val newPwdHash = passwordEncoder.encode(newPassword)
+        user.password = newPwdHash
+        user.passwordChangedDate = LocalDateTime.now()
     }
 
 }

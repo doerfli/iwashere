@@ -22,8 +22,8 @@ class UserHelper(
             return userRepository.findFirstByUsername(user.username).get()
         }
 
-        val username = principal.principal as UserPrincipal
-        return username.user
+        val userPrincipal = principal.principal as UserPrincipal
+        return userPrincipal.user
     }
 
     companion object {
@@ -33,7 +33,7 @@ class UserHelper(
             return (1..8)
                     .map { _ -> Random.nextInt(0, charPool.size) }
                     .map(charPool::get)
-                    .joinToString("");
+                    .joinToString("")
         }
     }
 }
