@@ -82,9 +82,7 @@ class AccountsServiceImpl(
     }
 
     private fun checkPassword(oldPassword: String, user: User) {
-        val oldPwdHash = passwordEncoder.encode(oldPassword)
-
-        if (oldPwdHash != user.password) {
+        if (! passwordEncoder.matches(oldPassword, user.password)) {
             logger.warn("old password did not match")
             throw IllegalArgumentException("invalid password")
         }

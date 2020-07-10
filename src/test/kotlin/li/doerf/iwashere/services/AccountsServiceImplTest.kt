@@ -119,7 +119,7 @@ internal class AccountsServiceImplTest {
     @Test
     fun changePassword() {
         // GIVEN
-        every { passwordEncoder.encode("test") } returns "xxx"
+        every { passwordEncoder.matches("test", "xxx") } returns true
         every { passwordEncoder.encode("other") } returns "yyy"
         val lastChangeDate = LocalDateTime.now().minusDays(1)
         val userMock = User(null, "user", "xxx", token = "abcdef", state = AccountState.CONFIRMED, passwordChangedDate = lastChangeDate)
@@ -155,8 +155,7 @@ internal class AccountsServiceImplTest {
     @Test
     fun changePasswordInvalidOldPassword() {
         // GIVEN
-        every { passwordEncoder.encode("test") } returns "xxx"
-        every { passwordEncoder.encode("other") } returns "yyy"
+        every { passwordEncoder.matches("test", "xx") } returns false
         val lastChangeDate = LocalDateTime.now().minusDays(1)
         val userMock = User(null, "user", "xx", token = "abcdef", state = AccountState.CONFIRMED, passwordChangedDate = lastChangeDate)
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
