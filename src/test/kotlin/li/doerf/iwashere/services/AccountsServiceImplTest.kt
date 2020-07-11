@@ -7,8 +7,10 @@ import li.doerf.iwashere.entities.AccountState
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.mail.MailService
+import li.doerf.iwashere.utils.UserHelper
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -26,16 +28,23 @@ internal class AccountsServiceImplTest {
     private lateinit var userRepository: UserRepository
     @MockkBean
     private lateinit var mailService: MailService
+    @MockkBean
+    private lateinit var userHelper: UserHelper
+    private lateinit var svc: AccountsServiceImpl
+
+    @BeforeEach
+    fun setup() {
+        svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService, userHelper)
+    }
 
     @Test
     fun create() {
         every { passwordEncoder.encode("test") } returns fakePwd
         every { userRepository.findFirstByUsername(any()) } returns Optional.empty()
+        every { userHelper.createUniqueToken() } returns "xyzabc"
         val userMock = mockkClass(User::class)
         every { userRepository.save(any<User>()) } returns userMock
         coEvery { mailService.sendSignupMail(any()) } returns mockk()
-
-        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
 
         runBlocking {
             svc.create("test@bla.com", "test")
@@ -53,8 +62,6 @@ internal class AccountsServiceImplTest {
         every { passwordEncoder.encode(any()) } returns fakePwd
         val userMock = mockkClass(User::class)
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
-
-        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
 
         runBlocking {
             svc.create("test@bla.com", "test")
@@ -78,8 +85,6 @@ internal class AccountsServiceImplTest {
         every { userRepository.findFirstByToken(any()) } returns Optional.of(user)
         every { userRepository.save(capture(userSlot)) } returns user
 
-        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
-
         // WHEN
         svc.confirm(token)
 
@@ -93,8 +98,6 @@ internal class AccountsServiceImplTest {
         // GIVEN
         every { userRepository.findFirstByToken(any()) } returns Optional.empty()
 
-        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
-
         // WHEN
         assertThatThrownBy {
             svc.confirm("abcdef")
@@ -107,8 +110,6 @@ internal class AccountsServiceImplTest {
         val token = "abcdef"
         val user = User(null, "user", "xx", token = token, state = AccountState.CONFIRMED)
         every { userRepository.findFirstByToken(any()) } returns Optional.of(user)
-
-        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
 
         // WHEN
         assertThatThrownBy {
@@ -127,8 +128,6 @@ internal class AccountsServiceImplTest {
         val userSlot = slot<User>()
         every { userRepository.save(capture(userSlot)) } returns userMock
 
-        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
-
         svc.changePassword("test", "other", "user")
 
         verify {
@@ -144,8 +143,6 @@ internal class AccountsServiceImplTest {
         // GIVEN
         every { userRepository.findFirstByUsername(any()) } returns Optional.empty()
 
-        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
-
         // WHEN
         assertThatThrownBy {
             svc.changePassword("old", "new", "test")
@@ -160,14 +157,49 @@ internal class AccountsServiceImplTest {
         val userMock = User(null, "user", "xx", token = "abcdef", state = AccountState.CONFIRMED, passwordChangedDate = lastChangeDate)
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
 
-        val svc = AccountsServiceImpl(userRepository, passwordEncoder, mailService)
-
         assertThatThrownBy {
             svc.changePassword("test", "other", "user")
         }.isInstanceOf(IllegalArgumentException::class.java).hasMessageContaining("password")
 
         verify(exactly = 0) {
             passwordEncoder.encode("other")
+            userRepository.save(any() as User)
+        }
+    }
+
+    @Test
+    fun forgotPasswort() {
+        val user = User(null, "user", "xx", state = AccountState.CONFIRMED)
+        every { userRepository.findFirstByUsername(any()) } returns Optional.of(user)
+        every { userHelper.createUniqueToken() } returns "xyzabc"
+        every { userRepository.save(any() as User) } returns user
+        coEvery { mailService.sendResetPasswordMail(any()) } returns mockk()
+
+        runBlocking {
+            svc.forgotPassword("user")
+        }
+
+        assertThat(user.token).isEqualTo("xyzabc")
+        assertThat(user.state).isEqualTo(AccountState.RESET_PASSWORD)
+
+        coVerify {
+            mailService.sendResetPasswordMail(user)
+        }
+    }
+
+    @Test
+    fun forgotPasswortInvalidUser() {
+        every { userRepository.findFirstByUsername(any()) } returns Optional.empty()
+
+
+        assertThatThrownBy {
+            runBlocking {
+                svc.forgotPassword("user")
+            }
+        }.isInstanceOf(IllegalArgumentException::class.java).hasMessageContaining("invalid username")
+
+        coVerify(exactly = 0) {
+            mailService.sendResetPasswordMail(any() as User)
             userRepository.save(any() as User)
         }
     }

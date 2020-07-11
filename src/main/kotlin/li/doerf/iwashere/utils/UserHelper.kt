@@ -26,8 +26,18 @@ class UserHelper(
         return userPrincipal.user
     }
 
+    fun createUniqueToken(): String {
+        var token: String
+
+        do {
+            token = generateToken()
+        } while( userRepository.countByToken(token) > 0)
+
+        return token
+    }
+
     companion object {
-        private val charPool : List<Char> = ('A'..'Z') + ('0'..'9')
+        private val charPool: List<Char> = ('A'..'Z') + ('0'..'9')
 
         fun generateToken(): String {
             return (1..8)

@@ -16,7 +16,8 @@ import java.time.LocalDateTime
 class AccountsServiceImpl(
         private val userRepository: UserRepository,
         private val passwordEncoder: PasswordEncoder,
-        private val mailService: MailService
+        private val mailService: MailService,
+        private val userHelper: UserHelper
 ) : AccountsService {
 
     private val logger = getLogger(javaClass)
@@ -33,7 +34,7 @@ class AccountsServiceImpl(
         val newUser = userRepository.save(User(
                 username = username,
                 password = pwdHash,
-                token = UserHelper.generateToken()
+                token = userHelper.createUniqueToken()
         ))
         logger.debug("user created")
         mailService.sendSignupMail(newUser)
@@ -76,20 +77,38 @@ class AccountsServiceImpl(
 
         checkPassword(oldPassword, user)
 
-        updatePassword(newPassword, user)
+        setPassword(newPassword, user)
         userRepository.save(user)
         logger.info("Password changed for user $user")
     }
 
-    private fun checkPassword(oldPassword: String, user: User) {
-        if (! passwordEncoder.matches(oldPassword, user.password)) {
-            logger.warn("old password did not match")
+    override suspend fun forgotPassword(username: String) {
+        logger.trace("forgot password for user $username")
+        val userOpt = userRepository.findFirstByUsername(username)
+
+        if (userOpt.isEmpty) {
+            throw IllegalArgumentException("invalid username")
+        }
+        val user = userOpt.get()
+
+        user.state = AccountState.RESET_PASSWORD
+        user.token = userHelper.createUniqueToken()
+        userRepository.save(user)
+
+        mailService.sendResetPasswordMail(user)
+
+        logger.info("forgot password for user $username done")
+    }
+
+    private fun checkPassword(password: String, user: User) {
+        if (! passwordEncoder.matches(password, user.password)) {
+            logger.warn("password did not match")
             throw IllegalArgumentException("invalid password")
         }
     }
 
-    private fun updatePassword(newPassword: String, user: User) {
-        val newPwdHash = passwordEncoder.encode(newPassword)
+    private fun setPassword(password: String, user: User) {
+        val newPwdHash = passwordEncoder.encode(password)
         user.password = newPwdHash
         user.passwordChangedDate = LocalDateTime.now()
     }

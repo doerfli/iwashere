@@ -15,7 +15,7 @@ class IwashereUserDetailsService(private val userRepository: UserRepository) : U
         if (user.isEmpty) {
             throw NoSuchElementException("user: $username");
         }
-        if (user.get().state != AccountState.CONFIRMED) {
+        if (user.get().state == AccountState.UNCONFIRMED) {
             throw IllegalStateException("account not confirmed")
         }
         return UserPrincipal(user.get())

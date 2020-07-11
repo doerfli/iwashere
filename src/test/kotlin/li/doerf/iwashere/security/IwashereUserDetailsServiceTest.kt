@@ -10,6 +10,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
@@ -34,12 +36,13 @@ internal class IwashereUserDetailsServiceTest {
         }
     }
 
-    @Test
-    fun testLoadUserByUsername() {
+    @ParameterizedTest
+    @ValueSource(strings = [ "CONFIRMED", "RESET_PASSWORD" ])
+    fun testLoadUserByUsername(state: String) {
         val username = "someone"
         val userMock = mockkClass(User::class)
         every { userMock.username } returns "someone"
-        every { userMock.state } returns AccountState.CONFIRMED
+        every { userMock.state } returns AccountState.valueOf(state)
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
 
         val res = sut.loadUserByUsername(username)

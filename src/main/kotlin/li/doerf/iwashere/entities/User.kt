@@ -18,6 +18,6 @@ data class User(
         var state: AccountState = AccountState.UNCONFIRMED,
         @Enumerated(EnumType.STRING)
         var language: Language = Language.DE,
-        var token: String?,
+        var token: String? = null,
         val createdDate: LocalDateTime = LocalDateTime.now()
 )
