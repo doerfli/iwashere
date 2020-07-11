@@ -8,5 +8,6 @@ interface AccountsService {
     fun confirm(token: String): User
     fun changePassword(oldPassword: String, newPassword: String, username: String)
     suspend fun forgotPassword(username: String)
+    suspend fun resetPassword(token: String, password: String)
 
 }

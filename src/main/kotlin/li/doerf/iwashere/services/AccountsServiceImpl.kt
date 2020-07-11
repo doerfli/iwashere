@@ -95,9 +95,32 @@ class AccountsServiceImpl(
         user.token = userHelper.createUniqueToken()
         userRepository.save(user)
 
-        mailService.sendResetPasswordMail(user)
+        mailService.sendForgotPasswordMail(user)
 
         logger.info("forgot password for user $username done")
+    }
+
+    override suspend fun resetPassword(token: String, password: String) {
+        logger.trace("forgot password for user with token $token")
+        val userOpt = userRepository.findFirstByToken(token)
+
+        if (userOpt.isEmpty) {
+            throw IllegalArgumentException("invalid token")
+        }
+        val user = userOpt.get()
+
+        if (user.state != AccountState.RESET_PASSWORD) {
+            throw java.lang.IllegalStateException("user did not request passwort reset")
+        }
+
+        setPassword(password, user)
+        user.state = AccountState.CONFIRMED
+        user.token = null
+        userRepository.save(user)
+
+        mailService.sendPasswordResetMail(user)
+
+        logger.info("reset password for user $user done")
     }
 
     private fun checkPassword(password: String, user: User) {

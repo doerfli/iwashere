@@ -173,7 +173,7 @@ internal class AccountsServiceImplTest {
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(user)
         every { userHelper.createUniqueToken() } returns "xyzabc"
         every { userRepository.save(any() as User) } returns user
-        coEvery { mailService.sendResetPasswordMail(any()) } returns mockk()
+        coEvery { mailService.sendForgotPasswordMail(any()) } returns mockk()
 
         runBlocking {
             svc.forgotPassword("user")
@@ -183,7 +183,7 @@ internal class AccountsServiceImplTest {
         assertThat(user.state).isEqualTo(AccountState.RESET_PASSWORD)
 
         coVerify {
-            mailService.sendResetPasswordMail(user)
+            mailService.sendForgotPasswordMail(user)
         }
     }
 
@@ -199,7 +199,64 @@ internal class AccountsServiceImplTest {
         }.isInstanceOf(IllegalArgumentException::class.java).hasMessageContaining("invalid username")
 
         coVerify(exactly = 0) {
-            mailService.sendResetPasswordMail(any() as User)
+            mailService.sendForgotPasswordMail(any() as User)
+            userRepository.save(any() as User)
+        }
+    }
+
+    @Test
+    fun resetPasswort() {
+        val date = LocalDateTime.now().minusDays(1)
+        val user = User(null, "user", "xx", token = "token123", state = AccountState.RESET_PASSWORD, passwordChangedDate = date)
+        every { userRepository.findFirstByToken("token123") } returns Optional.of(user)
+        every { passwordEncoder.encode("newpwd") } returns "yyy"
+        every { userRepository.save(any() as User) } returns user
+        coEvery { mailService.sendPasswordResetMail(user) } returns mockk()
+
+        runBlocking {
+            svc.resetPassword("token123", "newpwd")
+        }
+
+        assertThat(user.token).isNull()
+        assertThat(user.state).isEqualTo(AccountState.CONFIRMED)
+        assertThat(user.password).isEqualTo("yyy")
+        assertThat(user.passwordChangedDate).isAfter(date)
+
+        coVerify {
+            mailService.sendPasswordResetMail(user)
+            userRepository.save(user)
+        }
+    }
+
+    @Test
+    fun resetPasswortTokenInvalid() {
+        every { userRepository.findFirstByToken("token123") } returns Optional.empty()
+
+        assertThatThrownBy {
+            runBlocking {
+                svc.resetPassword("token123", "newpwd")
+            }
+        }.isInstanceOf(IllegalArgumentException::class.java).hasMessageContaining("invalid token")
+
+        coVerify(exactly = 0) {
+            mailService.sendPasswordResetMail(any() as User)
+            userRepository.save(any() as User)
+        }
+    }
+
+    @Test
+    fun resetPasswortInvalidState() {
+        val user = User(null, "user", "xx", token = "token123", state = AccountState.CONFIRMED)
+        every { userRepository.findFirstByToken("token123") } returns Optional.of(user)
+
+        assertThatThrownBy {
+            runBlocking {
+                svc.resetPassword("token123", "newpwd")
+            }
+        }.isInstanceOf(IllegalStateException::class.java).hasMessageContaining("user did not request passwort reset")
+
+        coVerify(exactly = 0) {
+            mailService.sendPasswordResetMail(any() as User)
             userRepository.save(any() as User)
         }
     }

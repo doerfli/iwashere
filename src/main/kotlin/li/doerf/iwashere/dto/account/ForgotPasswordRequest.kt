@@ -1,5 +1,5 @@
 package li.doerf.iwashere.dto.account
 
-data class ForgotPasswortRequest(
+data class ForgotPasswordRequest(
         val username: String
 )

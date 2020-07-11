@@ -29,6 +29,7 @@ class MailServiceImpl @Autowired constructor(
         val ctx = Context()
 //        val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
         ctx.setVariable("email", user.username)
+        // TODO url via config
         ctx.setVariable("link", "$applBaseUrl/#/signupConfirm/${user.token}")
 //        ctx.setVariable("validUntil", dateFormat.format(Date.from(user.tokenExpiration)))
 
@@ -66,15 +67,28 @@ class MailServiceImpl @Autowired constructor(
                 content)
     }
 
-    override suspend fun sendResetPasswordMail(user: User) {
-        logger.debug("sending reset password email to $user")
+    override suspend fun sendForgotPasswordMail(user: User) {
+        logger.debug("sending forgot password email to $user")
         val ctx = Context()
-//        val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
         ctx.setVariable("email", user.username)
+        // TODO url via config
         ctx.setVariable("link", "$applBaseUrl/#/resetPassword/${user.token}")
 //        ctx.setVariable("validUntil", dateFormat.format(Date.from(user.tokenExpiration)))
 
-        val content = templateEngine.process("resetPassword_${user.language.lower()}.txt", ctx)
+        val content = templateEngine.process("forgotPassword_${user.language.lower()}.txt", ctx)
+        mailgunService.sendEmail(
+                mailSender,
+                user.username,
+                "iwashere passwort forgotten",
+                content)
+    }
+
+    override suspend fun sendPasswordResetMail(user: User) {
+        logger.debug("sending password reset email to $user")
+        val ctx = Context()
+        ctx.setVariable("email", user.username)
+
+        val content = templateEngine.process("passwordReset_${user.language.lower()}.txt", ctx)
         mailgunService.sendEmail(
                 mailSender,
                 user.username,
