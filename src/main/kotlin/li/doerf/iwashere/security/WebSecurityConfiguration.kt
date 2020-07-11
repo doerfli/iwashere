@@ -22,8 +22,15 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             .and()
                 .authorizeRequests()
-                .antMatchers("/locations/byShortname/**","/visits","/login","/accounts/signup","/accounts/confirm/**","/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**", "/actuator/**")
-                    .permitAll()
+                .antMatchers(
+                        "/accounts/signup","/accounts/confirm/**","/accounts/resetPassword","/accounts/forgotPassword",
+                        "/actuator/**",
+                        "/locations/byShortname/**",
+                        "/login",
+                        "/swagger-ui.html","/swagger-ui/**",
+                        "/visits",
+                        "/v3/api-docs/**"
+                    ).permitAll()
                 .anyRequest()
                     .authenticated()
             .and()

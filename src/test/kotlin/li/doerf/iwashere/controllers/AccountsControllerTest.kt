@@ -30,8 +30,6 @@ internal class AccountsControllerTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
-    @Autowired
-    private lateinit var testHelper: TestHelper
     @MockkBean
     private lateinit var userRepository: UserRepository
     @MockkBean
@@ -42,11 +40,12 @@ internal class AccountsControllerTest {
     @Test
     fun signup() {
         every { userRepository.findFirstByUsername(any()) } returns Optional.empty()
+        every { userHelper.createUniqueToken() } returns "xyzabc"
         every { userRepository.save(any<User>()) } returns User(null, "newuser", "xx", token = UserHelper.generateToken())
         coEvery { mailService.sendSignupMail(any()) } returns mockk()
 
         mockMvc.perform(post("/accounts/signup")
-                .content(testHelper.asJsonString(SignupRequest("newuser", "123456")))
+                .content(TestHelper.asJsonString(SignupRequest("newuser", "123456")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         ).andDo(print())
@@ -63,7 +62,7 @@ internal class AccountsControllerTest {
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(User(null, "newuser", "xx", token = UserHelper.generateToken()))
 
         mockMvc.perform(post("/accounts/signup")
-                .content(testHelper.asJsonString(SignupRequest("newuser", "123456")))
+                .content(TestHelper.asJsonString(SignupRequest("newuser", "123456")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         ).andDo(print())

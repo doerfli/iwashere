@@ -44,7 +44,7 @@ suspend fun registerGuests(client: HttpClient, faker: Faker, shortname: String) 
         repeat(amount) {
             client.post<String>("$apiBaseUrl/visits") {
                 header("content-type", "application/json")
-                body = TestHelper().asJsonString(VisitRegisterRequest(
+                body = TestHelper.asJsonString(VisitRegisterRequest(
                         shortname,
                         faker.name().name(),
                         faker.internet().emailAddress(),
@@ -67,7 +67,7 @@ suspend fun createLocation(client: HttpClient, faker: Faker): String {
     }
     client.post<String>("$apiBaseUrl/locations") {
         header("content-type", "application/json")
-        body = TestHelper().asJsonString(LocationCreateRequest(
+        body = TestHelper.asJsonString(LocationCreateRequest(
                 name,
                 shortname,
                 faker.address().streetAddress(),
@@ -88,7 +88,7 @@ suspend fun registerUser(username: String, password: String) : HttpClient {
     }
     client.post<String>("$apiBaseUrl/accounts/signup") {
         header("content-type", "application/json")
-        body = TestHelper().asJsonString(SignupRequest(username, password))
+        body = TestHelper.asJsonString(SignupRequest(username, password))
     }
     client.post<HttpResponse>("$apiBaseUrl/login") {
         body = FormDataContent(Parameters.build {

@@ -45,8 +45,6 @@ internal class VisitsControllerTest {
     @Autowired
     private lateinit var dbTestHelper: DbTestHelper
     @Autowired
-    private lateinit var testHelper: TestHelper
-    @Autowired
     private lateinit var locationRepository: LocationRepository
     @Autowired
     private lateinit var guestRepository: GuestRepository
@@ -68,7 +66,7 @@ internal class VisitsControllerTest {
 
         // when
         mvc.perform(MockMvcRequestBuilders.post("/visits")
-                .content(testHelper.asJsonString(
+                .content(TestHelper.asJsonString(
                         VisitRegisterRequest(
                                 "loc1",
                                 "John Doe",
