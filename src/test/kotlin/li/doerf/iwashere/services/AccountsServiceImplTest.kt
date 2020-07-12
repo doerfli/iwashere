@@ -191,7 +191,6 @@ internal class AccountsServiceImplTest {
     fun forgotPasswortInvalidUser() {
         every { userRepository.findFirstByUsername(any()) } returns Optional.empty()
 
-
         runBlocking {
             svc.forgotPassword("user")
         }
