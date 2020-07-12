@@ -87,7 +87,9 @@ class AccountsServiceImpl(
         val userOpt = userRepository.findFirstByUsername(username)
 
         if (userOpt.isEmpty) {
-            throw IllegalArgumentException("invalid username")
+            logger.warn("invalid username")
+            // continue as if user exists for outside world
+            return
         }
         val user = userOpt.get()
 

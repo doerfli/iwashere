@@ -192,11 +192,9 @@ internal class AccountsServiceImplTest {
         every { userRepository.findFirstByUsername(any()) } returns Optional.empty()
 
 
-        assertThatThrownBy {
-            runBlocking {
-                svc.forgotPassword("user")
-            }
-        }.isInstanceOf(IllegalArgumentException::class.java).hasMessageContaining("invalid username")
+        runBlocking {
+            svc.forgotPassword("user")
+        }
 
         coVerify(exactly = 0) {
             mailService.sendForgotPasswordMail(any() as User)
