@@ -16,6 +16,8 @@ RUN mkdir -p build/libs/dependency && (cd build/libs/dependency; jar -xf ../*.ja
 #= Run ==============================================================
 FROM adoptopenjdk/openjdk11-openj9:alpine-slim
 EXPOSE 8080
+# create empty (dummy) dotenv file
+RUN touch .env
 VOLUME /tmp
 VOLUME /log
 COPY --from=build /workspace/build/libs/dependency/BOOT-INF/lib /app/lib
