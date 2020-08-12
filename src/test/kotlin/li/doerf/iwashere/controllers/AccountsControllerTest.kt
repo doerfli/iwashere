@@ -4,6 +4,7 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.*
 import li.doerf.iwashere.TestHelper
 import li.doerf.iwashere.dto.account.SignupRequest
+import li.doerf.iwashere.entities.AccountState
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.AccountsServiceImpl
@@ -59,7 +60,7 @@ internal class AccountsControllerTest {
 
     @Test
     fun signupUserExists() {
-        every { userRepository.findFirstByUsername(any()) } returns Optional.of(User(null, "newuser", "xx", token = UserHelper.generateToken()))
+        every { userRepository.findFirstByUsername(any()) } returns Optional.of(User(null, "newuser", "xx", token = UserHelper.generateToken(), state = AccountState.CONFIRMED))
 
         mockMvc.perform(post("/accounts/signup")
                 .content(TestHelper.asJsonString(SignupRequest("newuser", "123456")))
