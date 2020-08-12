@@ -26,20 +26,21 @@ class AccountsServiceImpl(
         val pwdHash = passwordEncoder.encode(password)
         val userOpt = userRepository.findFirstByUsername(username)
 
-        if (userOpt.isPresent) {
+        if (userOpt.isPresent && userOpt.get().state != AccountState.UNCONFIRMED) {
             logger.warn("user already exists: ${userOpt.get()}")
             return userOpt.get()
         }
 
-        val newUser = userRepository.save(User(
+        val user = userOpt.orElseGet {
+            logger.info("storing new user")
+            userRepository.save(User(
                 username = username,
                 password = pwdHash,
                 token = userHelper.createUniqueToken()
-        ))
-        logger.debug("user created")
-        mailService.sendSignupMail(newUser)
+        )) }
 
-        return newUser
+        mailService.sendSignupMail(user)
+        return user
     }
 
     override fun confirm(token: String): User {

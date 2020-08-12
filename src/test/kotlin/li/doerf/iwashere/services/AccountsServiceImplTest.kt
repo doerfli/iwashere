@@ -58,9 +58,10 @@ internal class AccountsServiceImplTest {
     }
 
     @Test
-    fun createUserExists() {
+    fun createUserExistsConfirmed() {
         every { passwordEncoder.encode(any()) } returns fakePwd
         val userMock = mockkClass(User::class)
+        every { userMock.state } returns AccountState.CONFIRMED
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
 
         runBlocking {
@@ -72,6 +73,27 @@ internal class AccountsServiceImplTest {
         }
         coVerify(exactly = 0) {
             userRepository.save(allAny<User>())
+            mailService.sendSignupMail(userMock)
+        }
+    }
+
+    @Test
+    fun createUserExistsUnconfirmed() {
+        every { passwordEncoder.encode(any()) } returns fakePwd
+        val userMock = mockkClass(User::class)
+        every { userMock.state } returns AccountState.UNCONFIRMED
+        every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
+        coEvery { mailService.sendSignupMail(any()) } returns mockk()
+
+        runBlocking {
+            svc.create("test@bla.com", "test")
+        }
+
+        coVerify(exactly = 0) {
+            userRepository.save(allAny<User>())
+        }
+        coVerify {
+            passwordEncoder.encode("test")
             mailService.sendSignupMail(userMock)
         }
     }
