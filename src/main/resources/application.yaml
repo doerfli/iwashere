@@ -35,4 +35,4 @@ mailsender: iwashere@mail.bytes.li
 
 cleanup:
   cron: "0 3 0 * * *"
-  retentionDays: 28
+  retentionDays: 15
