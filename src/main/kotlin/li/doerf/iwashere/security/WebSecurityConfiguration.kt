@@ -27,6 +27,7 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
                         "/actuator/**",
                         "/locations/byShortname/**",
                         "/login",
+                        "/monitoring",
                         "/swagger-ui.html","/swagger-ui/**",
                         "/visits",
                         "/v3/api-docs/**"

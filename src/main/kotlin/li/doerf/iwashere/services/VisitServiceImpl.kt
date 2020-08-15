@@ -78,6 +78,13 @@ class VisitServiceImpl(
         return visitRepository.getDateGuestCountList(location.get()).map{ fixDatePadding(it) }.map{ it.getDate() to it.getGuestcount() }.toMap()
     }
 
+    override fun countToday(): Long {
+        logger.trace("retrieving visit count for today")
+        val after = LocalDate.now().atStartOfDay()
+        val before = LocalDate.now().plusDays(1).atStartOfDay()
+        return visitRepository.countAllByVisitTimestampBetween(after, before)
+    }
+
     private fun fixDatePadding(dg: DateGuestcount): DateGuestcount {
         val date = dg.getDate()
         if (date.length == 10) {

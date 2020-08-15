@@ -10,6 +10,7 @@ interface VisitRepository : PagingAndSortingRepository<Visit, Long> {
 
     fun findAllByVisitTimestampBefore(date: LocalDateTime): Collection<Visit>
     fun findAllByLocationAndVisitTimestampBetween(location: Location, after: LocalDateTime, before: LocalDateTime): Collection<Visit>
+    fun countAllByVisitTimestampBetween(after: LocalDateTime, before: LocalDateTime): Long
     @Query("""
         SELECT DISTINCT 
             concat(
@@ -27,5 +28,4 @@ interface VisitRepository : PagingAndSortingRepository<Visit, Long> {
             date
     """)
     fun getDateGuestCountList(location: Location): List<DateGuestcount>
-
 }
