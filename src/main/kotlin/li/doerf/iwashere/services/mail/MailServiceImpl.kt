@@ -2,9 +2,12 @@ package li.doerf.iwashere.services.mail
 
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.entities.Visit
+import li.doerf.iwashere.streams.MailProducer
+import li.doerf.iwashere.streams.SendMailMessage
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Service
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
@@ -13,7 +16,7 @@ import java.time.format.DateTimeFormatter
 @Service
 class MailServiceImpl @Autowired constructor(
         private val templateEngine: TemplateEngine,
-        private val mailgunService: MailgunServiceImpl
+        private val mailProducer: MailProducer
 ) : MailService {
 
     @Value("\${baseUrl}")
@@ -34,11 +37,8 @@ class MailServiceImpl @Autowired constructor(
 //        ctx.setVariable("validUntil", dateFormat.format(Date.from(user.tokenExpiration)))
 
         val content = templateEngine.process("signup_${user.language.lower()}.txt", ctx)
-        mailgunService.sendEmail(
-                mailSender,
-                user.username,
-                "Welcome to iwashere",
-                content)
+
+        sendMail("Welcome to iwashere", user.username, content)
     }
 
     override suspend fun sendVisitMail(visit: Visit) {
@@ -60,11 +60,7 @@ class MailServiceImpl @Autowired constructor(
         ctx.setVariable("visit_timestamp", dateFormat.format(visit.visitTimestamp))
 
         val content = templateEngine.process("visit_${visit.location.user.language.lower()}.txt", ctx)
-        mailgunService.sendEmail(
-                mailSender,
-                recipientEmail,
-                "Ihr Besuch bei ${visit.location.name}",
-                content)
+        sendMail("Ihr Besuch bei ${visit.location.name}", recipientEmail, content)
     }
 
     override suspend fun sendForgotPasswordMail(user: User) {
@@ -76,11 +72,8 @@ class MailServiceImpl @Autowired constructor(
 //        ctx.setVariable("validUntil", dateFormat.format(Date.from(user.tokenExpiration)))
 
         val content = templateEngine.process("forgotPassword_${user.language.lower()}.txt", ctx)
-        mailgunService.sendEmail(
-                mailSender,
-                user.username,
-                "iwashere passwort forgotten",
-                content)
+
+        sendMail("iwashere passwort forgotten", user.username, content)
     }
 
     override suspend fun sendPasswordResetMail(user: User) {
@@ -89,12 +82,19 @@ class MailServiceImpl @Autowired constructor(
         ctx.setVariable("email", user.username)
 
         val content = templateEngine.process("passwordReset_${user.language.lower()}.txt", ctx)
-        mailgunService.sendEmail(
-                mailSender,
-                user.username,
-                "iwashere passwort reset",
-                content)
+
+        sendMail("iwashere passwort reset", user.username, content)
     }
 
+    private fun sendMail(subject: String, recipient: String, content: String) {
+        val msg = MessageBuilder.withPayload(
+                SendMailMessage(mailSender,
+                        recipient,
+                        subject,
+                        content)
+        ).build()
+        mailProducer.mailStreams.mailOut().send(msg)
+        logger.debug("mail message ${msg.payload.id} queued")
+    }
 
 }

@@ -13,9 +13,9 @@ services:
     #image: rabbitmq:3-alpine
     image: rabbitmq:3-management-alpine
     #restart: always
-    environment:
-      - RABBITMQ_DEFAULT_USER=karnickel
-      - RABBITMQ_DEFAULT_PASS=hasehuepf
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=karnickel
+#      - RABBITMQ_DEFAULT_PASS=hasehuepf
     ports:
       - 5672:5672
       - 9080:15672
