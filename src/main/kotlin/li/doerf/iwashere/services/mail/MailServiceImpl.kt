@@ -38,7 +38,7 @@ class MailServiceImpl @Autowired constructor(
 
         val content = templateEngine.process("signup_${user.language.lower()}.txt", ctx)
 
-        sendMail("Welcome to iwashere", user.username, content)
+        sendMail("Willkommen bei 'Ich war da'", user.username, content)
     }
 
     override suspend fun sendVisitMail(visit: Visit) {
@@ -60,20 +60,19 @@ class MailServiceImpl @Autowired constructor(
         ctx.setVariable("visit_timestamp", dateFormat.format(visit.visitTimestamp))
 
         val content = templateEngine.process("visit_${visit.location.user.language.lower()}.txt", ctx)
-        sendMail("Ihr Besuch bei ${visit.location.name}", recipientEmail, content)
+        sendMail("Ihr Besuch bei '${visit.location.name}'", recipientEmail, content)
     }
 
     override suspend fun sendForgotPasswordMail(user: User) {
         logger.debug("sending forgot password email to $user")
         val ctx = Context()
         ctx.setVariable("email", user.username)
-        // TODO url via config
         ctx.setVariable("link", "$applBaseUrl/#/resetPassword/${user.token}")
 //        ctx.setVariable("validUntil", dateFormat.format(Date.from(user.tokenExpiration)))
 
         val content = templateEngine.process("forgotPassword_${user.language.lower()}.txt", ctx)
 
-        sendMail("iwashere passwort forgotten", user.username, content)
+        sendMail("Passwort vergessen (Ich war da)", user.username, content)
     }
 
     override suspend fun sendPasswordResetMail(user: User) {
@@ -83,7 +82,7 @@ class MailServiceImpl @Autowired constructor(
 
         val content = templateEngine.process("passwordReset_${user.language.lower()}.txt", ctx)
 
-        sendMail("iwashere passwort reset", user.username, content)
+        sendMail("Passwort zurücksetzen (Ich war da)", user.username, content)
     }
 
     private fun sendMail(subject: String, recipient: String, content: String) {
