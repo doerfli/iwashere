@@ -12,7 +12,7 @@ import li.doerf.iwashere.entities.Visit
 import li.doerf.iwashere.repositories.GuestRepository
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.VisitRepository
-import li.doerf.iwashere.services.mail.MailgunServiceImpl
+import li.doerf.iwashere.services.mail.MailService
 import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -51,7 +51,7 @@ internal class VisitsControllerTest {
     @Autowired
     private lateinit var visitRepository: VisitRepository
     @MockkBean(relaxed = true)
-    private lateinit var mailgunServiceImpl: MailgunServiceImpl
+    private lateinit var mailService: MailService
 
     @BeforeEach
     fun setup() {
