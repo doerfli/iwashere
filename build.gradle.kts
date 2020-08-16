@@ -52,7 +52,6 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${Versions.coroutinesVersion}")
 	implementation("org.thymeleaf:thymeleaf-spring5")
 	implementation("org.springdoc:springdoc-openapi-ui:${Versions.springDocOpenApi}")
-//	implementation("org.springframework.boot:spring-boot-starter-amqp")
 	implementation("org.springframework.cloud:spring-cloud-stream")
 	implementation("org.springframework.cloud:spring-cloud-stream-binder-rabbit")
 
@@ -74,9 +73,9 @@ dependencies {
 	testImplementation("com.ninja-squad:springmockk:${Versions.mockk}")
 	testImplementation("com.github.javafaker:javafaker:${Versions.javaFaker}")
 	testImplementation("io.ktor:ktor-client-apache:${Versions.ktor}")
-	testImplementation("org.springframework.amqp:spring-rabbit-test")
-	testImplementation("org.springframework.cloud:spring-cloud-stream-test-support")
-	testImplementation("org.springframework.integration:spring-integration-test")
+//	testImplementation("org.springframework.amqp:spring-rabbit-test")
+//	testImplementation("org.springframework.cloud:spring-cloud-stream-test-support")
+//	testImplementation("org.springframework.integration:spring-integration-test")
 
 	testRuntimeOnly("com.h2database:h2")
 }
