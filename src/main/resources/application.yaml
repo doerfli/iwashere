@@ -21,6 +21,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: karnickel
+    password: hasehuepf
   cloud:
     stream:
       bindings:
@@ -32,17 +37,6 @@ spring:
           binder: rabbit
           destination: mails
           group: output-group-1
-      binders:
-        rabbit:
-          type: rabbit
-          environment:
-            spring:
-              rabbitmq:
-                host: localhost
-                port: 5672
-#                username: karnickel
-#                password: hasehuepf
-#                virtual-host: /
 
 server:
   servlet:
