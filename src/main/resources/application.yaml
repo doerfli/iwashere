@@ -21,6 +21,22 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: karnickel
+    password: hasehuepf
+  cloud:
+    stream:
+      bindings:
+        mailIn:
+          binder: rabbit
+          destination: mails
+          group: input-group-1
+        mailOut:
+          binder: rabbit
+          destination: mails
+          group: output-group-1
 
 server:
   servlet:
@@ -31,7 +47,7 @@ mailgun:
   baseurl: https://api.mailgun.net/v3/mail.bytes.li
 
 baseUrl: http://localhost:8081
-mailsender: iwashere@mail.bytes.li
+mailsender: info@mail.ich-war-da.net
 
 cleanup:
   cron: "0 3 0 * * *"

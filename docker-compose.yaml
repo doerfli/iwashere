@@ -9,6 +9,18 @@ services:
       - ./pgdata:/var/lib/postgresql/data
     ports:
       - 5432:5432
+  mq:
+    #image: rabbitmq:3-alpine
+    image: rabbitmq:3-management-alpine
+    #restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=karnickel
+      - RABBITMQ_DEFAULT_PASS=hasehuepf
+    ports:
+      - 5672:5672
+      - 9080:15672
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
   backend:
     image: docker.pkg.github.com/doerfli/iwashere/iwashere-backend:master
     ports:
@@ -16,7 +28,12 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database/postgres
       - MAILGUN_APIKEY=1234567890
+    depends_on:
+      - database
+      - mq
   frontend:
     image: docker.pkg.github.com/doerfli/iwashere-web/iwashere-frontend:master
     ports:
       - 8888:80
+    depends_on:
+      - backend
