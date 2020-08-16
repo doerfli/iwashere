@@ -31,7 +31,7 @@ mailgun:
   baseurl: https://api.mailgun.net/v3/mail.bytes.li
 
 baseUrl: http://localhost:8081
-mailsender: iwashere@mail.bytes.li
+mailsender: info@mail.ich-war-da.net
 
 cleanup:
   cron: "0 3 0 * * *"
