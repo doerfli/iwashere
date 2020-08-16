@@ -22,17 +22,22 @@ services:
     volumes:
       - ./rabbitmq:/var/lib/rabbitmq
   backend:
-    image: docker.pkg.github.com/doerfli/iwashere/iwashere-backend:master
+    #image: docker.pkg.github.com/doerfli/iwashere/iwashere-backend:master
+    build: .
     ports:
       - 8080:8080
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database/postgres
+      - SPRING_RABBITMQ_HOST=mq
+      - SPRING_RABBITMQ_USERNAME=karnickel
+      - SPRING_RABBITMQ_PASSWORD=hasehuepf
       - MAILGUN_APIKEY=1234567890
     depends_on:
       - database
       - mq
   frontend:
-    image: docker.pkg.github.com/doerfli/iwashere-web/iwashere-frontend:master
+    #image: docker.pkg.github.com/doerfli/iwashere-web/iwashere-frontend:master
+    build: ../iwashere-web
     ports:
       - 8888:80
     depends_on:
