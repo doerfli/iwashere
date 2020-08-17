@@ -10,4 +10,6 @@ interface VisitService {
     fun list(locationShortname: String, date: LocalDate, user: User): Collection<Visit>
     fun listDates(locationShortname: String, user: User): Map<String, Long>
     fun countToday(): Long
+    fun verifyEmail(id: Long)
+    fun verifyPhone(id: Long)
 }

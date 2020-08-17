@@ -29,7 +29,7 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
                         "/login",
                         "/monitoring",
                         "/swagger-ui.html","/swagger-ui/**",
-                        "/visits",
+                        "/visits","/visits/*/verify/*",
                         "/v3/api-docs/**"
                     ).permitAll()
                 .anyRequest()

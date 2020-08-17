@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.transaction.annotation.Transactional
@@ -40,6 +41,20 @@ class VisitsController(
         return ok(VisitRegisterResponse(visit.id!!, visit.visitTimestamp))
     }
 
+    @PutMapping("{id}/verify/email")
+    fun verifyEmail(@PathVariable id: Long) : HttpStatus {
+        logger.debug("confirm email visit $id")
+        visitService.verifyEmail(id)
+        return HttpStatus.OK
+    }
+
+    @PutMapping("{id}/verify/phone")
+    fun verifyPhone(@PathVariable id: Long) : HttpStatus {
+        logger.debug("confirm phone visit $id")
+        visitService.verifyPhone(id)
+        return HttpStatus.OK
+    }
+
     @GetMapping("{shortname}/{date}")
     fun list(@PathVariable("shortname") locationShortname: String, @PathVariable("date") dateStr: String, principal: Principal): ResponseEntity<VisitListResponse> {
         logger.debug("retrieving visits for $locationShortname on $dateStr")
@@ -66,7 +81,7 @@ class VisitsController(
         csvWriter.writeNext(arrayOf("${location.name}, $dateStr"))
         csvWriter.writeNext(arrayOf("${location.street}, ${location.zip}, ${location.city}, ${location.country}"))
         csvWriter.writeNext(arrayOf())
-        csvWriter.writeNext(arrayOf("name", "email", "phone"))
+        csvWriter.writeNext(arrayOf("name", "email", "verified", "phone", "verified"))
         guests.stream().forEach { csvWriter.writeNext(it.toCSV()) }
         csvWriter.close();
         logger.debug("writing csv finished")

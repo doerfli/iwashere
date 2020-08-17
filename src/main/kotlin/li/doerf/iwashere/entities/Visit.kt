@@ -14,5 +14,7 @@ data class Visit(
         @ManyToOne
         @JoinColumn(name="location_id", nullable=false)
         val location: Location,
-        val visitTimestamp: LocalDateTime = LocalDateTime.now()
+        val visitTimestamp: LocalDateTime = LocalDateTime.now(),
+        var verifiedEmail: Boolean = false,
+        var verifiedPhone: Boolean = false
 )

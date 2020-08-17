@@ -10,6 +10,7 @@ import li.doerf.iwashere.repositories.GuestRepository
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.VisitRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -161,5 +162,39 @@ class VisitServiceIntTest {
         assertThat(result[fmt.format(yesterDay)]).isEqualTo(2)
         assertThat(result[fmt.format(twoDaysAgo)]).isEqualTo(3)
         assertThat(result[fmt.format(aWeekAgo)]).isEqualTo(1)
+    }
+
+    @Test
+    fun verifyPhone() {
+        val visit = createVisit("1")
+
+        visitService.verifyPhone(visit.id!!)
+
+        val result = visitRepository.findById(visit.id!!).get()
+        assertThat(result.verifiedPhone).isTrue
+    }
+
+    @Test
+    fun verifyPhoneNotExists() {
+        assertThatThrownBy {
+            visitService.verifyPhone(1L)
+        }.isInstanceOf(IllegalArgumentException::class.java)
+    }
+
+    @Test
+    fun verifyEmail() {
+        val visit = createVisit("1")
+
+        visitService.verifyEmail(visit.id!!)
+
+        val result = visitRepository.findById(visit.id!!).get()
+        assertThat(result.verifiedEmail).isTrue
+    }
+
+    @Test
+    fun verifyEmailNotExists() {
+        assertThatThrownBy {
+            visitService.verifyEmail(1L)
+        }.isInstanceOf(IllegalArgumentException::class.java)
     }
 }

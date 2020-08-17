@@ -85,6 +85,22 @@ class VisitServiceImpl(
         return visitRepository.countAllByVisitTimestampBetween(after, before)
     }
 
+    override fun verifyEmail(id: Long) {
+        logger.trace("verify email for visit $id")
+        val visit = visitRepository.findById(id).orElseThrow{ IllegalArgumentException("Invalid visit id: $id") }
+        visit.verifiedEmail = true
+        visitRepository.save(visit)
+        logger.debug("visit email verified $visit")
+    }
+
+    override fun verifyPhone(id: Long) {
+        logger.trace("verify phone for visit $id")
+        val visit = visitRepository.findById(id).orElseThrow{ IllegalArgumentException("Invalid visit id: $id") }
+        visit.verifiedPhone = true
+        visitRepository.save(visit)
+        logger.debug("visit phone verified $visit")
+    }
+
     private fun fixDatePadding(dg: DateGuestcount): DateGuestcount {
         val date = dg.getDate()
         if (date.length == 10) {

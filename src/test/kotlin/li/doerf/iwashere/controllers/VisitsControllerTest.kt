@@ -13,6 +13,7 @@ import li.doerf.iwashere.repositories.GuestRepository
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.services.mail.MailService
+import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -116,6 +117,36 @@ internal class VisitsControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].visitTimestamp", CoreMatchers.equalTo(date)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[1].guest_name", CoreMatchers.equalTo("name4")))
 
+    }
+
+    @Test
+    fun verifyEmail() {
+        val visit = createVisit("1")
+
+        // when
+        mvc.perform(MockMvcRequestBuilders.put("/visits/${visit.id}/verify/email").contentType(MediaType.APPLICATION_JSON))
+                // then
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk)
+
+
+        val resultObj = visitRepository.findById(visit.id!!).get()
+        assertThat(resultObj.verifiedEmail).isTrue
+    }
+
+    @Test
+    fun verifyPhone() {
+        val visit = createVisit("1")
+
+        // when
+        mvc.perform(MockMvcRequestBuilders.put("/visits/${visit.id}/verify/phone").contentType(MediaType.APPLICATION_JSON))
+                // then
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk)
+
+
+        val resultObj = visitRepository.findById(visit.id!!).get()
+        assertThat(resultObj.verifiedPhone).isTrue
     }
 
     private fun createVisit(id: String, dateTime: LocalDateTime = LocalDateTime.now(), loc: Location = location): Visit {
