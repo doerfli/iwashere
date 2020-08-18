@@ -1,7 +1,12 @@
 Guten Tag [(${guest_name})]
 
 Wir haben Ihren Besuch bei [(${location_name})] ([(${location_zip})] [(${location_city})]) am [(${visit_timestamp})] registriert.
-Danke dass Sie uns Ihre Kontaktdaten zur Verfügung stellen, damit wir Sie im Bedarsfall kontaktieren können.
 
-Mit freundlichen Gruessen
+Mit einem Klick auf die folgende Link bestätigen Sie, dass Sie der Inhaber dieser Email Adresse sind.
+
+[(${link})]
+
+Danke dass Sie uns Ihre Kontaktdaten zur Verfügung stellen, damit wir Sie im Bedarfsfall kontaktieren können.
+
+Mit freundlichen Grüssen
 Das [(${location_name})] Team

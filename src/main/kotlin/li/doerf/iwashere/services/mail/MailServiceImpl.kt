@@ -58,6 +58,7 @@ class MailServiceImpl @Autowired constructor(
         ctx.setVariable("location_city", visit.location.city)
         val dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
         ctx.setVariable("visit_timestamp", dateFormat.format(visit.visitTimestamp))
+        ctx.setVariable("link", "$applBaseUrl/#/visit/${visit.id}/confirm")
 
         val content = templateEngine.process("visit_${visit.location.user.language.lower()}.txt", ctx)
         sendMail("Ihr Besuch bei '${visit.location.name}'", recipientEmail, content)
