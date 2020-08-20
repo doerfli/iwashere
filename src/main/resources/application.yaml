@@ -41,6 +41,8 @@ spring:
 server:
   servlet:
     contextPath: /api
+    session:
+      timeout: 300m
 
 mailgun:
   apikey: ${MAILGUN_APIKEY}
