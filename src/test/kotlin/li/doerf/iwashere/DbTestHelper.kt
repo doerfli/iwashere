@@ -8,6 +8,7 @@ import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.utils.UserHelper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
 
 @Component
 class DbTestHelper {
@@ -29,7 +30,7 @@ class DbTestHelper {
     }
 
     fun createTestUser(username: String): User {
-        return userRepository.save(User(null, username, "xxx", token = UserHelper.generateToken()))
+        return userRepository.save(User(null, username, "xxx", token = UserHelper.generateToken(), tokenValidUntil = LocalDateTime.now().plusMinutes(5)))
     }
 
 }

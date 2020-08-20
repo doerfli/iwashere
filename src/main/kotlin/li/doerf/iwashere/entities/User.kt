@@ -19,5 +19,6 @@ data class User(
         @Enumerated(EnumType.STRING)
         var language: Language = Language.DE,
         var token: String? = null,
+        var tokenValidUntil: LocalDateTime? = null,
         val createdDate: LocalDateTime = LocalDateTime.now()
 )

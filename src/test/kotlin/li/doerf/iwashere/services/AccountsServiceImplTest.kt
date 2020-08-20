@@ -102,7 +102,7 @@ internal class AccountsServiceImplTest {
     fun confirm() {
         // GIVEN
         val token = "abcdef"
-        val user = User(null, "user", "xx", token = token)
+        val user = User(null, "user", "xx", token = token, tokenValidUntil = LocalDateTime.now().plusMinutes(5))
         val userSlot = slot<User>()
         every { userRepository.findFirstByToken(any()) } returns Optional.of(user)
         every { userRepository.save(capture(userSlot)) } returns user
@@ -136,7 +136,20 @@ internal class AccountsServiceImplTest {
         // WHEN
         assertThatThrownBy {
             svc.confirm("abcdef")
-        }.isInstanceOf(IllegalStateException::class.java)
+        }.isInstanceOf(InvalidUserStateException::class.java)
+    }
+
+    @Test
+    fun confirmTokenExpired() {
+        // GIVEN
+        val token = "abcdef"
+        val user = User(null, "user", "xx", token = token, tokenValidUntil = LocalDateTime.now().minusMinutes(1))
+        every { userRepository.findFirstByToken(any()) } returns Optional.of(user)
+
+        // WHEN
+        assertThatThrownBy {
+            svc.confirm("abcdef")
+        }.isInstanceOf(ExpiredTokenException::class.java)
     }
 
     @Test
@@ -226,7 +239,7 @@ internal class AccountsServiceImplTest {
     @Test
     fun resetPasswort() {
         val date = LocalDateTime.now().minusDays(1)
-        val user = User(null, "user", "xx", token = "token123", state = AccountState.RESET_PASSWORD, passwordChangedDate = date)
+        val user = User(null, "user", "xx", token = "token123", tokenValidUntil = LocalDateTime.now().plusMinutes(5), state = AccountState.RESET_PASSWORD, passwordChangedDate = date)
         every { userRepository.findFirstByToken("token123") } returns Optional.of(user)
         every { passwordEncoder.encode("newpwd") } returns "yyy"
         every { userRepository.save(any() as User) } returns user
@@ -272,7 +285,24 @@ internal class AccountsServiceImplTest {
             runBlocking {
                 svc.resetPassword("token123", "newpwd")
             }
-        }.isInstanceOf(IllegalStateException::class.java).hasMessageContaining("user did not request passwort reset")
+        }.isInstanceOf(InvalidUserStateException::class.java)
+
+        coVerify(exactly = 0) {
+            mailService.sendPasswordResetMail(any() as User)
+            userRepository.save(any() as User)
+        }
+    }
+
+    @Test
+    fun resetPasswortTokenExpired() {
+        val user = User(null, "user", "xx", token = "token123", state = AccountState.RESET_PASSWORD, tokenValidUntil = LocalDateTime.now().minusMinutes(1))
+        every { userRepository.findFirstByToken("token123") } returns Optional.of(user)
+
+        assertThatThrownBy {
+            runBlocking {
+                svc.resetPassword("token123", "newpwd")
+            }
+        }.isInstanceOf(ExpiredTokenException::class.java)
 
         coVerify(exactly = 0) {
             mailService.sendPasswordResetMail(any() as User)

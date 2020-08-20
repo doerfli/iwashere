@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -78,7 +79,7 @@ internal class AccountsControllerTest {
     @Test
     fun confirm() {
         val token = "abcdef"
-        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token))
+        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token, tokenValidUntil = LocalDateTime.now().plusMinutes(5)))
         every { userRepository.save(any<User>()) } returns User(null, "newuser", "xx", token = null)
 
         mockMvc.perform(post("/accounts/confirm/$token")
@@ -99,11 +100,40 @@ internal class AccountsControllerTest {
         mockMvc.perform(post("/accounts/confirm/$token")
                 .accept(MediaType.APPLICATION_JSON)
         ).andDo(print())
-                .andExpect(status().isOk)
+                .andExpect(status().isBadRequest)
 
         verify(exactly = 0) {
             userRepository.save(allAny<User>())
         }
     }
 
+    @Test
+    fun confirmTokenExpired() {
+        val token = "abcdef"
+        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token, tokenValidUntil = LocalDateTime.now().minusMinutes(5)))
+
+        mockMvc.perform(post("/accounts/confirm/$token")
+                .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isUnauthorized)
+
+        verify(exactly = 0) {
+            userRepository.save(allAny<User>())
+        }
+    }
+
+    @Test
+    fun confirmInvalidState() {
+        val token = "abcdef"
+        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token, tokenValidUntil = LocalDateTime.now().minusMinutes(5), state = AccountState.CONFIRMED))
+
+        mockMvc.perform(post("/accounts/confirm/$token")
+                .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isConflict)
+
+        verify(exactly = 0) {
+            userRepository.save(allAny<User>())
+        }
+    }
 }

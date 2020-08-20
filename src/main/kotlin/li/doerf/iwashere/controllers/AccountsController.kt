@@ -31,13 +31,7 @@ class AccountsController(
 
     @PostMapping("confirm/{token}")
     fun confirm(@PathVariable token: String): HttpStatus {
-        try {
-            accountsService.confirm(token)
-        } catch (e: IllegalArgumentException) {
-            logger.warn("caught IllegalArgumentException", e)
-        } catch (e: IllegalStateException) {
-            logger.warn("caught IllegalStateException", e)
-        }
+        accountsService.confirm(token)
         return HttpStatus.OK
     }
 

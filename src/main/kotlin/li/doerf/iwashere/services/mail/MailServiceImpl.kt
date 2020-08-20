@@ -30,11 +30,10 @@ class MailServiceImpl @Autowired constructor(
     override suspend fun sendSignupMail(user: User) {
         logger.debug("sending signup email to $user")
         val ctx = Context()
-//        val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
+        val dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
         ctx.setVariable("email", user.username)
-        // TODO url via config
         ctx.setVariable("link", "$applBaseUrl/#/signupConfirm/${user.token}")
-//        ctx.setVariable("validUntil", dateFormat.format(Date.from(user.tokenExpiration)))
+        ctx.setVariable("validUntil", dateFormat.format(user.tokenValidUntil))
 
         val content = templateEngine.process("signup_${user.language.lower()}.txt", ctx)
 
@@ -66,10 +65,11 @@ class MailServiceImpl @Autowired constructor(
 
     override suspend fun sendForgotPasswordMail(user: User) {
         logger.debug("sending forgot password email to $user")
+        val dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
         val ctx = Context()
         ctx.setVariable("email", user.username)
         ctx.setVariable("link", "$applBaseUrl/#/resetPassword/${user.token}")
-//        ctx.setVariable("validUntil", dateFormat.format(Date.from(user.tokenExpiration)))
+        ctx.setVariable("validUntil", dateFormat.format(user.tokenValidUntil))
 
         val content = templateEngine.process("forgotPassword_${user.language.lower()}.txt", ctx)
 

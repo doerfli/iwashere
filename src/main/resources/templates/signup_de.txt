@@ -6,5 +6,7 @@ abzuschliessen folge bitte diesem Link
 
 [(${link})]
 
+Dieser Link ist gueltig bis [(${validUntil})].
+
 Falls du dich nicht fuer ein Konto bei 'Ich war da' angemeldet hast kannst du
 dieses E-Mail einfach ignorieren.

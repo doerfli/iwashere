@@ -19,7 +19,6 @@ class AccountsServiceImpl(
         private val mailService: MailService,
         private val userHelper: UserHelper
 ) : AccountsService {
-
     private val logger = getLogger(javaClass)
 
     override suspend fun create(username: String, password: String): User {
@@ -36,7 +35,8 @@ class AccountsServiceImpl(
             userRepository.save(User(
                 username = username,
                 password = pwdHash,
-                token = userHelper.createUniqueToken()
+                token = userHelper.createUniqueToken(),
+                tokenValidUntil = LocalDateTime.now().plusMinutes(TOKEN_VALID_MINUTES)
         )) }
 
         mailService.sendSignupMail(user)
@@ -47,18 +47,19 @@ class AccountsServiceImpl(
         val userOpt = userRepository.findFirstByToken(token)
 
         if (userOpt.isEmpty) {
+            logger.debug("token not found")
             throw IllegalArgumentException("invalid token: $token")
         }
 
         val user = userOpt.get()
 
-        if (user.state != AccountState.UNCONFIRMED) {
-            throw IllegalStateException("account has invalid state")
-        }
+        checkUserState(user, AccountState.UNCONFIRMED)
+        checkTokenExpiration(user)
 
         logger.info("found unconfirmed user $user")
         user.state = AccountState.CONFIRMED
         user.token = null
+        user.tokenValidUntil = null
 
         try {
             return userRepository.save(user)
@@ -96,6 +97,7 @@ class AccountsServiceImpl(
 
         user.state = AccountState.RESET_PASSWORD
         user.token = userHelper.createUniqueToken()
+        user.tokenValidUntil = LocalDateTime.now().plusMinutes(TOKEN_VALID_MINUTES)
         userRepository.save(user)
 
         mailService.sendForgotPasswordMail(user)
@@ -112,18 +114,33 @@ class AccountsServiceImpl(
         }
         val user = userOpt.get()
 
-        if (user.state != AccountState.RESET_PASSWORD) {
-            throw java.lang.IllegalStateException("user did not request passwort reset")
-        }
+        checkUserState(user, AccountState.RESET_PASSWORD)
+        checkTokenExpiration(user)
 
         setPassword(password, user)
         user.state = AccountState.CONFIRMED
         user.token = null
+        user.tokenValidUntil = null
         userRepository.save(user)
 
         mailService.sendPasswordResetMail(user)
 
         logger.info("reset password for user $user done")
+    }
+
+    private fun checkUserState(user: User, expectedState: AccountState) {
+        if (user.state != expectedState) {
+            throw InvalidUserStateException(expectedState, user.state)
+        }
+    }
+
+    private fun checkTokenExpiration(user: User) {
+        if (user.tokenValidUntil == null) {
+            throw IllegalStateException("token expiration missing")
+        }
+        if (LocalDateTime.now().isAfter(user.tokenValidUntil)) {
+            throw ExpiredTokenException()
+        }
     }
 
     private fun checkPassword(password: String, user: User) {
@@ -137,6 +154,10 @@ class AccountsServiceImpl(
         val newPwdHash = passwordEncoder.encode(password)
         user.password = newPwdHash
         user.passwordChangedDate = LocalDateTime.now()
+    }
+
+    companion object {
+        private val TOKEN_VALID_MINUTES = 5L
     }
 
 }
