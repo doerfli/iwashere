@@ -82,6 +82,7 @@ internal class AccountsServiceImplTest {
         every { passwordEncoder.encode(any()) } returns fakePwd
         val userMock = mockkClass(User::class)
         every { userMock.state } returns AccountState.UNCONFIRMED
+        every { userMock.tokenValidUntil } returns LocalDateTime.now().plusMinutes(5)
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
         coEvery { mailService.sendSignupMail(any()) } returns mockk()
 
@@ -95,6 +96,31 @@ internal class AccountsServiceImplTest {
         coVerify {
             passwordEncoder.encode("test")
             mailService.sendSignupMail(userMock)
+        }
+    }
+
+    @Test
+    fun createUserExistsUnconfirmedAndExpired() {
+        every { passwordEncoder.encode(any()) } returns fakePwd
+        every { userHelper.createUniqueToken() } returns "1234"
+        val userMock = mockkClass(User::class)
+        every { userMock.state } returns AccountState.UNCONFIRMED
+        every { userMock.tokenValidUntil } returns LocalDateTime.now().minusMinutes(5)
+        val userMock2 = mockkClass(User::class)
+        every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
+        every { userRepository.delete(userMock) } returns mockk()
+        every { userRepository.save(any<User>()) } returns userMock2
+        coEvery { mailService.sendSignupMail(any()) } returns mockk()
+
+        runBlocking {
+            svc.create("test@bla.com", "test")
+        }
+
+        coVerify {
+            passwordEncoder.encode("test")
+            userRepository.delete(userMock)
+            userRepository.save(allAny<User>())
+            mailService.sendSignupMail(userMock2)
         }
     }
 

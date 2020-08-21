@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.util.*
 
 @Service
 @Transactional
@@ -23,9 +24,12 @@ class AccountsServiceImpl(
 
     override suspend fun create(username: String, password: String): User {
         val pwdHash = passwordEncoder.encode(password)
-        val userOpt = userRepository.findFirstByUsername(username)
+        var userOpt = userRepository.findFirstByUsername(username)
 
-        if (userOpt.isPresent && userOpt.get().state != AccountState.UNCONFIRMED) {
+        if (userOpt.isPresent && userOpt.get().state == AccountState.UNCONFIRMED && LocalDateTime.now().isAfter(userOpt.get().tokenValidUntil)) {
+            deleteUser(userOpt)
+            userOpt = Optional.empty()
+        } else if (userOpt.isPresent && userOpt.get().state != AccountState.UNCONFIRMED) {
             logger.warn("user already exists: ${userOpt.get()}")
             return userOpt.get()
         }
@@ -41,6 +45,13 @@ class AccountsServiceImpl(
 
         mailService.sendSignupMail(user)
         return user
+    }
+
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    fun deleteUser(userOpt: Optional<User>) {
+        logger.debug("user already exists but token expired. Removing user")
+        userRepository.delete(userOpt.get())
+        logger.warn("expired user deleted")
     }
 
     override fun confirm(token: String): User {
@@ -157,7 +168,7 @@ class AccountsServiceImpl(
     }
 
     companion object {
-        private val TOKEN_VALID_MINUTES = 5L
+        private const val TOKEN_VALID_MINUTES = 1L
     }
 
 }
