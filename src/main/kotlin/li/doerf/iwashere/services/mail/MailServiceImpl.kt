@@ -83,7 +83,7 @@ class MailServiceImpl @Autowired constructor(
 
         val content = templateEngine.process("passwordReset_${user.language.lower()}.txt", ctx)
 
-        sendMail("Passwort zurücksetzen (Ich war da)", user.username, content)
+        sendMail("Passwort zurückgesetzt (Ich war da)", user.username, content)
     }
 
     private fun sendMail(subject: String, recipient: String, content: String) {
