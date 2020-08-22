@@ -21,6 +21,12 @@ services:
       - 9080:15672
     volumes:
       - ./rabbitmq:/var/lib/rabbitmq
+  redis:
+    image: redis:6-alpine
+    ports:
+      - 6379:6379
+#    volumes:
+#      - ./redis:/data
   backend:
     #image: docker.pkg.github.com/doerfli/iwashere/iwashere-backend:master
     build: .
@@ -31,10 +37,12 @@ services:
       - SPRING_RABBITMQ_HOST=mq
       - SPRING_RABBITMQ_USERNAME=karnickel
       - SPRING_RABBITMQ_PASSWORD=hasehuepf
+      - SPRING_REDIS_HOST=redis
       - MAILGUN_APIKEY=1234567890
     depends_on:
       - database
       - mq
+      - redis
   frontend:
     #image: docker.pkg.github.com/doerfli/iwashere-web/iwashere-frontend:master
     build: ../iwashere-web

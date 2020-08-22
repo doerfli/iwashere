@@ -13,6 +13,8 @@ logging:
 #              BasicBinder: TRACE
 
 spring:
+  cache:
+    type: redis
   datasource:
     username: postgres
     password: secret
@@ -26,6 +28,9 @@ spring:
     port: 5672
     username: karnickel
     password: hasehuepf
+  redis:
+    host: localhost
+    port: 6379
   cloud:
     stream:
       bindings:
