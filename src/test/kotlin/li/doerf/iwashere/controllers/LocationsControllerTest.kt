@@ -6,11 +6,13 @@ import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.utils.getLogger
 import org.hamcrest.CoreMatchers.`is`
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.cache.CacheManager
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -32,8 +35,11 @@ internal class LocationsControllerTest {
     private lateinit var dbTestHelper: DbTestHelper
     @Autowired
     private lateinit var locationRepository: LocationRepository
+    @Autowired
+    private lateinit var cacheManager: CacheManager
 
     private lateinit var testuser: User
+
 
     // BeforeEach does not work here as WithUserDetails breaks this (https://github.com/spring-projects/spring-security/issues/6591)
     @BeforeEach
@@ -41,6 +47,13 @@ internal class LocationsControllerTest {
         dbTestHelper.cleanDb()
         testuser = dbTestHelper.createTestUser("test@test123.com")
         logger.info("user created $testuser")
+    }
+
+    @AfterEach
+    fun evictAllCaches() {
+        for (name in cacheManager.cacheNames) {
+            cacheManager.getCache(name!!)!!.clear()
+        }
     }
 
     @Test

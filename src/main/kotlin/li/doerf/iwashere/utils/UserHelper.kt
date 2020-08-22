@@ -3,6 +3,7 @@ package li.doerf.iwashere.utils
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.security.UserPrincipal
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Component
 import java.security.Principal
@@ -14,7 +15,9 @@ class UserHelper(
 ) {
     private val logger = getLogger(javaClass)
 
+    @Cacheable("user")
     internal fun getUser(principal: Principal): User {
+        logger.debug("getUser by Princical")
         if ((principal as UsernamePasswordAuthenticationToken).principal is org.springframework.security.core.userdetails.User) {
             logger.warn("this should only be used during test")
             // this is for testcases using withMockUser

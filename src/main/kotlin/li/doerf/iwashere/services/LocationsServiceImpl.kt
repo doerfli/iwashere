@@ -1,10 +1,10 @@
 package li.doerf.iwashere.services
 
-import li.doerf.iwashere.dto.location.LocationDto
 import li.doerf.iwashere.entities.Location
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.utils.getLogger
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -14,23 +14,7 @@ class LocationsServiceImpl(
 ) : LocationsService {
     private val logger = getLogger(javaClass)
 
-    override fun create(newLocation: Location, user: User): Location {
-        logger.trace("create new location")
-        if (newLocation.id != null) {
-            throw IllegalArgumentException("location is already stored $newLocation")
-        }
-        if (newLocation.user != user) {
-            throw IllegalArgumentException("user referenced in location does not match current user: $newLocation")
-        }
-        if (exists(newLocation.shortname, user)) {
-            throw IllegalArgumentException("location with shortname already exists: $newLocation")
-        }
-
-        val loc = locationRepository.save(newLocation)
-        logger.info("location stored: $loc")
-        return loc
-    }
-
+    @Cacheable("location_exists")
     override fun exists(shortname: String, user: User): Boolean {
         logger.trace("location exists: $shortname")
         val count = locationRepository.countFirstByShortname(shortname)
@@ -38,11 +22,13 @@ class LocationsServiceImpl(
         return count > 0
     }
 
+    @Cacheable("location_shortname", key="#shortname")
     override fun getByShortName(shortname: String): Optional<Location> {
         logger.trace("get location with shortname $shortname")
         return locationRepository.findFirstByShortname(shortname)
     }
 
+    @Cacheable("location_shortname_user", key="#shortname")
     override fun getByShortName(shortname: String, user: User): Optional<Location> {
         logger.trace("get location with shortname $shortname")
         val location = locationRepository.findFirstByShortname(shortname)
@@ -59,45 +45,4 @@ class LocationsServiceImpl(
         return locationRepository.getAllByUser(user)
     }
 
-    override fun update(entity: LocationDto, user: User): Location {
-        logger.trace("location update request: $entity")
-        val loc = getLocationForUser(entity.id, user)
-
-        val updatedLoc = loc.copy(
-                name = entity.name,
-                street = entity.street,
-                zip = entity.zip,
-                city = entity.city,
-                country = entity.country
-        )
-        val result = locationRepository.save(updatedLoc)
-        logger.info("updated location $result")
-        return result
-    }
-
-    override fun updateShortname(id: Long, shortname: String, user: User): Location {
-        val loc = getLocationForUser(id, user)
-        if (exists(shortname, user)) {
-            throw java.lang.IllegalArgumentException("shortname already in use: $shortname")
-        }
-
-        val updatedLoc = loc.copy(
-                shortname = shortname
-        )
-        val result = locationRepository.save(updatedLoc)
-        logger.info("updated location shortname $result")
-        return result
-    }
-
-    private fun getLocationForUser(id: Long, user: User): Location {
-        val locOpt = locationRepository.findById(id)
-        if (locOpt.isEmpty) {
-            throw IllegalArgumentException("location with id does not exist: ${id}")
-        }
-        val loc = locOpt.get()
-        if (loc.user.id != user.id) {
-            throw IllegalArgumentException("user is not allowed to access location")
-        }
-        return loc
-    }
 }

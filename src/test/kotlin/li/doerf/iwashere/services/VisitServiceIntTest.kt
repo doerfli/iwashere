@@ -11,10 +11,12 @@ import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.VisitRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.cache.CacheManager
 import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -38,6 +40,8 @@ class VisitServiceIntTest {
     private lateinit var locationRepository: LocationRepository
     @Autowired
     private lateinit var dbTestHelper: DbTestHelper
+    @Autowired
+    private lateinit var cacheManager: CacheManager
 
     @BeforeEach
     fun setup() {
@@ -45,6 +49,13 @@ class VisitServiceIntTest {
         testuser = dbTestHelper.createTestUser("test@test123.com")
         location = LocationHelper.new("Location 1", "loc1", testuser)
         locationRepository.save(location)
+    }
+
+    @AfterEach
+    fun evictAllCaches() {
+        for (name in cacheManager.cacheNames) {
+            cacheManager.getCache(name!!)!!.clear()
+        }
     }
 
     @Test
