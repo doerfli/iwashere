@@ -1,5 +1,7 @@
-#server.servlet.session.cookie.http-only=true
-#server.servlet.session.cookie.secure=true
+#==================================================
+# general spring config
+#==================================================
+
 logging:
   level:
     li:
@@ -12,9 +14,26 @@ logging:
 #            sql:
 #              BasicBinder: TRACE
 
+server:
+  servlet:
+    contextPath: /api
+    session:
+      timeout: 300m
+
 spring:
   cache:
     type: redis
+  cloud:
+    stream:
+      bindings:
+        mailIn:
+          binder: rabbit
+          destination: mails
+          group: input-group-1
+        mailOut:
+          binder: rabbit
+          destination: mails
+          group: output-group-1
   datasource:
     username: postgres
     password: secret
@@ -31,24 +50,10 @@ spring:
   redis:
     host: localhost
     port: 6379
-  cloud:
-    stream:
-      bindings:
-        mailIn:
-          binder: rabbit
-          destination: mails
-          group: input-group-1
-        mailOut:
-          binder: rabbit
-          destination: mails
-          group: output-group-1
 
-server:
-  servlet:
-    contextPath: /api
-    session:
-      timeout: 300m
-
+#==================================================
+# application custom config
+#==================================================
 mailgun:
   apikey: ${MAILGUN_APIKEY}
   baseurl: https://api.mailgun.net/v3/mail.bytes.li
