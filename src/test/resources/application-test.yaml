@@ -11,6 +11,8 @@ logging:
               BasicBinder: TRACE
 
 spring:
+  cache:
+    type: none
   flyway:
     enabled: false
   datasource:
