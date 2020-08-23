@@ -1,9 +1,8 @@
 package li.doerf.iwashere.utils
 
 import li.doerf.iwashere.entities.User
-import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.security.UserPrincipal
-import org.springframework.cache.annotation.Cacheable
+import li.doerf.iwashere.services.UserService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Component
 import java.security.Principal
@@ -11,18 +10,17 @@ import kotlin.random.Random
 
 @Component
 class UserHelper(
-        private val userRepository: UserRepository
+        private val userService: UserService
 ) {
     private val logger = getLogger(javaClass)
 
-    @Cacheable("user")
     internal fun getUser(principal: Principal): User {
-        logger.debug("getUser by Princical")
+        logger.trace("getUser by Princical")
         if ((principal as UsernamePasswordAuthenticationToken).principal is org.springframework.security.core.userdetails.User) {
             logger.warn("this should only be used during test")
             // this is for testcases using withMockUser
             val user = principal.principal as org.springframework.security.core.userdetails.User
-            return userRepository.findFirstByUsername(user.username).get()
+            return userService.findByUsername(user.username).get()
         }
 
         val userPrincipal = principal.principal as UserPrincipal
@@ -34,7 +32,7 @@ class UserHelper(
 
         do {
             token = generateToken()
-        } while( userRepository.countByToken(token) > 0)
+        } while( userService.countByToken(token) > 0)
 
         return token
     }
