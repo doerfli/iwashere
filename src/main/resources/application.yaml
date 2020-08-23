@@ -21,8 +21,6 @@ server:
       timeout: 300m
 
 spring:
-  cache:
-    type: redis
   cloud:
     stream:
       bindings:
@@ -47,9 +45,6 @@ spring:
     port: 5672
     username: karnickel
     password: hasehuepf
-  redis:
-    host: localhost
-    port: 6379
 
 #==================================================
 # application custom config
