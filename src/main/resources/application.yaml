@@ -51,7 +51,7 @@ spring:
 #==================================================
 mailgun:
   apikey: ${MAILGUN_APIKEY}
-  baseurl: https://api.mailgun.net/v3/mail.bytes.li
+  baseurl: https://api.eu.mailgun.net/v3/mail.ich-war-da.net
 
 baseUrl: http://localhost:8081
 mailsender: info@mail.ich-war-da.net
