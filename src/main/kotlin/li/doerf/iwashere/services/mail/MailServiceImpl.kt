@@ -86,6 +86,17 @@ class MailServiceImpl @Autowired constructor(
         sendMail("Passwort zurückgesetzt (Ich war da)", user.username, content)
     }
 
+    override suspend fun sendFeedback(name: String, email: String, message: String) {
+        logger.debug("sending feedback email")
+        val ctx = Context()
+        ctx.setVariable("email", email)
+        ctx.setVariable("name", name)
+        ctx.setVariable("message", message)
+
+        val content = templateEngine.process("feedback.txt", ctx)
+        sendMail("Feedback 'Ich war da'", "info@ich-war-da.net", content)
+    }
+
     private fun sendMail(subject: String, recipient: String, content: String) {
         val msg = MessageBuilder.withPayload(
                 SendMailMessage(mailSender,

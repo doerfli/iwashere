@@ -25,6 +25,7 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
                 .antMatchers(
                         "/accounts/signup","/accounts/confirm/**","/accounts/resetPassword","/accounts/forgotPassword",
                         "/actuator/**",
+                        "/feedback",
                         "/locations/byShortname/**",
                         "/login",
                         "/monitoring",
