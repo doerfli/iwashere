@@ -168,7 +168,7 @@ class AccountsServiceImpl(
     }
 
     companion object {
-        private const val TOKEN_VALID_MINUTES = 1L
+        private const val TOKEN_VALID_MINUTES = 10L
     }
 
 }
