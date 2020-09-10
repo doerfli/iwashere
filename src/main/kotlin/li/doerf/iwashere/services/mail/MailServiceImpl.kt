@@ -11,6 +11,8 @@ import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Service
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 @Service
@@ -33,7 +35,9 @@ class MailServiceImpl @Autowired constructor(
         val dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
         ctx.setVariable("email", user.username)
         ctx.setVariable("link", "$applBaseUrl/#/signupConfirm/${user.token}")
-        ctx.setVariable("validUntil", dateFormat.format(user.tokenValidUntil))
+        // assume LocalDateTime to be in UTC and convert to Zurich time
+        val toInstant = user.tokenValidUntil?.toInstant(ZoneOffset.of("Z"))?.atZone(ZoneId.of("Europe/Zurich"))
+        ctx.setVariable("validUntil", dateFormat.format(toInstant))
 
         val content = templateEngine.process("signup_${user.language.lower()}.txt", ctx)
 
@@ -56,7 +60,8 @@ class MailServiceImpl @Autowired constructor(
         ctx.setVariable("location_zip", visit.location.zip)
         ctx.setVariable("location_city", visit.location.city)
         val dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-        ctx.setVariable("visit_timestamp", dateFormat.format(visit.visitTimestamp))
+        val visitTimestamp = visit.visitTimestamp.toInstant(ZoneOffset.of("Z"))?.atZone(ZoneId.of("Europe/Zurich"))
+        ctx.setVariable("visit_timestamp", dateFormat.format(visitTimestamp))
         ctx.setVariable("link", "$applBaseUrl/#/visit/${visit.id}/confirm")
 
         val content = templateEngine.process("visit_${visit.location.user.language.lower()}.txt", ctx)
@@ -69,7 +74,8 @@ class MailServiceImpl @Autowired constructor(
         val ctx = Context()
         ctx.setVariable("email", user.username)
         ctx.setVariable("link", "$applBaseUrl/#/resetPassword/${user.token}")
-        ctx.setVariable("validUntil", dateFormat.format(user.tokenValidUntil))
+        val tokenValidUntil = user.tokenValidUntil?.toInstant(ZoneOffset.of("Z"))?.atZone(ZoneId.of("Europe/Zurich"))
+        ctx.setVariable("validUntil", dateFormat.format(tokenValidUntil))
 
         val content = templateEngine.process("forgotPassword_${user.language.lower()}.txt", ctx)
 

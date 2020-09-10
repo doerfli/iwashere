@@ -1,19 +1,17 @@
 package li.doerf.iwashere
 
 import com.github.javafaker.Faker
-import io.ktor.client.HttpClient
-import io.ktor.client.features.cookies.AcceptAllCookiesStorage
-import io.ktor.client.features.cookies.HttpCookies
-import io.ktor.client.request.forms.FormDataContent
-import io.ktor.client.request.header
-import io.ktor.client.request.post
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.Parameters
+import io.ktor.client.*
+import io.ktor.client.features.cookies.*
+import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import li.doerf.iwashere.dto.account.SignupRequest
 import li.doerf.iwashere.dto.location.LocationCreateRequest
 import li.doerf.iwashere.dto.visit.VisitRegisterRequest
-import java.time.LocalDateTime
+import li.doerf.iwashere.utils.now
 import java.time.format.DateTimeFormatter
 import kotlin.random.Random
 
@@ -40,7 +38,7 @@ suspend fun registerGuests(client: HttpClient, faker: Faker, shortname: String) 
     val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     repeat(30) { i ->
         val amount = Random.nextInt(30)
-        val date = LocalDateTime.now().minusDays(i.toLong())
+        val date = now().minusDays(i.toLong())
         repeat(amount) {
             client.post<String>("$apiBaseUrl/visits") {
                 header("content-type", "application/json")

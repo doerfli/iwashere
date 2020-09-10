@@ -1,6 +1,7 @@
 package li.doerf.iwashere.entities
 
 import li.doerf.iwashere.utils.NoArgs
+import li.doerf.iwashere.utils.now
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -13,12 +14,12 @@ data class User(
         val id: Long? = null,
         val username: String,
         var password: String,
-        var passwordChangedDate: LocalDateTime = LocalDateTime.now(),
+        var passwordChangedDate: LocalDateTime = now(),
         @Enumerated(EnumType.STRING)
         var state: AccountState = AccountState.UNCONFIRMED,
         @Enumerated(EnumType.STRING)
         var language: Language = Language.DE,
         var token: String? = null,
         var tokenValidUntil: LocalDateTime? = null,
-        val createdDate: LocalDateTime = LocalDateTime.now()
+        val createdDate: LocalDateTime = now()
 )

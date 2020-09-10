@@ -1,6 +1,7 @@
 package li.doerf.iwashere.entities
 
 import li.doerf.iwashere.utils.NoArgs
+import li.doerf.iwashere.utils.now
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -14,7 +15,7 @@ data class Location(
         var zip: String?,
         var city: String?,
         var country: String?,
-        val createdDate: LocalDateTime = LocalDateTime.now(),
+        val createdDate: LocalDateTime = now(),
         @ManyToOne
         @JoinColumn(name="user_id", nullable=false)
         val user: User

@@ -32,7 +32,7 @@ services:
       - SPRING_RABBITMQ_HOST=mq
       - SPRING_RABBITMQ_USERNAME=karnickel
       - SPRING_RABBITMQ_PASSWORD=hasehuepf
-      - MAILGUN_APIKEY=1234567890
+      - MAILGUN_APIKEY=f030fdbe819e3e715327c9b21b94d891-4d640632-b81a7c1a
     depends_on:
       - database
       - mq

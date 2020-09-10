@@ -8,6 +8,7 @@ import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.UserHelper
+import li.doerf.iwashere.utils.now
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.time.LocalDateTime
 import java.util.*
 
 @ExtendWith(SpringExtension::class)
@@ -82,7 +82,7 @@ internal class AccountsServiceImplTest {
         every { passwordEncoder.encode(any()) } returns fakePwd
         val userMock = mockkClass(User::class)
         every { userMock.state } returns AccountState.UNCONFIRMED
-        every { userMock.tokenValidUntil } returns LocalDateTime.now().plusMinutes(5)
+        every { userMock.tokenValidUntil } returns now().plusMinutes(5)
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
         coEvery { mailService.sendSignupMail(any()) } returns mockk()
 
@@ -105,7 +105,7 @@ internal class AccountsServiceImplTest {
         every { userHelper.createUniqueToken() } returns "1234"
         val userMock = mockkClass(User::class)
         every { userMock.state } returns AccountState.UNCONFIRMED
-        every { userMock.tokenValidUntil } returns LocalDateTime.now().minusMinutes(5)
+        every { userMock.tokenValidUntil } returns now().minusMinutes(5)
         val userMock2 = mockkClass(User::class)
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
         every { userRepository.delete(userMock) } returns mockk()
@@ -128,7 +128,7 @@ internal class AccountsServiceImplTest {
     fun confirm() {
         // GIVEN
         val token = "abcdef"
-        val user = User(null, "user", "xx", token = token, tokenValidUntil = LocalDateTime.now().plusMinutes(5))
+        val user = User(null, "user", "xx", token = token, tokenValidUntil = now().plusMinutes(5))
         val userSlot = slot<User>()
         every { userRepository.findFirstByToken(any()) } returns Optional.of(user)
         every { userRepository.save(capture(userSlot)) } returns user
@@ -169,7 +169,7 @@ internal class AccountsServiceImplTest {
     fun confirmTokenExpired() {
         // GIVEN
         val token = "abcdef"
-        val user = User(null, "user", "xx", token = token, tokenValidUntil = LocalDateTime.now().minusMinutes(1))
+        val user = User(null, "user", "xx", token = token, tokenValidUntil = now().minusMinutes(1))
         every { userRepository.findFirstByToken(any()) } returns Optional.of(user)
 
         // WHEN
@@ -183,7 +183,7 @@ internal class AccountsServiceImplTest {
         // GIVEN
         every { passwordEncoder.matches("test", "xxx") } returns true
         every { passwordEncoder.encode("other") } returns "yyy"
-        val lastChangeDate = LocalDateTime.now().minusDays(1)
+        val lastChangeDate = now().minusDays(1)
         val userMock = User(null, "user", "xxx", token = "abcdef", state = AccountState.CONFIRMED, passwordChangedDate = lastChangeDate)
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
         val userSlot = slot<User>()
@@ -214,7 +214,7 @@ internal class AccountsServiceImplTest {
     fun changePasswordInvalidOldPassword() {
         // GIVEN
         every { passwordEncoder.matches("test", "xx") } returns false
-        val lastChangeDate = LocalDateTime.now().minusDays(1)
+        val lastChangeDate = now().minusDays(1)
         val userMock = User(null, "user", "xx", token = "abcdef", state = AccountState.CONFIRMED, passwordChangedDate = lastChangeDate)
         every { userRepository.findFirstByUsername(any()) } returns Optional.of(userMock)
 
@@ -264,8 +264,8 @@ internal class AccountsServiceImplTest {
 
     @Test
     fun resetPasswort() {
-        val date = LocalDateTime.now().minusDays(1)
-        val user = User(null, "user", "xx", token = "token123", tokenValidUntil = LocalDateTime.now().plusMinutes(5), state = AccountState.RESET_PASSWORD, passwordChangedDate = date)
+        val date = now().minusDays(1)
+        val user = User(null, "user", "xx", token = "token123", tokenValidUntil = now().plusMinutes(5), state = AccountState.RESET_PASSWORD, passwordChangedDate = date)
         every { userRepository.findFirstByToken("token123") } returns Optional.of(user)
         every { passwordEncoder.encode("newpwd") } returns "yyy"
         every { userRepository.save(any() as User) } returns user
@@ -321,7 +321,7 @@ internal class AccountsServiceImplTest {
 
     @Test
     fun resetPasswortTokenExpired() {
-        val user = User(null, "user", "xx", token = "token123", state = AccountState.RESET_PASSWORD, tokenValidUntil = LocalDateTime.now().minusMinutes(1))
+        val user = User(null, "user", "xx", token = "token123", state = AccountState.RESET_PASSWORD, tokenValidUntil = now().minusMinutes(1))
         every { userRepository.findFirstByToken("token123") } returns Optional.of(user)
 
         assertThatThrownBy {

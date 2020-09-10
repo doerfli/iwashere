@@ -6,6 +6,7 @@ import li.doerf.iwashere.repositories.DateGuestcount
 import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.getLogger
+import li.doerf.iwashere.utils.now
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -31,7 +32,7 @@ class VisitServiceImpl(
         val timestamp = if (timestampStr != null) {
             LocalDateTime.from(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").parse("$timestampStr 11:00"))
         } else {
-            LocalDateTime.now()
+            now()
         }
         val visitor = guestsService.create(name, email, phone)
         val visit = visitRepository.save(Visit(
@@ -48,7 +49,7 @@ class VisitServiceImpl(
 
     override fun cleanup(retentionDays: Long) {
         logger.info("cleaning up visits older than $retentionDays days")
-        val cleanupDay = LocalDateTime.now().minus(retentionDays, ChronoUnit.DAYS)
+        val cleanupDay = now().minus(retentionDays, ChronoUnit.DAYS)
         val visits = visitRepository.findAllByVisitTimestampBefore(cleanupDay)
         val visitors = visits.map { it.guest }
         logger.info("deleting ${visits.size} visits")

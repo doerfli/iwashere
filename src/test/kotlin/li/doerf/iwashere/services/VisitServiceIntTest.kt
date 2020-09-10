@@ -9,6 +9,7 @@ import li.doerf.iwashere.entities.Visit
 import li.doerf.iwashere.repositories.GuestRepository
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.VisitRepository
+import li.doerf.iwashere.utils.now
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterEach
@@ -70,7 +71,7 @@ class VisitServiceIntTest {
                 null,
                 visitor1,
                 location,
-                LocalDateTime.now()
+                now()
         ))
 
         val visitor2 = guestRepository.save(Guest(
@@ -83,7 +84,7 @@ class VisitServiceIntTest {
                 null,
                 visitor2,
                 location,
-                LocalDateTime.now().minus(35, ChronoUnit.DAYS)
+                now().minus(35, ChronoUnit.DAYS)
         ))
 
         visitService.cleanup(28)
@@ -116,10 +117,10 @@ class VisitServiceIntTest {
     fun listDifferentDates() {
         // GIVEN
         createVisit("1")
-        createVisit("2", dateTime = LocalDateTime.now().minus(1, ChronoUnit.DAYS))
-        createVisit("3", dateTime = LocalDateTime.now().minus(2, ChronoUnit.DAYS))
+        createVisit("2", dateTime = now().minus(1, ChronoUnit.DAYS))
+        createVisit("3", dateTime = now().minus(2, ChronoUnit.DAYS))
         createVisit("4")
-        createVisit("5", dateTime = LocalDateTime.now().minus(38, ChronoUnit.DAYS))
+        createVisit("5", dateTime = now().minus(38, ChronoUnit.DAYS))
 
         val today = LocalDate.now()
 
@@ -134,7 +135,7 @@ class VisitServiceIntTest {
     }
 
 
-    private fun createVisit(id: String, dateTime: LocalDateTime = LocalDateTime.now(), loc: Location = location): Visit {
+    private fun createVisit(id: String, dateTime: LocalDateTime = now(), loc: Location = location): Visit {
         val visitor1 = guestRepository.save(Guest(
                 null,
                 "name$id",
@@ -152,7 +153,7 @@ class VisitServiceIntTest {
     @Test
     fun listDates() {
         // GIVEN
-        val today = LocalDateTime.now()
+        val today = now()
         val yesterDay = today.minus(1, ChronoUnit.DAYS)
         val twoDaysAgo = today.minus(2, ChronoUnit.DAYS)
         val aWeekAgo = today.minus(7, ChronoUnit.DAYS)

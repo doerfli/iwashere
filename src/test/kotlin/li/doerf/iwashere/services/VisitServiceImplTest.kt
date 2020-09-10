@@ -10,6 +10,7 @@ import li.doerf.iwashere.entities.Location
 import li.doerf.iwashere.entities.Visit
 import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.services.mail.MailService
+import li.doerf.iwashere.utils.now
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
@@ -17,7 +18,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.time.LocalDateTime
 import java.util.*
 
 @ExtendWith(SpringExtension::class)
@@ -57,7 +57,7 @@ internal class VisitServiceImplTest {
                 3,
                 visitor,
                 location,
-                LocalDateTime.now()
+                now()
         )
         every { visitRepository.save(any() as Visit) } returns visit
 

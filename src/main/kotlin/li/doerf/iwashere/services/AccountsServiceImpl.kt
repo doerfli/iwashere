@@ -6,10 +6,10 @@ import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.getLogger
+import li.doerf.iwashere.utils.now
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
 import java.util.*
 
 @Service
@@ -26,7 +26,7 @@ class AccountsServiceImpl(
         val pwdHash = passwordEncoder.encode(password)
         var userOpt = userRepository.findFirstByUsername(username)
 
-        if (userOpt.isPresent && userOpt.get().state == AccountState.UNCONFIRMED && LocalDateTime.now().isAfter(userOpt.get().tokenValidUntil)) {
+        if (userOpt.isPresent && userOpt.get().state == AccountState.UNCONFIRMED && now().isAfter(userOpt.get().tokenValidUntil)) {
             deleteUser(userOpt)
             userOpt = Optional.empty()
         } else if (userOpt.isPresent && userOpt.get().state != AccountState.UNCONFIRMED) {
@@ -40,7 +40,7 @@ class AccountsServiceImpl(
                 username = username,
                 password = pwdHash,
                 token = userHelper.createUniqueToken(),
-                tokenValidUntil = LocalDateTime.now().plusMinutes(TOKEN_VALID_MINUTES)
+                tokenValidUntil = now().plusMinutes(TOKEN_VALID_MINUTES)
         )) }
 
         mailService.sendSignupMail(user)
@@ -108,7 +108,7 @@ class AccountsServiceImpl(
 
         user.state = AccountState.RESET_PASSWORD
         user.token = userHelper.createUniqueToken()
-        user.tokenValidUntil = LocalDateTime.now().plusMinutes(TOKEN_VALID_MINUTES)
+        user.tokenValidUntil = now().plusMinutes(TOKEN_VALID_MINUTES)
         userRepository.save(user)
 
         mailService.sendForgotPasswordMail(user)
@@ -149,7 +149,7 @@ class AccountsServiceImpl(
         if (user.tokenValidUntil == null) {
             throw IllegalStateException("token expiration missing")
         }
-        if (LocalDateTime.now().isAfter(user.tokenValidUntil)) {
+        if (now().isAfter(user.tokenValidUntil)) {
             throw ExpiredTokenException()
         }
     }
@@ -164,7 +164,7 @@ class AccountsServiceImpl(
     private fun setPassword(password: String, user: User) {
         val newPwdHash = passwordEncoder.encode(password)
         user.password = newPwdHash
-        user.passwordChangedDate = LocalDateTime.now()
+        user.passwordChangedDate = now()
     }
 
     companion object {

@@ -13,6 +13,7 @@ import li.doerf.iwashere.repositories.GuestRepository
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.services.mail.MailService
+import li.doerf.iwashere.utils.now
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.BeforeEach
@@ -99,8 +100,8 @@ internal class VisitsControllerTest {
     @Test
     fun list() {
         createVisit("1")
-        createVisit("2", dateTime = LocalDateTime.now().minus(1, ChronoUnit.DAYS))
-        createVisit("3", dateTime = LocalDateTime.now().minus(2, ChronoUnit.DAYS))
+        createVisit("2", dateTime = now().minus(1, ChronoUnit.DAYS))
+        createVisit("3", dateTime = now().minus(2, ChronoUnit.DAYS))
         createVisit("4")
 
         val date = SimpleDateFormat("yyyy-MM-dd").format(Date.from(Instant.now()))
@@ -149,7 +150,7 @@ internal class VisitsControllerTest {
         assertThat(resultObj.verifiedPhone).isTrue
     }
 
-    private fun createVisit(id: String, dateTime: LocalDateTime = LocalDateTime.now(), loc: Location = location): Visit {
+    private fun createVisit(id: String, dateTime: LocalDateTime = now(), loc: Location = location): Visit {
         val visitor1 = guestRepository.save(Guest(
                 null,
                 "name$id",

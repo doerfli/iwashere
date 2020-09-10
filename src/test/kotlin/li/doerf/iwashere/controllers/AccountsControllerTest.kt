@@ -10,6 +10,7 @@ import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.AccountsServiceImpl
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.UserHelper
+import li.doerf.iwashere.utils.now
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.time.LocalDateTime
 import java.util.*
 
 
@@ -79,7 +79,7 @@ internal class AccountsControllerTest {
     @Test
     fun confirm() {
         val token = "abcdef"
-        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token, tokenValidUntil = LocalDateTime.now().plusMinutes(5)))
+        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token, tokenValidUntil = now().plusMinutes(5)))
         every { userRepository.save(any<User>()) } returns User(null, "newuser", "xx", token = null)
 
         mockMvc.perform(post("/accounts/confirm/$token")
@@ -110,7 +110,7 @@ internal class AccountsControllerTest {
     @Test
     fun confirmTokenExpired() {
         val token = "abcdef"
-        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token, tokenValidUntil = LocalDateTime.now().minusMinutes(5)))
+        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token, tokenValidUntil = now().minusMinutes(5)))
 
         mockMvc.perform(post("/accounts/confirm/$token")
                 .accept(MediaType.APPLICATION_JSON)
@@ -125,7 +125,7 @@ internal class AccountsControllerTest {
     @Test
     fun confirmInvalidState() {
         val token = "abcdef"
-        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token, tokenValidUntil = LocalDateTime.now().minusMinutes(5), state = AccountState.CONFIRMED))
+        every { userRepository.findFirstByToken(any()) } returns Optional.of(User(null, "newuser", "xx", token = token, tokenValidUntil = now().minusMinutes(5), state = AccountState.CONFIRMED))
 
         mockMvc.perform(post("/accounts/confirm/$token")
                 .accept(MediaType.APPLICATION_JSON)
