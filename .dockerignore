@@ -3,3 +3,5 @@
 build/
 mongo/
 out/
+pgdata/
+rabbitmq/
