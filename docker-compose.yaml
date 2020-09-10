@@ -37,7 +37,6 @@ services:
     depends_on:
       - database
       - mq
-      - redis
   frontend:
     #image: docker.pkg.github.com/doerfli/iwashere-web/iwashere-frontend:master
     build: ../iwashere-web
