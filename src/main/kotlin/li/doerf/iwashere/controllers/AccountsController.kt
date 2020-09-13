@@ -38,7 +38,12 @@ class AccountsController(
     @PostMapping("changePassword")
     fun changePassword(@RequestBody request: ChangePasswordRequest, principal: Principal): HttpStatus {
         logger.debug("received change password request")
-        accountsService.changePassword(request.oldPassword, request.newPassword, userHelper.getUser(principal).username)
+        val username = userHelper.getUser(principal).username
+        // do not allow password change for demo account
+        if ("demo@ich-war-da.net".equals(username)) {
+            return HttpStatus.OK
+        }
+        accountsService.changePassword(request.oldPassword, request.newPassword, username)
         return HttpStatus.OK
     }
 
