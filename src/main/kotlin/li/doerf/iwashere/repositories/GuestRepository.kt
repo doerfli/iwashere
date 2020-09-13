@@ -1,8 +1,8 @@
 package li.doerf.iwashere.repositories
 
 import li.doerf.iwashere.entities.Guest
-import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface GuestRepository : PagingAndSortingRepository<Guest, Long> {
+interface GuestRepository : JpaRepository<Guest, Long> {
 
 }

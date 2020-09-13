@@ -3,6 +3,7 @@ package li.doerf.iwashere.controllers
 import kotlinx.coroutines.runBlocking
 import li.doerf.iwashere.dto.account.*
 import li.doerf.iwashere.services.AccountsService
+import li.doerf.iwashere.services.DemoService
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.http.HttpStatus
@@ -10,13 +11,12 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
-import javax.transaction.Transactional
 
 @RestController
 @RequestMapping("accounts")
-@Transactional
 class AccountsController(
     private val accountsService: AccountsService,
+    private val demoService: DemoService,
     private val userHelper: UserHelper
 ) {
     private val logger = getLogger(javaClass)
@@ -61,6 +61,14 @@ class AccountsController(
         logger.debug("received forgot password request")
         runBlocking {
             accountsService.resetPassword(request.token, request.password)
+        }
+        return HttpStatus.OK
+    }
+
+    @DeleteMapping("resetDemo")
+    fun resetDemo(): HttpStatus {
+        runBlocking {
+            demoService.resetDemoAccount()
         }
         return HttpStatus.OK
     }

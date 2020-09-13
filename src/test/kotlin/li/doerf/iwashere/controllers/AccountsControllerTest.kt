@@ -8,6 +8,7 @@ import li.doerf.iwashere.entities.AccountState
 import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.UserRepository
 import li.doerf.iwashere.services.AccountsServiceImpl
+import li.doerf.iwashere.services.DemoService
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.now
@@ -38,6 +39,8 @@ internal class AccountsControllerTest {
     private lateinit var mailService: MailService
     @MockkBean
     private lateinit var userHelper: UserHelper
+    @MockkBean
+    private lateinit var demoService: DemoService
 
     @Test
     fun signup() {

@@ -23,7 +23,7 @@ class VisitServiceImpl(
 
     private val logger = getLogger(javaClass)
 
-    override suspend fun register(name: String, email: String, phone: String, locationShortname: String, timestampStr: String?): Visit {
+    override suspend fun register(name: String, email: String, phone: String, locationShortname: String, timestampStr: String?, suppressEmail: Boolean): Visit {
         logger.trace("registering visit $name, $email, $phone at $locationShortname")
         val location = locationsService.getByShortName(locationShortname)
         if (location.isEmpty) {
@@ -43,7 +43,9 @@ class VisitServiceImpl(
         ))
         logger.debug("visit saved: $visit")
         logger.info("visit registered id: ${visit.id} - location: ${visit.location}")
-        mailService.sendVisitMail(visit)
+        if (!suppressEmail) {
+            mailService.sendVisitMail(visit)
+        }
         return visit
     }
 
@@ -66,6 +68,17 @@ class VisitServiceImpl(
         val after = date.atStartOfDay()
         val before= date.plusDays(1).atStartOfDay()
         val visits = visitRepository.findAllByLocationAndVisitTimestampBetween(location.get(), after, before)
+        // double check that location of visit belongs to current user
+        return visits.filter { visit -> visit.location.user.id == user.id }
+    }
+
+    override fun getAllByLocation(locationShortname: String, user: User): Collection<Visit> {
+        logger.trace("retrieving all guests for location '$locationShortname'")
+        val location = locationsService.getByShortName(locationShortname, user)
+        if (location.isEmpty) {
+            throw IllegalArgumentException("unknown location: $locationShortname")
+        }
+        val visits = visitRepository.findAllByLocation(location.get())
         // double check that location of visit belongs to current user
         return visits.filter { visit -> visit.location.user.id == user.id }
     }

@@ -61,6 +61,7 @@ dependencies {
 	implementation("com.opencsv:opencsv:${Versions.openCSV}")
 	implementation("org.apache.poi:poi:${Versions.apachePOI}")
 	implementation("org.apache.poi:poi-ooxml:${Versions.apachePOI}")
+	implementation("com.github.javafaker:javafaker:${Versions.javaFaker}")
 
 	runtimeOnly("org.postgresql:postgresql")
 	runtimeOnly("org.flywaydb:flyway-core")
@@ -71,7 +72,6 @@ dependencies {
 	}
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("com.ninja-squad:springmockk:${Versions.mockk}")
-	testImplementation("com.github.javafaker:javafaker:${Versions.javaFaker}")
 	testImplementation("io.ktor:ktor-client-apache:${Versions.ktor}")
 //	testImplementation("org.springframework.amqp:spring-rabbit-test")
 //	testImplementation("org.springframework.cloud:spring-cloud-stream-test-support")
