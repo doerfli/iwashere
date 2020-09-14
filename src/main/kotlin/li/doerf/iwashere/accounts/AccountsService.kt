@@ -1,6 +1,4 @@
-package li.doerf.iwashere.services
-
-import li.doerf.iwashere.entities.User
+package li.doerf.iwashere.accounts
 
 interface AccountsService {
 

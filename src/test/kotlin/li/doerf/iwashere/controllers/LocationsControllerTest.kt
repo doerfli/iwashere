@@ -2,7 +2,7 @@ package li.doerf.iwashere.controllers
 
 import li.doerf.iwashere.DbTestHelper
 import li.doerf.iwashere.LocationHelper
-import li.doerf.iwashere.entities.User
+import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.utils.getLogger
 import org.hamcrest.CoreMatchers.`is`

@@ -1,7 +1,7 @@
 package li.doerf.iwashere.repositories
 
+import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.entities.Location
-import li.doerf.iwashere.entities.User
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 

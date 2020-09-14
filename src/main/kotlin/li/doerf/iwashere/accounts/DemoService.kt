@@ -1,10 +1,10 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.accounts
 
 import com.github.javafaker.Faker
 import li.doerf.iwashere.entities.Location
-import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.VisitRepository
+import li.doerf.iwashere.services.*
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

@@ -1,7 +1,7 @@
 package li.doerf.iwashere.security
 
-import li.doerf.iwashere.entities.AccountState
-import li.doerf.iwashere.repositories.UserRepository
+import li.doerf.iwashere.accounts.AccountState
+import li.doerf.iwashere.accounts.UserRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service

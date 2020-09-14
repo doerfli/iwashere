@@ -1,4 +1,4 @@
-package li.doerf.iwashere.entities
+package li.doerf.iwashere.accounts
 
 enum class Language {
     DE,

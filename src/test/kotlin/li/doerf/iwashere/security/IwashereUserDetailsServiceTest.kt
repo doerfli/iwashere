@@ -3,9 +3,9 @@ package li.doerf.iwashere.security
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.mockkClass
-import li.doerf.iwashere.entities.AccountState
-import li.doerf.iwashere.entities.User
-import li.doerf.iwashere.repositories.UserRepository
+import li.doerf.iwashere.accounts.AccountState
+import li.doerf.iwashere.accounts.User
+import li.doerf.iwashere.accounts.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

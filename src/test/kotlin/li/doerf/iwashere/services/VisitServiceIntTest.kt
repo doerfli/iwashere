@@ -2,9 +2,9 @@ package li.doerf.iwashere.services
 
 import li.doerf.iwashere.DbTestHelper
 import li.doerf.iwashere.LocationHelper
+import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.entities.Guest
 import li.doerf.iwashere.entities.Location
-import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.entities.Visit
 import li.doerf.iwashere.repositories.GuestRepository
 import li.doerf.iwashere.repositories.LocationRepository

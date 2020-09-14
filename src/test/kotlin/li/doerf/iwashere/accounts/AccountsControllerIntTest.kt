@@ -1,13 +1,10 @@
-package li.doerf.iwashere.controllers
+package li.doerf.iwashere.accounts
 
 import com.ninjasquad.springmockk.MockkBean
 import li.doerf.iwashere.DbTestHelper
 import li.doerf.iwashere.TestHelper
-import li.doerf.iwashere.dto.account.ForgotPasswordRequest
-import li.doerf.iwashere.dto.account.ResetPasswordRequest
-import li.doerf.iwashere.entities.AccountState
-import li.doerf.iwashere.entities.User
-import li.doerf.iwashere.repositories.UserRepository
+import li.doerf.iwashere.accounts.dto.ForgotPasswordRequest
+import li.doerf.iwashere.accounts.dto.ResetPasswordRequest
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.getLogger
 import org.assertj.core.api.Assertions.assertThat

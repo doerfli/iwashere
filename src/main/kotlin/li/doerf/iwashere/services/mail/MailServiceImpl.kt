@@ -1,6 +1,6 @@
 package li.doerf.iwashere.services.mail
 
-import li.doerf.iwashere.entities.User
+import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.entities.Visit
 import li.doerf.iwashere.streams.MailProducer
 import li.doerf.iwashere.streams.SendMailMessage

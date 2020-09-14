@@ -1,4 +1,4 @@
-package li.doerf.iwashere.dto.account
+package li.doerf.iwashere.accounts.dto
 
 data class ResetPasswordRequest(
         val token: String,

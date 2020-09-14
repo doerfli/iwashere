@@ -1,4 +1,4 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.accounts
 
 import li.doerf.iwashere.entities.Location
 import li.doerf.iwashere.repositories.LocationRepository

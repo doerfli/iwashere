@@ -1,8 +1,8 @@
 package li.doerf.iwashere.services
 
+import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.dto.location.LocationDto
 import li.doerf.iwashere.entities.Location
-import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.cache.annotation.CacheEvict

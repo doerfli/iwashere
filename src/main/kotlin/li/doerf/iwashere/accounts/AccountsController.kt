@@ -1,9 +1,7 @@
-package li.doerf.iwashere.controllers
+package li.doerf.iwashere.accounts
 
 import kotlinx.coroutines.runBlocking
-import li.doerf.iwashere.dto.account.*
-import li.doerf.iwashere.services.AccountsService
-import li.doerf.iwashere.services.DemoService
+import li.doerf.iwashere.accounts.dto.*
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.http.HttpStatus
@@ -15,9 +13,9 @@ import java.security.Principal
 @RestController
 @RequestMapping("accounts")
 class AccountsController(
-    private val accountsService: AccountsService,
-    private val demoService: DemoService,
-    private val userHelper: UserHelper
+        private val accountsService: AccountsService,
+        private val demoService: DemoService,
+        private val userHelper: UserHelper
 ) {
     private val logger = getLogger(javaClass)
 

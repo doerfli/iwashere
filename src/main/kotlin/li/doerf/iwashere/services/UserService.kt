@@ -1,7 +1,7 @@
 package li.doerf.iwashere.services
 
-import li.doerf.iwashere.entities.User
-import li.doerf.iwashere.repositories.UserRepository
+import li.doerf.iwashere.accounts.User
+import li.doerf.iwashere.accounts.UserRepository
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service

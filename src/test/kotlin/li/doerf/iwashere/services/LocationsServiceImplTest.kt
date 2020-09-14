@@ -4,8 +4,8 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.mockkClass
 import li.doerf.iwashere.LocationHelper
+import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.entities.Location
-import li.doerf.iwashere.entities.User
 import li.doerf.iwashere.repositories.LocationRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach

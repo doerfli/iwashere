@@ -1,6 +1,6 @@
 package li.doerf.iwashere.services
 
-import li.doerf.iwashere.entities.User
+import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.entities.Visit
 import java.time.LocalDate
 
