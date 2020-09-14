@@ -1,4 +1,4 @@
-package li.doerf.iwashere.dto.visit
+package li.doerf.iwashere.visits.dto
 
 import java.time.LocalDateTime
 

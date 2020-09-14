@@ -1,10 +1,10 @@
 package li.doerf.iwashere.services.mail
 
 import li.doerf.iwashere.accounts.User
-import li.doerf.iwashere.entities.Visit
 import li.doerf.iwashere.streams.MailProducer
 import li.doerf.iwashere.streams.SendMailMessage
 import li.doerf.iwashere.utils.getLogger
+import li.doerf.iwashere.visits.Visit
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.messaging.support.MessageBuilder

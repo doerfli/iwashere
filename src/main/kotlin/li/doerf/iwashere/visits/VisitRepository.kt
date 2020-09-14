@@ -1,6 +1,5 @@
-package li.doerf.iwashere.repositories
+package li.doerf.iwashere.visits
 
-import li.doerf.iwashere.entities.Visit
 import li.doerf.iwashere.locations.Location
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query

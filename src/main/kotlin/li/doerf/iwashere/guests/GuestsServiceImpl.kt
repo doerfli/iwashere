@@ -1,7 +1,5 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.guests
 
-import li.doerf.iwashere.entities.Guest
-import li.doerf.iwashere.repositories.GuestRepository
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.stereotype.Service
 

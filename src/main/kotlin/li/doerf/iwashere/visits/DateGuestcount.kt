@@ -1,4 +1,4 @@
-package li.doerf.iwashere.repositories
+package li.doerf.iwashere.visits
 
 
 interface DateGuestcount {

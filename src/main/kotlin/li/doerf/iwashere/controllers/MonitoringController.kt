@@ -1,7 +1,7 @@
 package li.doerf.iwashere.controllers
 
 import li.doerf.iwashere.dto.monitoring.CheckResponse
-import li.doerf.iwashere.services.VisitService
+import li.doerf.iwashere.visits.VisitService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

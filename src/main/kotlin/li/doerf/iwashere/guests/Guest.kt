@@ -1,4 +1,4 @@
-package li.doerf.iwashere.entities
+package li.doerf.iwashere.guests
 
 import li.doerf.iwashere.utils.NoArgs
 import li.doerf.iwashere.utils.now

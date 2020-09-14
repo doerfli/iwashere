@@ -1,7 +1,6 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.visits
 
 import li.doerf.iwashere.accounts.User
-import li.doerf.iwashere.entities.Visit
 import java.time.LocalDate
 
 interface VisitService {

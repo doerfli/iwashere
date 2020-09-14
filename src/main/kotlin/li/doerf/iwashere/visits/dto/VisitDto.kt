@@ -1,6 +1,6 @@
-package li.doerf.iwashere.dto.visit
+package li.doerf.iwashere.visits.dto
 
-import li.doerf.iwashere.entities.Visit
+import li.doerf.iwashere.visits.Visit
 import java.time.format.DateTimeFormatter
 
 data class VisitDto(

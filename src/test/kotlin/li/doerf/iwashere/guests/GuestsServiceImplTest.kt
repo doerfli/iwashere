@@ -1,9 +1,7 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.guests
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import li.doerf.iwashere.entities.Guest
-import li.doerf.iwashere.repositories.GuestRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

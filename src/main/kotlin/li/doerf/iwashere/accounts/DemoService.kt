@@ -1,15 +1,15 @@
 package li.doerf.iwashere.accounts
 
 import com.github.javafaker.Faker
+import li.doerf.iwashere.guests.GuestsService
 import li.doerf.iwashere.locations.Location
 import li.doerf.iwashere.locations.LocationRepository
 import li.doerf.iwashere.locations.LocationsCommandService
 import li.doerf.iwashere.locations.LocationsService
-import li.doerf.iwashere.repositories.VisitRepository
-import li.doerf.iwashere.services.GuestsService
 import li.doerf.iwashere.services.UserService
-import li.doerf.iwashere.services.VisitService
 import li.doerf.iwashere.utils.getLogger
+import li.doerf.iwashere.visits.VisitRepository
+import li.doerf.iwashere.visits.VisitService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

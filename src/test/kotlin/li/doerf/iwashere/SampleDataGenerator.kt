@@ -9,9 +9,9 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import li.doerf.iwashere.accounts.dto.SignupRequest
-import li.doerf.iwashere.dto.visit.VisitRegisterRequest
 import li.doerf.iwashere.locations.dto.LocationCreateRequest
 import li.doerf.iwashere.utils.now
+import li.doerf.iwashere.visits.dto.VisitRegisterRequest
 import java.time.format.DateTimeFormatter
 import kotlin.random.Random
 

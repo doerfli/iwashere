@@ -1,19 +1,17 @@
-package li.doerf.iwashere.controllers
+package li.doerf.iwashere.visits
 
 import com.ninjasquad.springmockk.MockkBean
 import li.doerf.iwashere.DbTestHelper
 import li.doerf.iwashere.LocationHelper
 import li.doerf.iwashere.TestHelper
 import li.doerf.iwashere.accounts.User
-import li.doerf.iwashere.dto.visit.VisitRegisterRequest
-import li.doerf.iwashere.entities.Guest
-import li.doerf.iwashere.entities.Visit
+import li.doerf.iwashere.guests.Guest
+import li.doerf.iwashere.guests.GuestRepository
 import li.doerf.iwashere.locations.Location
 import li.doerf.iwashere.locations.LocationRepository
-import li.doerf.iwashere.repositories.GuestRepository
-import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.now
+import li.doerf.iwashere.visits.dto.VisitRegisterRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.BeforeEach

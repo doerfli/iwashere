@@ -1,5 +1,6 @@
-package li.doerf.iwashere.entities
+package li.doerf.iwashere.visits
 
+import li.doerf.iwashere.guests.Guest
 import li.doerf.iwashere.locations.Location
 import li.doerf.iwashere.utils.NoArgs
 import li.doerf.iwashere.utils.now

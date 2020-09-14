@@ -1,15 +1,14 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.visits
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
-import li.doerf.iwashere.entities.Guest
-import li.doerf.iwashere.entities.Visit
+import li.doerf.iwashere.guests.Guest
+import li.doerf.iwashere.guests.GuestsService
 import li.doerf.iwashere.locations.Location
 import li.doerf.iwashere.locations.LocationsService
-import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.now
 import org.assertj.core.api.Assertions.assertThat

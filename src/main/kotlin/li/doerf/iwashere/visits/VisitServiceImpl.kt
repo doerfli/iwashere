@@ -1,10 +1,8 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.visits
 
 import li.doerf.iwashere.accounts.User
-import li.doerf.iwashere.entities.Visit
+import li.doerf.iwashere.guests.GuestsService
 import li.doerf.iwashere.locations.LocationsService
-import li.doerf.iwashere.repositories.DateGuestcount
-import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.getLogger
 import li.doerf.iwashere.utils.now
@@ -129,7 +127,7 @@ class VisitServiceImpl(
         if (day.length < 2) {
             day = day.padStart(2, '0')
         }
-        return object : DateGuestcount{
+        return object : DateGuestcount {
             override fun getDate(): String {
                 return "$year-$month-$day"
             }

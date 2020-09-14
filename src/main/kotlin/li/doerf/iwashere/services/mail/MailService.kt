@@ -1,7 +1,7 @@
 package li.doerf.iwashere.services.mail
 
 import li.doerf.iwashere.accounts.User
-import li.doerf.iwashere.entities.Visit
+import li.doerf.iwashere.visits.Visit
 
 interface MailService {
     suspend fun sendSignupMail(user: User)

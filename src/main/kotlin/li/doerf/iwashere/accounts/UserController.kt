@@ -1,6 +1,6 @@
-package li.doerf.iwashere.controllers
+package li.doerf.iwashere.accounts
 
-import li.doerf.iwashere.dto.user.UserGetResponse
+import li.doerf.iwashere.accounts.dto.UserGetResponse
 import li.doerf.iwashere.utils.UserHelper
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
