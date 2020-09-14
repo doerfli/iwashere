@@ -1,8 +1,7 @@
-package li.doerf.iwashere.scheduler
+package li.doerf.iwashere.visits
 
 import li.doerf.iwashere.guests.GuestsService
 import li.doerf.iwashere.utils.getLogger
-import li.doerf.iwashere.visits.VisitService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
