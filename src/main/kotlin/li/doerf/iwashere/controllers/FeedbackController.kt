@@ -1,7 +1,7 @@
 package li.doerf.iwashere.controllers
 
-import li.doerf.iwashere.common.FeedbackService
-import li.doerf.iwashere.dto.FeedbackRequestDto
+import li.doerf.iwashere.common.feedback.FeedbackRequestDto
+import li.doerf.iwashere.common.feedback.FeedbackService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping

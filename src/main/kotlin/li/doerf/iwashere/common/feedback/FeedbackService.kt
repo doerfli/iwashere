@@ -1,4 +1,4 @@
-package li.doerf.iwashere.common
+package li.doerf.iwashere.common.feedback
 
 import kotlinx.coroutines.runBlocking
 import li.doerf.iwashere.infrastructure.mail.MailService
