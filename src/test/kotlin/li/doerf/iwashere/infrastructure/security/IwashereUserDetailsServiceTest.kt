@@ -1,4 +1,4 @@
-package li.doerf.iwashere.security
+package li.doerf.iwashere.infrastructure.security
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every

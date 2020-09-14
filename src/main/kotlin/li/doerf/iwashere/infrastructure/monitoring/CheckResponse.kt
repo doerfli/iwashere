@@ -1,4 +1,4 @@
-package li.doerf.iwashere.dto.monitoring
+package li.doerf.iwashere.infrastructure.monitoring
 
 data class CheckResponse(
         val visitCount: Long

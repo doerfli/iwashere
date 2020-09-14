@@ -1,4 +1,4 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.accounts
 
 class ExpiredTokenException : Exception() {
 }

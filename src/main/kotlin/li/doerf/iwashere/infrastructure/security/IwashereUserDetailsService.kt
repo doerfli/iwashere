@@ -1,4 +1,4 @@
-package li.doerf.iwashere.security
+package li.doerf.iwashere.infrastructure.security
 
 import li.doerf.iwashere.accounts.AccountState
 import li.doerf.iwashere.accounts.UserRepository

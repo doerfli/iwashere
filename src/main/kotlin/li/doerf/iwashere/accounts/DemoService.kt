@@ -6,7 +6,6 @@ import li.doerf.iwashere.locations.Location
 import li.doerf.iwashere.locations.LocationRepository
 import li.doerf.iwashere.locations.LocationsCommandService
 import li.doerf.iwashere.locations.LocationsService
-import li.doerf.iwashere.services.UserService
 import li.doerf.iwashere.utils.getLogger
 import li.doerf.iwashere.visits.VisitRepository
 import li.doerf.iwashere.visits.VisitService
@@ -20,7 +19,7 @@ import kotlin.random.Random
 @Service
 @Transactional
 class DemoService @Autowired constructor(
-        private val userService: UserService,
+        private val userRepository: UserRepository,
         private val locationsService: LocationsService,
         private val locationRepository: LocationRepository,
         private val locationsCommandService: LocationsCommandService,
@@ -34,7 +33,7 @@ class DemoService @Autowired constructor(
 
     suspend fun resetDemoAccount() {
         log.info("resetting demo user account")
-        val user = userService.findByUsername(USERNAME_DEMO_ACCOUNT).orElseThrow{ IllegalStateException("demo user not found") }
+        val user = userRepository.findFirstByUsername(USERNAME_DEMO_ACCOUNT).orElseThrow{ IllegalStateException("demo user not found") }
         dropAllDemoLocations(user)
         createDemoLocations(user)
     }

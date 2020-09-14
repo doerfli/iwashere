@@ -1,7 +1,7 @@
-package li.doerf.iwashere.streams
+package li.doerf.iwashere.infrastructure.mail.mq
 
 import kotlinx.coroutines.runBlocking
-import li.doerf.iwashere.services.mail.MailgunService
+import li.doerf.iwashere.infrastructure.mail.MailgunService
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.cloud.stream.annotation.EnableBinding
 import org.springframework.cloud.stream.annotation.StreamListener

@@ -1,7 +1,7 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.common
 
 import kotlinx.coroutines.runBlocking
-import li.doerf.iwashere.services.mail.MailService
+import li.doerf.iwashere.infrastructure.mail.MailService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

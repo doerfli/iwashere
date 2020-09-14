@@ -4,7 +4,7 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.*
 import li.doerf.iwashere.TestHelper
 import li.doerf.iwashere.accounts.dto.SignupRequest
-import li.doerf.iwashere.services.mail.MailService
+import li.doerf.iwashere.infrastructure.mail.MailService
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.now
 import org.junit.jupiter.api.Test

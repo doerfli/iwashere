@@ -1,8 +1,6 @@
 package li.doerf.iwashere.accounts
 
-import li.doerf.iwashere.services.ExpiredTokenException
-import li.doerf.iwashere.services.InvalidUserStateException
-import li.doerf.iwashere.services.mail.MailService
+import li.doerf.iwashere.infrastructure.mail.MailService
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.getLogger
 import li.doerf.iwashere.utils.now

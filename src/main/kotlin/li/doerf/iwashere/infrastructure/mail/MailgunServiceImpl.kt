@@ -1,4 +1,4 @@
-package li.doerf.iwashere.services.mail
+package li.doerf.iwashere.infrastructure.mail
 
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Method

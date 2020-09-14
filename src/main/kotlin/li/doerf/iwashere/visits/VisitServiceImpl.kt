@@ -2,8 +2,8 @@ package li.doerf.iwashere.visits
 
 import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.guests.GuestsService
+import li.doerf.iwashere.infrastructure.mail.MailService
 import li.doerf.iwashere.locations.LocationsService
-import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.getLogger
 import li.doerf.iwashere.utils.now
 import org.springframework.stereotype.Service

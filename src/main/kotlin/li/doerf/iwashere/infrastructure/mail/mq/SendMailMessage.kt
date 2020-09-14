@@ -1,4 +1,4 @@
-package li.doerf.iwashere.streams
+package li.doerf.iwashere.infrastructure.mail.mq
 
 import java.util.*
 

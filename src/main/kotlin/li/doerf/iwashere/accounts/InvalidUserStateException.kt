@@ -1,6 +1,4 @@
-package li.doerf.iwashere.services
-
-import li.doerf.iwashere.accounts.AccountState
+package li.doerf.iwashere.accounts
 
 class InvalidUserStateException(expectedState: AccountState, state: AccountState) : Exception() {
 }

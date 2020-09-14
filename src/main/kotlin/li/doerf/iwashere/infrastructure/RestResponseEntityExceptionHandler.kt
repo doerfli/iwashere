@@ -1,7 +1,7 @@
-package li.doerf.iwashere.controllers
+package li.doerf.iwashere.infrastructure
 
-import li.doerf.iwashere.services.ExpiredTokenException
-import li.doerf.iwashere.services.InvalidUserStateException
+import li.doerf.iwashere.accounts.ExpiredTokenException
+import li.doerf.iwashere.accounts.InvalidUserStateException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

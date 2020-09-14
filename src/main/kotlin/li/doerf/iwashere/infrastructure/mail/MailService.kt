@@ -1,4 +1,4 @@
-package li.doerf.iwashere.services.mail
+package li.doerf.iwashere.infrastructure.mail
 
 import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.visits.Visit

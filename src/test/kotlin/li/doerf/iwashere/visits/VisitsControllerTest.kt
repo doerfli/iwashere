@@ -7,9 +7,9 @@ import li.doerf.iwashere.TestHelper
 import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.guests.Guest
 import li.doerf.iwashere.guests.GuestRepository
+import li.doerf.iwashere.infrastructure.mail.MailService
 import li.doerf.iwashere.locations.Location
 import li.doerf.iwashere.locations.LocationRepository
-import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.now
 import li.doerf.iwashere.visits.dto.VisitRegisterRequest
 import org.assertj.core.api.Assertions.assertThat

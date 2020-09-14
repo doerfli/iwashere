@@ -5,7 +5,7 @@ import li.doerf.iwashere.DbTestHelper
 import li.doerf.iwashere.TestHelper
 import li.doerf.iwashere.accounts.dto.ForgotPasswordRequest
 import li.doerf.iwashere.accounts.dto.ResetPasswordRequest
-import li.doerf.iwashere.services.mail.MailService
+import li.doerf.iwashere.infrastructure.mail.MailService
 import li.doerf.iwashere.utils.getLogger
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach

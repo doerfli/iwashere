@@ -7,9 +7,9 @@ import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
 import li.doerf.iwashere.guests.Guest
 import li.doerf.iwashere.guests.GuestsService
+import li.doerf.iwashere.infrastructure.mail.MailService
 import li.doerf.iwashere.locations.Location
 import li.doerf.iwashere.locations.LocationsService
-import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.now
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy

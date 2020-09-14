@@ -3,9 +3,7 @@ package li.doerf.iwashere.accounts
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
-import li.doerf.iwashere.services.ExpiredTokenException
-import li.doerf.iwashere.services.InvalidUserStateException
-import li.doerf.iwashere.services.mail.MailService
+import li.doerf.iwashere.infrastructure.mail.MailService
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.now
 import org.assertj.core.api.Assertions.assertThat
