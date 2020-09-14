@@ -1,7 +1,7 @@
 package li.doerf.iwashere
 
-import li.doerf.iwashere.entities.Location
-import li.doerf.iwashere.entities.User
+import li.doerf.iwashere.accounts.User
+import li.doerf.iwashere.locations.Location
 
 class LocationHelper {
 
