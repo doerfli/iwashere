@@ -1,4 +1,4 @@
-package li.doerf.iwashere.dto.location
+package li.doerf.iwashere.locations.dto
 
 data class LocationUpdateShortnameRequest(
         val id: Long,

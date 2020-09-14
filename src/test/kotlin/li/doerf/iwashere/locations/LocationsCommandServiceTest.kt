@@ -1,13 +1,11 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.locations
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.mockkClass
 import io.mockk.verify
 import li.doerf.iwashere.accounts.User
-import li.doerf.iwashere.dto.location.toLocationDto
-import li.doerf.iwashere.entities.Location
-import li.doerf.iwashere.repositories.LocationRepository
+import li.doerf.iwashere.locations.dto.toLocationDto
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach

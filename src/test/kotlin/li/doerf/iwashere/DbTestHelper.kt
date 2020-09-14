@@ -2,8 +2,8 @@ package li.doerf.iwashere
 
 import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.accounts.UserRepository
+import li.doerf.iwashere.locations.LocationRepository
 import li.doerf.iwashere.repositories.GuestRepository
-import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.now

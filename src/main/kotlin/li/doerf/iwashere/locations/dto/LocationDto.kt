@@ -1,6 +1,6 @@
-package li.doerf.iwashere.dto.location
+package li.doerf.iwashere.locations.dto
 
-import li.doerf.iwashere.entities.Location
+import li.doerf.iwashere.locations.Location
 
 data class LocationDto(
         val id: Long,

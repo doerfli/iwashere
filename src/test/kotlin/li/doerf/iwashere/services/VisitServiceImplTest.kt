@@ -6,8 +6,9 @@ import io.mockk.every
 import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
 import li.doerf.iwashere.entities.Guest
-import li.doerf.iwashere.entities.Location
 import li.doerf.iwashere.entities.Visit
+import li.doerf.iwashere.locations.Location
+import li.doerf.iwashere.locations.LocationsService
 import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.services.mail.MailService
 import li.doerf.iwashere.utils.now

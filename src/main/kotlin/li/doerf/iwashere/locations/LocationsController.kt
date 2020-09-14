@@ -1,9 +1,6 @@
-package li.doerf.iwashere.controllers
+package li.doerf.iwashere.locations
 
-import li.doerf.iwashere.dto.location.*
-import li.doerf.iwashere.entities.Location
-import li.doerf.iwashere.services.LocationsCommandService
-import li.doerf.iwashere.services.LocationsService
+import li.doerf.iwashere.locations.dto.*
 import li.doerf.iwashere.utils.UserHelper
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound

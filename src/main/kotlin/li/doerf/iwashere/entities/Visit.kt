@@ -1,5 +1,6 @@
 package li.doerf.iwashere.entities
 
+import li.doerf.iwashere.locations.Location
 import li.doerf.iwashere.utils.NoArgs
 import li.doerf.iwashere.utils.now
 import java.time.LocalDateTime

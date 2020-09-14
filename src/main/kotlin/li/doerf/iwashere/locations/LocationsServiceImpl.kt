@@ -1,8 +1,6 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.locations
 
 import li.doerf.iwashere.accounts.User
-import li.doerf.iwashere.entities.Location
-import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.utils.getLogger
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service

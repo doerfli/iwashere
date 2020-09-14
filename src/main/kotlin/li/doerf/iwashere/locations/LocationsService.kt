@@ -1,7 +1,6 @@
-package li.doerf.iwashere.services
+package li.doerf.iwashere.locations
 
 import li.doerf.iwashere.accounts.User
-import li.doerf.iwashere.entities.Location
 import java.util.*
 
 interface LocationsService {

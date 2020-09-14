@@ -2,6 +2,7 @@ package li.doerf.iwashere.services
 
 import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.entities.Visit
+import li.doerf.iwashere.locations.LocationsService
 import li.doerf.iwashere.repositories.DateGuestcount
 import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.services.mail.MailService

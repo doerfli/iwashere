@@ -1,4 +1,4 @@
-package li.doerf.iwashere.entities
+package li.doerf.iwashere.locations
 
 import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.utils.NoArgs

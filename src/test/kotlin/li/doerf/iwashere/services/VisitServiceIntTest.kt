@@ -4,10 +4,10 @@ import li.doerf.iwashere.DbTestHelper
 import li.doerf.iwashere.LocationHelper
 import li.doerf.iwashere.accounts.User
 import li.doerf.iwashere.entities.Guest
-import li.doerf.iwashere.entities.Location
 import li.doerf.iwashere.entities.Visit
+import li.doerf.iwashere.locations.Location
+import li.doerf.iwashere.locations.LocationRepository
 import li.doerf.iwashere.repositories.GuestRepository
-import li.doerf.iwashere.repositories.LocationRepository
 import li.doerf.iwashere.repositories.VisitRepository
 import li.doerf.iwashere.utils.now
 import org.assertj.core.api.Assertions.assertThat

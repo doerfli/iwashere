@@ -3,7 +3,7 @@ package li.doerf.iwashere.controllers
 import com.opencsv.CSVWriter
 import kotlinx.coroutines.runBlocking
 import li.doerf.iwashere.dto.visit.*
-import li.doerf.iwashere.services.LocationsService
+import li.doerf.iwashere.locations.LocationsService
 import li.doerf.iwashere.services.VisitService
 import li.doerf.iwashere.utils.UserHelper
 import li.doerf.iwashere.utils.getLogger
