@@ -44,7 +44,9 @@ class LocationsCommandService(
                 street = entity.street,
                 zip = entity.zip,
                 city = entity.city,
-                country = entity.country
+                country = entity.country,
+                useTableNumber = entity.useTableNumber,
+                useSector = entity.useSector,
         )
         val result = locationRepository.save(updatedLoc)
         logger.info("updated location $result")

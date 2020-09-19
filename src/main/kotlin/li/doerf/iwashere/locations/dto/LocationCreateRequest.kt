@@ -6,5 +6,7 @@ data class LocationCreateRequest(
         var street: String?,
         var zip: String?,
         var city: String?,
-        var country: String?
+        var country: String?,
+        var useTableNumber: Boolean,
+        var useSector: Boolean
 )

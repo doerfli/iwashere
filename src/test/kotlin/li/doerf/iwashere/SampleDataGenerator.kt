@@ -71,7 +71,9 @@ suspend fun createLocation(client: HttpClient, faker: Faker): String {
                 faker.address().streetAddress(),
                 faker.address().zipCode(),
                 faker.address().city(),
-                faker.address().country()
+                faker.address().country(),
+                true,
+                false
         ))
     }
     return shortname

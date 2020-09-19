@@ -9,7 +9,9 @@ data class LocationDto(
         val street: String?,
         val zip: String?,
         val city: String?,
-        val country: String?
+        val country: String?,
+        val useTableNumber: Boolean,
+        val useSector: Boolean
 )
 
 fun Location.toLocationDto(): LocationDto {
@@ -20,6 +22,8 @@ fun Location.toLocationDto(): LocationDto {
             this.street,
             this.zip,
             this.city,
-            this.country
+            this.country,
+            this.useTableNumber,
+            this.useSector
     )
 }

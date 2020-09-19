@@ -75,6 +75,8 @@ class DemoService @Autowired constructor(
                         faker.phoneNumber().phoneNumber(),
                         short,
                         fmt.format(date),
+                        faker.number().numberBetween(1, 20).toString(),
+                        "",
                         true
                 )
             }

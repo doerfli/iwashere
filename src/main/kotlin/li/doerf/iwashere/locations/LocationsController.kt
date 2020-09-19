@@ -37,7 +37,9 @@ class LocationsController(
 
     @PostMapping
     fun create(@RequestBody request: LocationCreateRequest, principal: Principal): ResponseEntity<LocationCreateResponse> {
-        val toBeCreated = Location(null, request.name, request.shortname, request.street, request.zip, request.city, request.country, user = userHelper.getUser(principal))
+        val toBeCreated = Location(null, request.name, request.shortname, request.street, request.zip, request.city,
+                request.country, user = userHelper.getUser(principal), useTableNumber = request.useTableNumber,
+                useSector = request.useSector)
         val loc = locationsCommandService.create(toBeCreated, userHelper.getUser(principal))
         return ok(LocationCreateResponse(loc.toLocationDto()))
     }

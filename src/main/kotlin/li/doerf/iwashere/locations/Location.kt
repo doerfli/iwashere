@@ -19,5 +19,7 @@ data class Location(
         val createdDate: LocalDateTime = now(),
         @ManyToOne
         @JoinColumn(name="user_id", nullable=false)
-        val user: User
+        val user: User,
+        val useTableNumber: Boolean = false,
+        val useSector: Boolean = false
 )
