@@ -22,7 +22,7 @@ class VisitServiceImpl(
 
     private val logger = getLogger(javaClass)
 
-    override suspend fun register(name: String, email: String, phone: String, locationShortname: String, timestampStr: String?, suppressEmail: Boolean): Visit {
+    override suspend fun register(name: String, email: String, phone: String, locationShortname: String, timestampStr: String?, tableNumber: String?, sector: String?, suppressEmail: Boolean): Visit {
         logger.trace("registering visit $name, $email, $phone at $locationShortname")
         val location = locationsService.getByShortName(locationShortname)
         if (location.isEmpty) {
@@ -38,7 +38,9 @@ class VisitServiceImpl(
                 null,
                 visitor,
                 location.get(),
-                timestamp
+                timestamp,
+                tableNumber = tableNumber,
+                sector = sector,
         ))
         logger.debug("visit saved: $visit")
         logger.info("visit registered id: ${visit.id} - location: ${visit.location}")

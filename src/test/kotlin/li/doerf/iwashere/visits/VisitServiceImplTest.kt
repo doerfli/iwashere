@@ -65,7 +65,10 @@ internal class VisitServiceImplTest {
         val result = runBlocking {
             svc.register("john doe",
                     "john.doe@hotmail.com", "+0123456789",
-                    "barometer")
+                    "barometer",
+                    null,
+                    "42",
+                    null)
         }
 
         // THEN
@@ -84,7 +87,9 @@ internal class VisitServiceImplTest {
             runBlocking {
                 svc.register("john doe",
                         "john.doe@hotmail.com", "+0123456789",
-                        "barometer")
+                        "barometer",
+                        null,
+                        "17", null)
             }
         }
 

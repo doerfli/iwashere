@@ -5,5 +5,7 @@ data class VisitRegisterRequest(
         val name: String,
         val email: String,
         val phone: String,
-        val timestamp: String? = null
+        val timestamp: String? = null,
+        val tableNumber: String? = null,
+        val sector: String? = null,
 )

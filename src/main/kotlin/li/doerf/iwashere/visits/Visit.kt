@@ -19,5 +19,7 @@ data class Visit(
         val location: Location,
         val visitTimestamp: LocalDateTime = now(),
         var verifiedEmail: Boolean = false,
-        var verifiedPhone: Boolean = false
+        var verifiedPhone: Boolean = false,
+        var tableNumber: String? = null,
+        var sector: String? = null
 )

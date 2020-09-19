@@ -71,7 +71,10 @@ internal class VisitsControllerTest {
                                 "loc1",
                                 "John Doe",
                                 "john@doe.com",
-                                "+41798654321"
+                                "+41798654321",
+                                null,
+                                "42",
+                                null
                         )
                 ))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -112,6 +115,8 @@ internal class VisitsControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].guest_name", CoreMatchers.equalTo("name1")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].guest_email", CoreMatchers.equalTo("name1@mail.com")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].guest_phone", CoreMatchers.equalTo("0000001")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].tableNumber", CoreMatchers.equalTo("table1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].sector", CoreMatchers.nullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].id", CoreMatchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[0].visitTimestamp", CoreMatchers.equalTo(date)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.visits[1].guest_name", CoreMatchers.equalTo("name4")))
@@ -159,7 +164,8 @@ internal class VisitsControllerTest {
                 null,
                 visitor1,
                 loc,
-                dateTime
+                dateTime,
+                tableNumber = "table$id"
         ))
     }
 }

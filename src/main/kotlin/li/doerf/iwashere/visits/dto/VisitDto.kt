@@ -10,7 +10,9 @@ data class VisitDto(
         val guest_phone: String?,
         val visitTimestamp: String,
         val verifiedEmail: Boolean,
-        val verifiedPhone: Boolean
+        val verifiedPhone: Boolean,
+        val tableNumber: String?,
+        val sector: String?,
 )
 
 val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -23,7 +25,9 @@ fun Visit.toDto(): VisitDto {
             this.guest.phone,
             fmt.format(this.visitTimestamp),
             this.verifiedEmail,
-            this.verifiedPhone
+            this.verifiedPhone,
+            this.tableNumber,
+            this.sector,
     )
 }
 
@@ -34,5 +38,7 @@ fun Visit.toCSV(): Array<String> {
             if (this.verifiedEmail) { "y" } else { "n" },
             this.guest.phone,
             if (this.verifiedPhone) { "y" } else { "n" },
+            this.tableNumber.orEmpty(),
+            this.sector.orEmpty(),
     )
 }
