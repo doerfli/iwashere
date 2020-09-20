@@ -4,6 +4,7 @@ object Versions {
     const val kotlin = "1.4.10"
     const val spring = "2.3.4.RELEASE"
     const val springDependencyManagement = "1.0.10.RELEASE"
+    const val springCloud = "Hoxton.SR8"
     const val benManesVersions = "0.33.0"
     const val nebulaRelease = "15.2.0"
 

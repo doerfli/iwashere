@@ -27,11 +27,10 @@ repositories {
 	jcenter()
 }
 
-extra["springCloudVersion"] = "Hoxton.SR7"
 
 dependencyManagement {
 	imports {
-		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${Versions.springCloud}")
 	}
 }
 
