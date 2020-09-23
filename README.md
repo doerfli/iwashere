@@ -5,7 +5,8 @@ bars and the likes to track visits of patrons. Access to guestlists can be inval
 to contact patrons in case one of the guests had a COVID-19 infections and other needs to be informed about such a case. 
 
 The app allows venues to register on the site and create a unique QR code that can be scanned by mobile phone and 
-provided a link to the registration page of this venue to register the visit. 
+provided a link to the registration page of this venue to register the visit. The application will automatically delete 
+any visit data after a defined retention time. 
 
 The backend application is developed in Kotlin using the Spring Boot framework. 
 The application can easily be deployed as a container on any container host (Kubernetes, Docker, ...).
