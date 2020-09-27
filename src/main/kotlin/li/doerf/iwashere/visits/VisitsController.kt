@@ -80,7 +80,7 @@ class VisitsController(
         csvWriter.writeNext(arrayOf("${location.name}, $dateStr"))
         csvWriter.writeNext(arrayOf("${location.street}, ${location.zip}, ${location.city}, ${location.country}"))
         csvWriter.writeNext(arrayOf())
-        csvWriter.writeNext(arrayOf("name", "email", "verified", "phone", "verified", "table number", "sector"))
+        csvWriter.writeNext(arrayOf("name", "email", "verified", "phone", "verified", "street", "zip", "city", "country", "table number", "sector"))
         guests.stream().forEach { csvWriter.writeNext(it.toCSV()) }
         csvWriter.close();
         logger.debug("writing csv finished")
@@ -114,16 +114,24 @@ class VisitsController(
         header3.createCell(0).setCellValue("name")
         header3.createCell(1).setCellValue("email")
         header3.createCell(2).setCellValue("phone")
-        header3.createCell(3).setCellValue("table number")
-        header3.createCell(4).setCellValue("sector")
+        header3.createCell(3).setCellValue("street")
+        header3.createCell(4).setCellValue("zip")
+        header3.createCell(5).setCellValue("city")
+        header3.createCell(6).setCellValue("country")
+        header3.createCell(7).setCellValue("table number")
+        header3.createCell(8).setCellValue("sector")
 
         guests.stream().forEach {
             val rw = sheet.createRow(row++)
             rw.createCell(0).setCellValue(it.guest.name)
             rw.createCell(1).setCellValue(it.guest.email)
             rw.createCell(2).setCellValue(it.guest.phone)
-            rw.createCell(3).setCellValue(it.tableNumber)
-            rw.createCell(4).setCellValue(it.sector)
+            rw.createCell(3).setCellValue(it.guest.street)
+            rw.createCell(4).setCellValue(it.guest.zip)
+            rw.createCell(5).setCellValue(it.guest.city)
+            rw.createCell(6).setCellValue(it.guest.country)
+            rw.createCell(7).setCellValue(it.tableNumber)
+            rw.createCell(8).setCellValue(it.sector)
         }
 
         logger.debug("writing xls")
