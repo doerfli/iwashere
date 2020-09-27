@@ -37,7 +37,11 @@ internal class GuestsServiceImplTest {
         val result = svc.create(
                 visitor.name,
                 visitor.email,
-                visitor.phone
+                visitor.phone,
+                visitor.street,
+                visitor.zip,
+                visitor.city,
+                visitor.country
         )
 
         assertThat(result.id).isEqualTo(1)

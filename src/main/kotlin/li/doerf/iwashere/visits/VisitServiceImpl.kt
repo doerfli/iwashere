@@ -22,7 +22,7 @@ class VisitServiceImpl(
 
     private val logger = getLogger(javaClass)
 
-    override suspend fun register(name: String, email: String, phone: String, locationShortname: String, timestampStr: String?, tableNumber: String?, sector: String?, suppressEmail: Boolean): Visit {
+    override suspend fun register(name: String, email: String, phone: String, street: String?, zip: String?, city: String?, country: String?, locationShortname: String, timestampStr: String?, tableNumber: String?, sector: String?, suppressEmail: Boolean): Visit {
         logger.trace("registering visit $name, $email, $phone at $locationShortname")
         val location = locationsService.getByShortName(locationShortname)
         if (location.isEmpty) {
@@ -33,7 +33,7 @@ class VisitServiceImpl(
         } else {
             now()
         }
-        val visitor = guestsService.create(name, email, phone)
+        val visitor = guestsService.create(name, email, phone, street, zip, city, country)
         val visit = visitRepository.save(Visit(
                 null,
                 visitor,

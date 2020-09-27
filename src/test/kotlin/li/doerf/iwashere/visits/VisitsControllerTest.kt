@@ -72,9 +72,10 @@ internal class VisitsControllerTest {
                                 "John Doe",
                                 "john@doe.com",
                                 "+41798654321",
-                                null,
-                                "42",
-                                null
+                                "strasse 13",
+                                "1235",
+                                "stadt",
+                                "land"
                         )
                 ))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -84,7 +85,6 @@ internal class VisitsControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp", CoreMatchers.notNullValue()))
-
     }
 
     @Test

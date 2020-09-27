@@ -51,8 +51,11 @@ internal class VisitServiceImplTest {
         val location = mockkClass(Location::class)
         every { locationsService.getByShortName("barometer") } returns Optional.of(location)
         val visitor = mockkClass(Guest::class)
-        every { guestsService.create("john doe",
-                "john.doe@hotmail.com", "+0123456789") } returns visitor
+        every { guestsService.create(
+                "john doe",
+                "john.doe@hotmail.com", "+0123456789",
+                "strasse", "1234", "stadt", "land"
+        ) } returns visitor
         val visit = Visit(
                 3,
                 visitor,
@@ -64,7 +67,7 @@ internal class VisitServiceImplTest {
         // WHEN
         val result = runBlocking {
             svc.register("john doe",
-                    "john.doe@hotmail.com", "+0123456789",
+                    "john.doe@hotmail.com", "+0123456789", "strasse", "1234", "stadt", "land",
                     "barometer",
                     null,
                     "42",
@@ -86,10 +89,7 @@ internal class VisitServiceImplTest {
         assertThatThrownBy {
             runBlocking {
                 svc.register("john doe",
-                        "john.doe@hotmail.com", "+0123456789",
-                        "barometer",
-                        null,
-                        "17", null)
+                        "john.doe@hotmail.com", "+0123456789", "strasse", "1234", "stadt", "land", "barometer", null, "17", null)
             }
         }
 

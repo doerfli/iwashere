@@ -62,7 +62,7 @@ class DemoService @Autowired constructor(
 
     private suspend fun createLocation(name: String, short: String, adr: String, plz: String, city: String, country: String, user: User) {
         val newLocation = Location(null, name, short, adr, plz, city, country, LocalDateTime.now(), user)
-        val location = locationsCommandService.create(newLocation, user)
+        locationsCommandService.create(newLocation, user)
         val faker = Faker()
         val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
@@ -73,6 +73,10 @@ class DemoService @Autowired constructor(
                         faker.name().name(),
                         faker.internet().emailAddress(),
                         faker.phoneNumber().phoneNumber(),
+                        faker.address().streetAddress(),
+                        faker.address().zipCode(),
+                        faker.address().city(),
+                        faker.address().country(),
                         short,
                         fmt.format(date),
                         faker.number().numberBetween(1, 20).toString(),

@@ -10,13 +10,17 @@ class GuestsServiceImpl(
 
     private val logger = getLogger(javaClass)
 
-    override fun create(name: String, email: String, phone: String): Guest {
+    override fun create(name: String, email: String, phone: String, street: String?, zip: String?, city: String?, country: String?): Guest {
         logger.trace("creating visitor $name, $email, $phone")
         val visitor = guestRepository.save(Guest(
                 null,
                 name,
                 email,
-                phone
+                phone,
+                street,
+                zip,
+                city,
+                country
         ))
         logger.debug("visitor saved: $visitor")
         return visitor

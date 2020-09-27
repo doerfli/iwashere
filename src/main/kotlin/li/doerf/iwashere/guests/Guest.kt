@@ -14,5 +14,9 @@ data class Guest(
         var name: String,
         var email: String,
         var phone: String,
+        var street: String? = null,
+        var zip: String? = null,
+        var city: String? = null,
+        var country: String? = null,
         val createdDate: LocalDateTime = now()
 )
