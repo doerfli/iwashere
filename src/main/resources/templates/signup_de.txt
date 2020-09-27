@@ -8,5 +8,8 @@ abzuschliessen folge bitte diesem Link
 
 Dieser Link ist gueltig bis [(${validUntil})].
 
-Falls du dich nicht fuer ein Konto bei 'Ich war da' angemeldet hast kannst du
+Falls du dich nicht für ein Konto bei 'Ich war da' angemeldet hast kannst du
 dieses E-Mail einfach ignorieren.
+
+--
+https://ich-war-da.net - Digitales Gästebuch online

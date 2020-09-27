@@ -10,3 +10,6 @@ Danke dass Sie uns Ihre Kontaktdaten zur Verfügung stellen, damit wir Sie im Be
 
 Mit freundlichen Grüssen
 Das [(${location_name})] Team
+
+--
+https://ich-war-da.net - Digitales Gästebuch online
