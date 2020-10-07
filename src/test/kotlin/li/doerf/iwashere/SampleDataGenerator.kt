@@ -42,11 +42,16 @@ suspend fun registerGuests(client: HttpClient, faker: Faker, shortname: String) 
         repeat(amount) {
             client.post<String>("$apiBaseUrl/visits") {
                 header("content-type", "application/json")
+                val address = faker.address()
                 body = TestHelper.asJsonString(VisitRegisterRequest(
                         shortname,
                         faker.name().name(),
                         faker.internet().emailAddress(),
                         faker.phoneNumber().phoneNumber(),
+                        address.streetAddress(),
+                        address.zipCode(),
+                        address.city(),
+                        address.country(),
                         fmt.format(date)
                 ))
             }
