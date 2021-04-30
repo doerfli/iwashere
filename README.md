@@ -1,3 +1,5 @@
+**This project is archived and no longer maintained**
+
 # iwashere - 'I was here' backend application
 
 _Iwashere_ is the backend for the contact tracing web application _Iwashere_. It can be used by restaurants, cafes, 
